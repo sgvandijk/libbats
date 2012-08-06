@@ -1,0 +1,7 @@
+#include "behaviorfactory.hh"
+#include <stdexcept>
+#include "../Behavior/behavior.hh"
+
+using namespace bats;
+using namespace std;
+

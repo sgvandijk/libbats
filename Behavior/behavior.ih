@@ -1,0 +1,15 @@
+#include "behavior.hh"
+#include "../BatsException/batsexception.hh"
+#include <algorithm>
+#include <iostream>
+#include <string>
+#include "../Clock/clock.hh"
+
+#define DEBUGLEVEL 0
+#include "../Preprocessor/debug.hh"
+
+using namespace bats;
+using namespace std;
+
+typedef AST::Node::NodeVector NodeVector;
+

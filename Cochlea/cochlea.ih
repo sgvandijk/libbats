@@ -1,0 +1,10 @@
+#include "cochlea.hh"
+
+#define DEBUGLEVEL 0
+#include "../Preprocessor/debug.hh"
+#include "../SocketComm/AgentSocketComm/agentsocketcomm.hh"
+
+using namespace bats;
+using namespace std;
+using namespace Eigen;
+

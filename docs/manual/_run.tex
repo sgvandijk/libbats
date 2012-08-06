@@ -1,0 +1,38 @@
+\chapter{Running the Simulation}
+
+\section{Starting}
+To start the simulation server, run the following:
+\begin{verbatim}
+$ rcssserver3d
+\end{verbatim}
+This will generate some output to the terminal, including a list of 'not found' and 'Unknow function' errors. These are actually more like warnings and can be ignored. Next, you will have to start a monitor to be able to see what is going on in the simulation. If you run the monitor on te same machine as the simulator, use:
+\begin{verbatim}
+$ rcssmonitor3d
+\end{verbatim}
+If you run the monitor on a different machine, which can boost the speed of the simulator if you experience lag, use:
+\begin{verbatim}
+$ rcssmonitor3d --server 192.168.1.2
+\end{verbatim}
+Of course, use the actual address of the machine you run the server on. You can connect as many monitors you want (and your machine(s) can handle).
+
+For convenience, there is also a script that starts both the server and the monitor, and kills the server when you close the monitor:
+\begin{verbatim}
+$ rcsoccersim3d
+\end{verbatim}
+
+\section{Controls}
+
+\begin{center}
+	\begin{tabular}{ll}
+		\keystroke{1}-\keystroke{7} & Move camera to default positions \\
+		\LArrow, \UArrow, \DArrow, \RArrow & Move camera horizontally \\
+		\PgUp, \PgDown & Move camera vertically \\
+		Click + drag & Turn camera \\
+		\keystroke{K} & Kick-off \\
+		\keystroke{B} & Drop ball \\
+		\keystroke{L} & Free kick for the left team \\
+		\keystroke{R} & Free kick for the right team \\
+		\keystroke{Q} & Quit \\
+	\end{tabular}
+	\label{tab:}
+\end{center}

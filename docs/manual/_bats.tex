@@ -1,0 +1,25 @@
+\chapter{BATS Agent Architecture}
+\label{chArchitecture}
+
+%Over onze eigen architectuur. Hoe behaviors enzo werken. Voorbeelden komen in tutorial.
+%getCapability etc.
+%Kan practisch hetzelfde als TDP worden.
+
+After setting up a large, behavior driven system for the 2006 RoboCup competition in Bremen, we decided that although dividing the code up into behaviors was good, the architecture was missing some crucial thing. The 2006 robots had a tendency to switch behaviors to quickly, and would also try to combine tasks that shouldn't be combined (like attacking and defending at the same time).
+With this in mind, we created a list of minimal requirements for our architecture:
+\begin{itemize}
+\item An agent should be able to commit to a task, but never get completely stuck in it. For example: \emph{Keep getting up until you are done}.
+\item An agent should be able to decide which behavior best fits the situation. For example: \emph{Dont' walk to the ball, when the play mode doesn't allow you to}.
+\item Behaviors should be groupable, to keep certain behaviors from interfering with others. For example: \emph{Don't try to stand up, when you want to lie down on the ground}.
+\item Some behaviors are only usefull after running other behaviors. For example: \emph{Don't try to go through a locked door, before unlocking it.}
+\end{itemize}
+
+The Little Green BATS architecture allows the agent programmer to group behaviors in a flexible hierarchy, commit agents to behaviors, and decide which of a group of applicable behaviors is the best.
+To support all of these features, the architecture introduces a hierarchy of behaviors. Each behavior can have sub-behaviors in steps and slots.
+Steps are used to create sequences of behaviors: when the next step is possible, it is run.
+Slots are contained in steps and allow for behaviors to compete (share a slot) or run in parallel (each behavior has it's own slot, and these slots share a step).
+
+Because the architecture has no knowledge of the applicability of a behavior, the behavior will have to export this information in a uniform interface. This is known as the capability. The capability of a behavior tells the architecture how likely (and how certain) a behavior thinks it can achieve its goals when executed. The architecture chooses between competing behaviors by sorting the capability of the competing behaviors and choosing the first in the list. 
+
+
+

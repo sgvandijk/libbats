@@ -1,0 +1,37 @@
+AC_PREREQ(2.13)
+
+dnl Package name and version number (DO NOT MODIFY)
+dnl -----------------------------------------------
+
+AC_INIT([libbats], [2.0])
+AM_INIT_AUTOMAKE([foreign])
+
+ACLOCAL_AMFLAGS='${ACLOCAL_FLAGS}'
+AC_SUBST(ACLOCAL_AMFLAGS)
+
+dnl Checks for programs.
+AC_PROG_LIBTOOL
+AC_PROG_INSTALL
+AC_PROG_CXX
+
+# Checks for libraries.
+dnl Headers used: ext/hash_map libxml/parser.h libxml/tree.h libxml/xinclude.h
+dnl   libxml/xpath.h libxml/xpathInternals.h sys/select.h
+
+AC_LANG_PUSH(C++)
+
+PKG_CHECK_MODULES(DEPS, [libxml-2.0 sigc++-2.0 gtkmm-2.4 eigen2])
+AC_CHECK_HEADERS([sys/select.h signal.h], [], [AC_MSG_ERROR([cannot find system headers])])
+AC_CHECK_PROG([PDFLATEX], [pdflatex], [yes], [no])
+AM_CONDITIONAL(COND_PDFLATEX, test x$PDFLATEX != xno)
+AC_CHECK_PROG([DOXYGEN], [doxygen], [yes], [no])
+AM_CONDITIONAL(COND_DOXYGEN, test x$DOXYGEN != xno)
+
+AC_LANG_POP(C++)
+
+AC_SUBST(DEPS_CFLAGS)
+AC_SUBST(DEPS_LIBS)
+
+dnl Create makefiles
+AC_OUTPUT(Makefile docs/Makefile docs/manual/Makefile examples/Makefile examples/helloworld/Makefile)
+

@@ -1,0 +1,116 @@
+%documentclass[twocolumn]{report}
+\documentclass{scrbook}
+\usepackage[british]{babel}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{hyperref}
+\usepackage{caption}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{subfigure}
+\floatstyle{boxed}
+\usepackage{listings}
+\lstloadlanguages{C++}
+\lstset{
+	rulecolor=,
+	language=matlab,
+  basicstyle=\scriptsize,
+  upquote=true,
+  aboveskip={1.5\baselineskip},
+  columns=fixed,
+  showstringspaces=false,
+  extendedchars=true,
+  breaklines=true,
+  prebreak = \raisebox{0ex}[0ex][0ex]{\ensuremath{\hookleftarrow}},
+  frame=single,
+  showtabs=false,
+  showspaces=false,
+  showstringspaces=false,
+  identifierstyle=\ttfamily,
+  keywordstyle=\color[rgb]{0,0,1},
+  commentstyle=\color[rgb]{0.133,0.545,0.133},
+  stringstyle=\color[rgb]{0.627,0.126,0.941},
+  language=C++
+}
+\usepackage{wrapfig}
+\usepackage{keystroke}
+
+\newfloat{program}{htb}{lop}
+
+%\lstset{frameround=fttt}
+\newfloat{program}{H}{lop}
+\renewcommand{\textfraction}{0.05}
+\renewcommand{\topfraction}{0.95}
+\renewcommand{\bottomfraction}{0.95}
+\renewcommand{\floatpagefraction}{0.35}
+\setcounter{totalnumber}{5}
+
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
+\newcommand{\libbats}{{\tt libbats} }
+
+%\author{Little Green BATS}
+\title{Libbats Manual}
+
+\begin{document}
+
+\frontmatter
+
+\begin{titlepage}
+{\noindent
+\vspace{2cm}\\
+\textbf{
+{\texttt{\Huge libbats}}\\[0.5cm]
+{\textsf{\Huge User Manual}}\\[2.5cm]
+}
+%\HRule \\[0.5cm]
+\textbf{\textsf{\Large Little Green BATS}}\\
+{\sf\large University of Groningen, the Netherlands}\\
+{\large\url{http://www.littlegreenbats.nl}}\\[0.5cm]
+\textbf{\textsf{\Large Bold Hearts}}\\
+{\sf\large University of Hertfordshire, UK}\\
+{\large\url{http://homepages.stca.herts.ac.uk/~epics/boldhearts}}\\[0.5cm]
+\vfill
+\begin{center}
+{\sf\large v. 2.0}
+\end{center}
+}
+\end{titlepage}
+
+\tableofcontents
+
+%\include{_introduction}
+\include{_introductionLibbats}
+\mainmatter
+
+\include{_simspark}
+\include{_installation}
+%\include{_run}
+%\include{_server}
+%\include{_monitor}
+\include{_quickstart}
+%\include{_bats}
+%\include{_humanoidbat}
+\include{_tutorial}
+\include{_util}
+
+
+%\appendix
+
+%\include{_appendici}
+
+\backmatter
+%\begin{thebibliography}{}
+%
+%
+%\bibitem{homepage} The Little Green BATS homepage, \\
+%    \url{http://www.littlegreenbats.nl/}.
+%\bibitem{simspark} Simspark, \\
+%    \url{http://simspark.sourceforge.net/}.
+%\bibitem{rcssserver3d} RoboCup 3D Simspark Simulation Server (includes 2D server),\\
+%    \url{http://sserver.sourceforge.net/}
+%
+%
+%\end{thebibliography}
+
+
+
+\end{document}

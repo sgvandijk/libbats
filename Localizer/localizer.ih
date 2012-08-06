@@ -1,0 +1,14 @@
+#include "localizer.hh"
+#include "../Cochlea/cochlea.hh"
+#include "../Math/math.hh"
+#include "../AgentModel/agentmodel.hh"
+#include "../WorldModel/worldmodel.hh"
+#include "../Clock/clock.hh"
+#include <iostream>
+
+#include <Eigen/SVD>
+#include <Eigen/LU>
+
+using namespace bats;
+using namespace std;
+using namespace Eigen;

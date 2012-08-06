@@ -1,0 +1,76 @@
+\chapter{SimSpark Simulation 3D Monitor}
+\label{chSimulator}
+The SimSpark Simulation 3D monitor ''rcssmonitor3d`` is used to observe and control the actual Simspark Simulation 3D Server.
+\section{Invocation}
+
+You may use the following command line options while starting rcssmonitor3d:
+%XXX Not all options seems to work in current version!
+\begin{description}
+\item[{\tt --help}] Print a help message and exit.
+%\item[{\tt --port}] Specify the port number (default is 12001).
+%\item[{\tt --server}] Specify the server host (default is 'localhost').
+\item[{\tt --logfile}] Specify the logfile to read.
+%\item[{\tt --msgskip}] Every but the nth message should be discarded (default is 1).
+%\item[{\tt --texture}] Set the name of the texturefile to use.  If no absolute path is given the file is assumed to reside in your ~/.rcssserver3d/ directory.
+\end{description}
+
+Using the {\tt --logfile} flag you can run a {\tt monitor.log} file you made earlier, simply by running {\tt rcssmonitor3d --logfile monitor.log}.
+The monitor client connects by default to ''127.0.0.1:3200``.
+
+\section{Usage}
+%XXX '?' Does not seem to work in current version:
+%After starting the monitor there are a few special keys you can use to move and manipulate your viewport. To get the most reset values, press {\tt ?}. After pressing questionmark, the monitor will output a message like keystroke information described in table \ref{monitorkeyshelp}.
+
+While rcssmonitor3d (the OpenGL GUI) is running, a few special keys can be used to move and manipulate the viewport. These are described in table \ref{tabmonitorkeyshelp}.
+
+\begin{table}[placement]
+
+\caption{Keybindings for rcssmonitor3d}
+
+\label{tabmonitorkeyshelp}
+\begin{tabular}[t]{|l|l|}
+
+\hline
+& General \\
+\hline
+q          & Quit the monitor \\
+p          & Pause the simulation/logplayer \\
+r          & Unpause the simulation/logplayer \\
+n          & Toggle uniform numbers \\
+1          & Toggle debug information \\
+2          & Toggle two dimensional overview \\
+v          & Toggle velocities \\
+?          & Display keybindings \\
+\hline
+& Camera movement \\
+\hline
+c          & Toggle ball centered camera \\
+w/s        & Move camera in/out \\
+a/d        & Move camera left/right \\
++/-        & Move camera up/down \\
+3          & Move camera behind left goal \\
+4          & Move camera behind right goal \\
+\emph{Arrow keys} & Move camera \\
+\hline
+& Simulation \\
+\hline
+k          & Kick-off left (start the game) \\
+j          & Kick-off right \\
+l          & Free kick left \\
+r          & Free kick right \\
+b          & (Playon) Drop the ball at its current position \\
+\emph{SPACE}      & Toggle kick off side (side-random) \\
+\hline
+& Logplayer \\
+\hline
+f          & Toggle fast/realtime replay \\
+b          & Backward replay \\
+F          & Realtime replay \\
+m          & Toggle single step mode for logplayer \\
+$>$        & Move one step forward \\
+\hline
+
+\end{tabular}
+
+\end{table}
+

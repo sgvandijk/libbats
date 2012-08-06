@@ -1,0 +1,6 @@
+#include "random.hh"
+#include <cstdlib>
+#include <cmath>
+
+using namespace bats;
+using namespace Eigen;

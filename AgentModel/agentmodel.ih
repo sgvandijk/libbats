@@ -1,0 +1,18 @@
+#include "agentmodel.hh"
+#include <list>
+#include <algorithm>
+#include <cmath>
+
+#include "../Math/math.hh"
+#include "../Conf/conf.hh"
+#include "../Cochlea/cochlea.hh"
+#include "../WorldModel/worldmodel.hh"
+#include "../Preprocessor/foreach.hh"
+
+#define DEBUGLEVEL 0
+#include "../Preprocessor/debug.hh"
+
+using namespace bats;
+using namespace std;
+using namespace Eigen;
+

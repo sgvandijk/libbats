@@ -1,0 +1,18 @@
+#include "kalmanlocalizer.hh"
+#include "../../AgentModel/agentmodel.hh"
+#include "../../Clock/clock.hh"
+#include "../../Cochlea/cochlea.hh"
+#include "../../Debugger/debugger.hh"
+#include "../../DistributionTracker/distributiontracker.hh"
+#include "../../Math/math.hh"
+#include "../../SocketComm/AgentSocketComm/agentsocketcomm.hh"
+#include "../../WorldModel/worldmodel.hh"
+
+#include <iostream>
+#include <Eigen/SVD>
+#include <Eigen/LU>
+
+using namespace bats;
+using namespace std;
+using namespace Eigen;
+

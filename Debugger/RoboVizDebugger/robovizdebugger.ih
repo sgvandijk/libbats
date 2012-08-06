@@ -1,0 +1,12 @@
+#include "robovizdebugger.hh"
+#include <iostream>
+#include "../../HumanoidAgent/humanoidagent.hh"
+#include "../../Localizer/localizer.hh"
+#include "../../Behavior/behavior.hh"
+#include "../../AgentModel/agentmodel.hh"
+#include <Eigen/Core>
+
+using namespace std;
+using namespace bats;
+using namespace Eigen;
+

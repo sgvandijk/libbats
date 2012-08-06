@@ -1,0 +1,16 @@
+#include "simplelocalizer.hh"
+
+#include <Eigen/LU>
+
+#include "../../Cochlea/cochlea.hh"
+#include "../../WorldModel/worldmodel.hh"
+#include "../../AgentModel/agentmodel.hh"
+#include "../../Math/math.hh"
+
+#define DEBUGLEVEL 4
+#include "../../Preprocessor/debug.hh"
+
+using namespace bats;
+using namespace Eigen;
+
+
