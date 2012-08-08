@@ -15,18 +15,11 @@ set(LIBBATS_SOURCES ./PortableParser/static.cc ./WorldModel/onMySide.cc ./WorldM
 
 include_directories(${EIGEN2_INCLUDE_DIR} ${LIBXML2_INCLUDE_DIR} ${SigC++_INCLUDE_DIRS} ${GTKMM_INCLUDE_DIRS})
 
-add_library(batsStatic STATIC
+add_library(bats
 ${LIBBATS_SOURCES}
 )
-
-add_library(batsDynamic SHARED
-${LIBBATS_SOURCES}
-)
-
-set_target_properties(batsStatic PROPERTIES OUTPUT_NAME bats)
-set_target_properties(batsDynamic PROPERTIES OUTPUT_NAME bats)
 
 set(CMAKE_CXX_FLAGS "-std=c++0x")
 
-install(TARGETS batsStatic DESTINATION lib)
+install(TARGETS bats DESTINATION lib)
 
