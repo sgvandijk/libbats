@@ -41,14 +41,12 @@
 #define _BATS_OBJECTINFO_HH_
 
 #include "../Types/types.hh"
-#include "../Ref/rf.hh"
-#include "../RefAble/refable.hh"
 #include "../Distribution/distribution.hh"
 #include "../Distribution/NormalDistribution/normaldistribution.hh"
 
 namespace bats
 {
-  struct ObjectInfo : RefAble
+  struct ObjectInfo
   {
     /**
      * Holds information about the object's position and velocity in the
@@ -58,7 +56,7 @@ namespace bats
      *   last 3 elements giving velocity
      * - a 6x6 matrix for sigma, with the top-left 3x3 giving velocity
      */
-    rf<Distribution> posVelLocal;
+    std::shared_ptr<Distribution> posVelLocal;
 
     /**
      * Holds information about the object's position and velocity in the
@@ -68,10 +66,10 @@ namespace bats
      *   last 3 elements giving velocity
      * - a 6x6 matrix for sigma, with the top-left 3x3 giving velocity
      */
-    rf<Distribution> posVelGlobal;
+    std::shared_ptr<Distribution> posVelGlobal;
     
-    rf<NormalDistribution> posVelRaw;
-    rf<NormalDistribution> posVelRawGlobal;
+    std::shared_ptr<NormalDistribution> posVelRaw;
+    std::shared_ptr<NormalDistribution> posVelRawGlobal;
     
     /** Gets whether this object was sighted in the last vision data. */
     bool isVisible;
@@ -97,10 +95,10 @@ namespace bats
     const bool isDynamic;
 
     ObjectInfo(const Types::Object objectId, const double radius, const bool isDynamic = false)
-    : posVelLocal(new NormalDistribution(6)),
-      posVelGlobal(new NormalDistribution(6)),
-      posVelRaw(new NormalDistribution(6)),
-      posVelRawGlobal(new NormalDistribution(6)),
+    : posVelLocal(std::make_shared<NormalDistribution>(6)),
+      posVelGlobal(std::make_shared<NormalDistribution>(6)),
+      posVelRaw(std::make_shared<NormalDistribution>(6)),
+      posVelRawGlobal(std::make_shared<NormalDistribution>(6)),
       isVisible(false),
       objectId(objectId), 
       radius(radius), 
@@ -121,9 +119,9 @@ namespace bats
      * Gets the position distribution of this object in the local frame of the agent.
      * This represents the belief and uncertainty of the position.
      */
-    rf<Distribution> getPositionDistributionLocal() const
+    std::shared_ptr<Distribution> getPositionDistributionLocal() const
     {
-      rf<NormalDistribution> d = new NormalDistribution(3);
+      std::shared_ptr<NormalDistribution> d = std::make_shared<NormalDistribution>(3);
       d->init(posVelLocal->getMu().start<3>(), posVelLocal->getSigma().block<3,3>(0,0));
       return d;
     }
@@ -138,9 +136,9 @@ namespace bats
      * Gets the position distribution of this object in the global frame.
      * This represents the belief and uncertainty of the position.
      */
-    rf<Distribution> getPositionDistributionGlobal() const
+    std::shared_ptr<Distribution> getPositionDistributionGlobal() const
     {
-      rf<bats::NormalDistribution> d = new bats::NormalDistribution(3);
+      std::shared_ptr<bats::NormalDistribution> d = std::make_shared<NormalDistribution>(3);
       d->init(posVelGlobal->getMu().start<3>(), posVelGlobal->getSigma().block<3,3>(0,0));
       return d;
     }

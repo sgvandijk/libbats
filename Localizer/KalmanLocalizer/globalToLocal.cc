@@ -28,7 +28,7 @@ void KalmanLocalizer::globalToLocal()
   // Determine local coordinates for all objects given the earlier computed
   // global coordinates.
   //
-  for (rf<ObjectInfo> object : objects)
+  for (shared_ptr<ObjectInfo> object : objects)
   {
     object->posVelLocal->init(joinPositionAndVelocityVectors( globalToLocal             * object->getPositionGlobal(),
                                                               globalToLocalRot          * object->getVelocityGlobal()),
@@ -37,7 +37,7 @@ void KalmanLocalizer::globalToLocal()
 
     if (object->isPlayer)
     {
-      rf<PlayerInfo> player = rf_static_cast<PlayerInfo>(object);
+      shared_ptr<PlayerInfo> player = static_pointer_cast<PlayerInfo>(object);
       
       if (player->lArmVisible)
         player->posLArmLocal = globalToLocalRot * player->posLArmGlobal;
@@ -86,7 +86,7 @@ void KalmanLocalizer::globalToLocal()
     // TODO is there a better way of type checking/casting here?
     if (object->isDynamic)
     {
-      rf<DynamicObjectInfo> dynamicObject = rf_static_cast<DynamicObjectInfo>(object);
+      shared_ptr<DynamicObjectInfo> dynamicObject = static_pointer_cast<DynamicObjectInfo>(object);
       // 95% certainty radius is 3m, the object is dead (TODO: un-magic-numberfy)
       if (sqrt(dynamicObject->posVelGlobal->getSigma()(0, 0)) * 2 > 3.0)
         dynamicObject->isAlive = false;

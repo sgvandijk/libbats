@@ -21,18 +21,18 @@ void BehaviorTree::create()
   d_win = create(winset.front());
 
   // Iterate over all behaviors, and call 'constructed'
-  for (map<string, rf<Behavior> >::iterator iter = d_behaviors.begin(); iter != d_behaviors.end(); ++iter)
+  for (map<string, shared_ptr<Behavior> >::iterator iter = d_behaviors.begin(); iter != d_behaviors.end(); ++iter)
     (iter->second)->constructed();
 }
 
-rf<Behavior> BehaviorTree::create(XMLNode const& b)
+shared_ptr<Behavior> BehaviorTree::create(XMLNode const& b)
 {
   Conf& conf = bats::SConf::getInstance();
 
   // Make behavior of this node's type
   
   BehaviorFactory& bf = bats::SBehaviorFactory::getInstance();
-  rf<Behavior> behavior = bf.createBehavior(b.getProp("type"), b.getProp("id"), d_id);
+  shared_ptr<Behavior> behavior = bf.createBehavior(b.getProp("type"), b.getProp("id"), d_id);
   
   if (!behavior)
     throw runtime_error(string("(BehaviorTree::create) ") + b.getProp("type") + ": unknown behavior type (trying to create behavior with id: " + b.getProp("id") + " in behavior tree " + d_id + ")");
@@ -65,7 +65,7 @@ rf<Behavior> BehaviorTree::create(XMLNode const& b)
           throw runtime_error(string() + "(BehaviorTree::create) '" + path + "' not found in behavior tree " + d_id + ".");
         
         XMLNode sb = set.front();
-        rf<Behavior> subBehavior = create(sb);
+        shared_ptr<Behavior> subBehavior = create(sb);
         subBehavior->shouldCommit(commit == "1");
         subBehavior->shouldCommitIfChildrenCommitted(scicc == "1");
         behavior->addToSlot(subBehavior, step, slot);

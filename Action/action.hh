@@ -40,11 +40,10 @@
 #ifndef __BATS_ACTION_HH_
 #define __BATS_ACTION_HH_
 
-#include "../RefAble/refable.hh"
 
 namespace bats
 {
-  struct Action : public RefAble
+  struct Action
   {
     Action(unsigned t = 0)
     : type(t)

@@ -2,12 +2,12 @@
 
 void TrainerSocketComm::init()
 {
-  rf<Predicate> msg = makeInitMessage();
+  shared_ptr<Predicate> msg = makeInitMessage();
   send(msg);
 }
 
-rf<Predicate> TrainerSocketComm::makeInitMessage()
+shared_ptr<Predicate> TrainerSocketComm::makeInitMessage()
 {
-  rf<Predicate> msg = new Predicate("init");
+  shared_ptr<Predicate> msg = make_shared<Predicate>("init");
   return msg;
 }

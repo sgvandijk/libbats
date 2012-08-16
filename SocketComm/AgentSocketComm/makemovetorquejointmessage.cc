@@ -1,11 +1,11 @@
 #include "agentsocketcomm.ih"
 
-rf<Predicate> AgentSocketComm::makeMoveTorqueJointMessage(Types::Joint joint, double force)
+shared_ptr<Predicate> AgentSocketComm::makeMoveTorqueJointMessage(Types::Joint joint, double force)
 {
   AgentModel& am = SAgentModel::getInstance();
 
-  rf<Predicate> message = new Predicate("", Predicate::type_list);
-  rf<Predicate> pred = message->push(new Predicate(am.getJoint(joint)->effector));
+  shared_ptr<Predicate> message = make_shared<Predicate>("", Predicate::type_list);
+  shared_ptr<Predicate> pred = message->push(make_shared<Predicate>(am.getJoint(joint)->effector));
   pred->pushLeaf(force);
 
   return message;

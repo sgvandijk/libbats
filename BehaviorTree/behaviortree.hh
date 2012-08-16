@@ -6,24 +6,24 @@
 
 namespace bats
 {
-  class BehaviorTree : public RefAble
+  class BehaviorTree
   {
     public:
-      typedef std::map<std::string, rf<BehaviorTree> > BTMap;
+      typedef std::map<std::string, std::shared_ptr<BehaviorTree> > BTMap;
       
       BehaviorTree(std::string const& id);
-      rf<Behavior> getWinBehavior() const { return d_win; }
+      std::shared_ptr<Behavior> getWinBehavior() const { return d_win; }
       
       static void createBehaviorTrees();
-      static rf<BehaviorTree> getBehaviorTree(std::string const& id) { return s_behaviorTrees[id]; }
+      static std::shared_ptr<BehaviorTree> getBehaviorTree(std::string const& id) { return s_behaviorTrees[id]; }
       
     private:
       std::string d_id;
-      std::map<std::string, rf<Behavior> > d_behaviors;
-      rf<Behavior> d_win;
+      std::map<std::string, std::shared_ptr<Behavior> > d_behaviors;
+      std::shared_ptr<Behavior> d_win;
       
       void create();
-      rf<Behavior> create(bats::XMLNode const& b);
+      std::shared_ptr<Behavior> create(bats::XMLNode const& b);
       
       static BTMap s_behaviorTrees;
   };

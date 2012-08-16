@@ -68,8 +68,8 @@ namespace bats
 		 * @param slot Slot number in the step
 		 * @returns goal: Speed - the angular velocity in radians needed to move the joint
 		 */
-		virtual rf<Goal> generateGoal(unsigned step, unsigned slot);
-		virtual rf<State> getCurrentState() { return 0; }
+		virtual std::shared_ptr<Goal> generateGoal(unsigned step, unsigned slot);
+		virtual std::shared_ptr<State> getCurrentState() { return 0; }
 
 		/** Get the capability of the behavior to achieve goal g from state s
 		 *
@@ -77,7 +77,7 @@ namespace bats
 		 * @param g Expected goal: Angle - absolute angle in radians to move the joint to, MaxSpeed (optional) - maximum angular velocity to use (negative value means double normal value)
 		 * @returns Always medium confidence
 		 */
-		virtual ConfidenceInterval getCapability(rf<State> s, rf<Goal> g) { return ConfidenceInterval(0.5, 0.2); }
+		virtual ConfidenceInterval getCapability(std::shared_ptr<State> s, std::shared_ptr<Goal> g) { return ConfidenceInterval(0.5, 0.2); }
 
 		public:
 			MoveJointTo(std::string const &id, std::string const& behaviorTree);

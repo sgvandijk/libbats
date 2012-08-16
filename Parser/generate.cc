@@ -1,6 +1,6 @@
 #include "parser.ih"
 
-string Parser::generate(rf<Predicate> const &pred)
+string Parser::generate(shared_ptr<Predicate> const &pred)
 {
   stringstream sstrm;
   

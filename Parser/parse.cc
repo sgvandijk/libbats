@@ -4,7 +4,7 @@
 
 #define IDXPT(x) "(" << x/(256*4) << "/" << (x/256)%4 << ")"
 
-rf<Predicate> Parser::parse(unsigned char const *data, unsigned len)
+shared_ptr<Predicate> Parser::parse(unsigned char const *data, unsigned len)
 {
   // Lexer iteration.
   unsigned char const *lexSrc = data;
@@ -19,10 +19,10 @@ rf<Predicate> Parser::parse(unsigned char const *data, unsigned len)
   unsigned lexTokenLength = 1;
 
   // The stack.
-  std::stack< rf<Predicate> > stck;
+  std::stack< shared_ptr<Predicate> > stck;
 
   // Initial stack value.
-  stck.push(new Predicate(Predicate::type_list));
+  stck.push(make_shared<Predicate>(Predicate::type_list));
 
   while (true) {
 
@@ -48,7 +48,7 @@ rf<Predicate> Parser::parse(unsigned char const *data, unsigned len)
       pCurrentState = reinterpret_cast<ParseEntry*>(pCurrentState->value) + *(++lexI);
 
       // Push new predicate.
-      stck.push(stck.top()->push(new Predicate(string(lexToken,lexTokenLength),Predicate::type_node)));
+      stck.push(stck.top()->push(make_shared<Predicate>(string(lexToken,lexTokenLength),Predicate::type_node)));
 
       // Update the lexer tokens.
       lexToken = reinterpret_cast<char const *>(lexI);
@@ -60,7 +60,7 @@ rf<Predicate> Parser::parse(unsigned char const *data, unsigned len)
       pCurrentState = reinterpret_cast<ParseEntry*>(pCurrentState->value) + *(++lexI);
 
       // Append predicate.
-      stck.top()->push(new Predicate(string(lexToken,lexTokenLength),Predicate::type_leaf));
+      stck.top()->push(make_shared<Predicate>(string(lexToken,lexTokenLength),Predicate::type_leaf));
 
       lexToken = reinterpret_cast<char const *>(lexI);
       lexTokenLength = 0;

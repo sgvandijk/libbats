@@ -2,7 +2,7 @@
 
 bool Behavior::doNextStep()
 {
-  behavior_signal(new NextStepStartEvent(d_name, d_id, d_curStep + 1));
+  behavior_signal(make_shared<NextStepStartEvent>(d_name, d_id, d_curStep + 1));
   
   try
   {
@@ -10,7 +10,7 @@ bool Behavior::doNextStep()
     
     if (d_curStep < static_cast<int>(d_tree->size()) - 1)
     {
-      rf<AST::Node> nextStepNode = d_tree->getChild(d_curStep + 1);
+      shared_ptr<AST::Node> nextStepNode = d_tree->getChild(d_curStep + 1);
 
       bool stepHasBehaviors = false;      
       // Sort all behaviors in the slots by capability
@@ -18,18 +18,18 @@ bool Behavior::doNextStep()
       for (unsigned i = 0; i < nextStepNode->size(); ++i)
       {
 
-        rf<AST::Node> slot = nextStepNode->getChild(i);
+        shared_ptr<AST::Node> slot = nextStepNode->getChild(i);
         if (slot->size() == 0)
           continue;
         
         stepHasBehaviors = true;
         
-        rf<Goal> g = generateGoal(d_curStep + 1, i);
+        shared_ptr<Goal> g = generateGoal(d_curStep + 1, i);
         // Set goals on behaviors in slots
       
         for (unsigned j = 0; j < slot->size(); ++j)
         {
-          rf<Behavior> beh = rf_cast<BehaviorNode>(slot->getChild(j))->getBehavior();
+          shared_ptr<Behavior> beh = static_pointer_cast<BehaviorNode>(slot->getChild(j))->getBehavior();
       	  if (beh->getLastUpdate() < clock.getTime())
   	        beh->update();
           beh->setGoal(g);
@@ -39,7 +39,7 @@ bool Behavior::doNextStep()
         sort(slot->begin(), slot->end(), CapabilityCompare());
       
         // Give up when the first behavior doesnt have high enough capability
-        ConfidenceInterval c = rf_cast<BehaviorNode>(*(slot->begin()))->getBehavior()->getCapability();
+        ConfidenceInterval c = static_pointer_cast<BehaviorNode>(*(slot->begin()))->getBehavior()->getCapability();
         if (c.first + c.second < MIN_C)
           return false;
       }
@@ -51,14 +51,14 @@ bool Behavior::doNextStep()
       // Run the behaviors in the slots
       for (unsigned i = 0; i < nextStepNode->size() && !giveUp; ++i)
       {
-        rf<AST::Node> slot = nextStepNode->getChild(i);
+        shared_ptr<AST::Node> slot = nextStepNode->getChild(i);
         if (slot->size() == 0)
           continue;
           
-        rf<Behavior> behavior = 0;
+        shared_ptr<Behavior> behavior = 0;
         for (unsigned j = 0; j < slot->size(); ++j)
         {
-          behavior = rf_cast<BehaviorNode>(slot->getChild(j))->getBehavior();
+          behavior = static_pointer_cast<BehaviorNode>(slot->getChild(j))->getBehavior();
           ConfidenceInterval c = behavior->getCapability();
           if (c.first + c.second >= MIN_C && behavior->achieveGoal())
           {
@@ -74,7 +74,7 @@ bool Behavior::doNextStep()
         // Reset all behaviors that didn't run
         for (unsigned j = 0; j < slot->size(); ++j)
         {
-          rf<Behavior> b = rf_cast<BehaviorNode>(slot->getChild(j))->getBehavior();
+          shared_ptr<Behavior> b = static_pointer_cast<BehaviorNode>(slot->getChild(j))->getBehavior();
           if (b != behavior)
             b->reset();
         }
@@ -96,9 +96,9 @@ bool Behavior::doNextStep()
       {
         for (unsigned i = 0; i < nextStepNode->size(); ++i)
         {
-          rf<AST::Node> slot = nextStepNode->getChild(i);
+          shared_ptr<AST::Node> slot = nextStepNode->getChild(i);
           for (unsigned j = 0; j < slot->size(); ++j)
-            rf_cast<BehaviorNode>(slot->getChild(j))->getBehavior()->reset();
+            static_pointer_cast<BehaviorNode>(slot->getChild(j))->getBehavior()->reset();
         }
         return false;
       }

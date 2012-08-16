@@ -16,11 +16,11 @@ void KalmanLocalizer::updateRaw()
   // Set everything as non-visible initially.  We will set these to true
   // as we process the raw data below.
   //
-  for (rf<ObjectInfo> object : objects)
+  for (shared_ptr<ObjectInfo> object : objects)
   {
     if (object->isPlayer)
     {
-      rf<PlayerInfo> player = rf_static_cast<PlayerInfo>(object);
+      shared_ptr<PlayerInfo> player = static_pointer_cast<PlayerInfo>(object);
       player->lArmVisible = false;
       player->rArmVisible = false;
       player->lFootVisible = false;
@@ -32,7 +32,7 @@ void KalmanLocalizer::updateRaw()
   //
   // Loop through all objects and see whether there's new vision data for them.
   //
-  for (rf<ObjectInfo> object : objects)
+  for (shared_ptr<ObjectInfo> object : objects)
   {
     // TODO: also filter noise
     
@@ -41,7 +41,7 @@ void KalmanLocalizer::updateRaw()
     //
     if (object->isPlayer)
     {
-      rf<PlayerInfo> player = rf_static_cast<PlayerInfo>(object);
+      shared_ptr<PlayerInfo> player = static_pointer_cast<PlayerInfo>(object);
       
       //
       // We may be seeing our own limbs.  Ignore them.
@@ -98,7 +98,7 @@ void KalmanLocalizer::updateRaw()
     {
       object->isVisible = true;
       if (object->isDynamic)
-        rf_static_cast<DynamicObjectInfo>(object)->isAlive = true;
+        static_pointer_cast<DynamicObjectInfo>(object)->isAlive = true;
 
       Vector3d posPolar = cochlea.getInfo(infoId).start<3>();
       

@@ -4,15 +4,15 @@ void AgentSocketComm::beam(Vector3d const& pos)
 {
   send(makeBeamMessage(pos));
   /*
-  rf<BeamEvent> event = new BeamEvent(pos);
+  shared_ptr<BeamEvent> event = new BeamEvent(pos);
   cout << event->toString() << endl;
   beam_signal(event);
   */
 }
 
-rf<Predicate> AgentSocketComm::makeBeamMessage(Vector3d const& pos)
+shared_ptr<Predicate> AgentSocketComm::makeBeamMessage(Vector3d const& pos)
 {
-  rf<Predicate> beamPred = new Predicate("beam");
+  shared_ptr<Predicate> beamPred = make_shared<Predicate>("beam");
   beamPred->pushLeafs(pos);
   return beamPred;
 }

@@ -48,6 +48,7 @@
 #include <cassert>
 #include <sstream>
 #include <cstdlib>
+#include <memory>
 
 #include "../AST/ast.hh"
 #include "../Path/path.hh"
@@ -140,7 +141,7 @@ namespace bats {
       type_list = 3,
     };
 
-    static bool pred_comp(rf<Predicate> p, std::string const &val)
+    static bool pred_comp(std::shared_ptr<Predicate> p, std::string const &val)
     {
       return p->getStr() < val;
     }
@@ -201,9 +202,9 @@ namespace bats {
      *  Note: no circular predicates should be created
      *        (because they won't be destroyed automaticaly).
      */
-    rf<Predicate> push(rf<Predicate> msg)
+    std::shared_ptr<Predicate> push(std::shared_ptr<Predicate> msg)
     {
-      return rf_cast<Predicate>(addChild(rf_cast<AST::Node>(msg)));
+      return std::static_pointer_cast<Predicate>(addChild(std::static_pointer_cast<AST::Node>(msg)));
     }
 
     /**
@@ -211,7 +212,7 @@ namespace bats {
      */
     void pushLeaf(std::string const &str)
     {
-      push(new Predicate(str,type_leaf));
+      push(std::make_shared<Predicate>(str,type_leaf));
     }
 
     /**
@@ -221,7 +222,7 @@ namespace bats {
     {
       std::ostringstream s;
       s << val;
-      push(new Predicate(s.str(),type_leaf));
+      push(std::make_shared<Predicate>(s.str(),type_leaf));
     }
 
     /**
@@ -232,7 +233,7 @@ namespace bats {
       std::ostringstream s;
       s.precision(precision);
       s << val;
-      push(new Predicate(s.str(),type_leaf));
+      push(std::make_shared<Predicate>(s.str(),type_leaf));
     }
 
     /**
@@ -242,7 +243,7 @@ namespace bats {
      */
     void pushArg(std::string const &key, std::string const &value)
     {
-      rf<Predicate> pred = new Predicate(key);
+      std::shared_ptr<Predicate> pred = std::make_shared<Predicate>(key);
       pred->pushLeaf(value);
       push(pred);
     }
@@ -254,7 +255,7 @@ namespace bats {
      */
     void pushArg(std::string const &key, unsigned value)
     {
-      rf<Predicate> pred = new Predicate(key);
+      std::shared_ptr<Predicate> pred = std::make_shared<Predicate>(key);
       pred->pushLeaf(value);
       push(pred);
     }
@@ -266,7 +267,7 @@ namespace bats {
      */
     void pushArg(std::string const &key, double value)
     {
-      rf<Predicate> pred = new Predicate(key);
+      std::shared_ptr<Predicate> pred = std::make_shared<Predicate>(key);
       pred->pushLeaf(value);
       push(pred);
     }
@@ -276,9 +277,9 @@ namespace bats {
      *
      *  Note: should check args type!
      */
-    rf<Predicate> getArg(std::string const &key)
+    std::shared_ptr<Predicate> getArg(std::string const &key)
     {
-      return rf_cast<Predicate>(find(key)->getChild(0));
+      return std::static_pointer_cast<Predicate>(find(key)->getChild(0));
     }
 
     /**
@@ -294,9 +295,9 @@ namespace bats {
     /**
      *  Gets the child with index idx.
      */
-    rf<Predicate> get(unsigned idx) { return rf_cast<Predicate>(getChild(idx)); }
-    rf<Predicate> const get(unsigned idx) const { return rf_cast<Predicate>(getChild(idx)); }
-    rf<Predicate> const operator[](unsigned idx) { return rf_cast<Predicate>(getChild(idx)); }
+    std::shared_ptr<Predicate> get(unsigned idx) { return std::static_pointer_cast<Predicate>(getChild(idx)); }
+    std::shared_ptr<Predicate> const get(unsigned idx) const { return std::static_pointer_cast<Predicate>(getChild(idx)); }
+    std::shared_ptr<Predicate> const operator[](unsigned idx) { return std::static_pointer_cast<Predicate>(getChild(idx)); }
 
     /**
      *  The STL iterators. These return iterators to the children

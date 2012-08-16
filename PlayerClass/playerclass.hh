@@ -1,17 +1,16 @@
 #ifndef __BATS_PLAYERCLASS_HH_
 #define __BATS_PLAYERCLASS_HH_
 
-#include "../RefAble/refable.hh"
-#include "../Ref/rf.hh"
 #include "../Conf/conf.hh"
 #include <map>
+#include <memory>
 
 namespace bats
 {
-  class PlayerClass : public RefAble
+  class PlayerClass
   {
   public:
-    typedef std::map<unsigned, rf<PlayerClass> > PCMap;
+    typedef std::map<unsigned, std::shared_ptr<PlayerClass> > PCMap;
     
     PlayerClass(unsigned idx)
     : d_idx(idx)
@@ -23,7 +22,7 @@ namespace bats
     
     static PCMap getPlayerClasses() { return s_playerClasses; }
     
-    static rf<PlayerClass> getPlayerClass(unsigned idx) { return s_playerClasses[idx]; }
+    static std::shared_ptr<PlayerClass> getPlayerClass(unsigned idx) { return s_playerClasses[idx]; }
 
   protected:
     unsigned d_idx;
@@ -46,7 +45,7 @@ namespace bats
       }
       
       unsigned idx = atoi(PCNode.getProp("index").c_str());
-      rf<PlayerClass> pc = s_playerClasses[idx] = new T(idx);
+      std::shared_ptr<PlayerClass> pc = s_playerClasses[idx] = new T(idx);
     }
   }
   

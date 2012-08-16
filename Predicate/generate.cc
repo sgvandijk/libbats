@@ -13,7 +13,7 @@ namespace bats {
       for (AST::Node::NodeVector::const_iterator i = d_nodes.begin();
            i != d_nodes.end(); ++i) {
         os << " ";
-        rf_cast<Predicate>(*i)->generate(os);
+        static_pointer_cast<Predicate>(*i)->generate(os);
       }
 
       if (!isList())

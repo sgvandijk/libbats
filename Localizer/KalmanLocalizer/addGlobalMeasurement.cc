@@ -1,6 +1,6 @@
 #include "kalmanlocalizer.ih"
 
-void KalmanLocalizer::addGlobalMeasurement(rf<DynamicObjectInfo> dynamicObject, rf<Distribution> measurement)
+void KalmanLocalizer::addGlobalMeasurement(shared_ptr<DynamicObjectInfo> dynamicObject, shared_ptr<Distribution> measurement)
 {
   if (!dynamicObject || !measurement)
   {

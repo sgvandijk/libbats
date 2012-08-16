@@ -65,27 +65,27 @@ namespace bats
 
     void init();
 
-    static rf<Predicate> makeInitMessage();
+    static std::shared_ptr<Predicate> makeInitMessage();
     
     void setBallPos(Eigen::Vector3d const& pos);
     
-    static rf<Predicate> makeSetBallPosMessage(Eigen::Vector3d const& pos);
+    static std::shared_ptr<Predicate> makeSetBallPosMessage(Eigen::Vector3d const& pos);
     
     void setBallVel(Eigen::Vector3d const& vel);
     
-    static rf<Predicate> makeSetBallVelMessage(Eigen::Vector3d const& vel);
+    static std::shared_ptr<Predicate> makeSetBallVelMessage(Eigen::Vector3d const& vel);
     
     void setBallPosVel(Eigen::Vector3d const& pos, Eigen::Vector3d const& vel);
     
-    static rf<Predicate> makeSetBallPosVelMessage(Eigen::Vector3d const& pos, Eigen::Vector3d const& vel);
+    static std::shared_ptr<Predicate> makeSetBallPosVelMessage(Eigen::Vector3d const& pos, Eigen::Vector3d const& vel);
     
     void kickOff();
     
-    static rf<Predicate> makeKickOffMessage();
+    static std::shared_ptr<Predicate> makeKickOffMessage();
     
     void setPlayMode(Types::PlayMode mode);
     
-    static rf<Predicate> makeSetPlayModeMessage(Types::PlayMode mode);
+    static std::shared_ptr<Predicate> makeSetPlayModeMessage(Types::PlayMode mode);
     
     static unsigned port;
   };

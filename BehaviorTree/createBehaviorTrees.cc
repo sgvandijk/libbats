@@ -14,6 +14,6 @@ void BehaviorTree::createBehaviorTrees()
     }
     
     std::string id = BTNode.getProp("id");
-    s_behaviorTrees[id] = new BehaviorTree(id);
+    s_behaviorTrees[id] = make_shared<BehaviorTree>(id);
   }
 }

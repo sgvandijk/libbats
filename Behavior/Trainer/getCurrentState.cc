@@ -1,10 +1,10 @@
 #include "trainer.ih"
 
-rf<State> Trainer::getCurrentState()
+shared_ptr<State> Trainer::getCurrentState()
 {
-  rf<State> state = new State();
-  rf<OrNode> dis = state->addDisjunct();
-  rf<AndNode> con = dis->addConjunct();
+  shared_ptr<State> state = make_shared<State>();
+  shared_ptr<OrNode> dis = state->addDisjunct();
+  shared_ptr<AndNode> con = dis->addConjunct();
 
   // con->addVar("Var", 0, 1);
   return state;

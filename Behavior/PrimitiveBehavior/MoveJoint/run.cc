@@ -9,7 +9,7 @@ bool MoveJoint::run()
 {
   AgentModel& am = SAgentModel::getInstance();
 
-  rf<StateVarNode> speedNode = rf_cast<StateVarNode>(d_goal->findDeep("Speed"));
+  shared_ptr<StateVarNode> speedNode = static_pointer_cast<StateVarNode>(d_goal->findDeep("Speed"));
 
   if (!speedNode)
   {
@@ -19,7 +19,7 @@ bool MoveJoint::run()
   double speed = speedNode->getVar().second.mean();
   am.setControl(d_joint, speed);
 
-  d_action = new MoveJointAction(d_joint, speed);
+  d_action = make_shared<MoveJointAction>(d_joint, speed);
   
   addToActionCommandBehaviors();
   

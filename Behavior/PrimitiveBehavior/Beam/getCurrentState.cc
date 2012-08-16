@@ -1,6 +1,6 @@
 #include "beam.ih"
 
-rf<State> Beam::getCurrentState()
+shared_ptr<State> Beam::getCurrentState()
 {
   return 0;
 }

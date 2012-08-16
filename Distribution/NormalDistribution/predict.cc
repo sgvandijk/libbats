@@ -1,6 +1,6 @@
 #include "normaldistribution.ih"
 
-void NormalDistribution::predict(MatrixXd const& F, rf<Distribution> controlModel)
+void NormalDistribution::predict(MatrixXd const& F, shared_ptr<Distribution> controlModel)
 {
   // x_k^- = F x_k-1 + B u_k-1
   // where u is the movement model

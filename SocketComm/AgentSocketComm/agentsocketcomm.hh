@@ -72,7 +72,7 @@ namespace bats
 
     void syn();
     
-    static rf<Predicate> makeSynMessage();
+    static std::shared_ptr<Predicate> makeSynMessage();
     
     /** Send initialization message
      *
@@ -87,7 +87,7 @@ namespace bats
      * @param unum Uniform number (0 = auto choose by server)
      * @param team Team name
      */
-    static rf<Predicate> makeInitMessage(unsigned unum, std::string team);
+    static std::shared_ptr<Predicate> makeInitMessage(unsigned unum, std::string team);
     
     /** Move a joint
      *
@@ -102,7 +102,7 @@ namespace bats
      * @param joint The joint to move
      * @param deltaAngle The angle to move the joint by in radians
      */
-    static rf<Predicate> makeMoveJointMessage(Types::Joint joint, double deltaAngle);
+    static std::shared_ptr<Predicate> makeMoveJointMessage(Types::Joint joint, double deltaAngle);
     
     
     /** Move a hinge joint
@@ -126,14 +126,14 @@ namespace bats
      * @param joint The joint effector name
      * @param deltaAngle The angle to move the joint by in radians
      */
-    static rf<Predicate> makeMoveHingeJointMessage(Types::Joint joint, double deltaAngle);
+    static std::shared_ptr<Predicate> makeMoveHingeJointMessage(Types::Joint joint, double deltaAngle);
 
     /** Make a command predicate for moving a hinge torque joint
      *
      * @param joint The joint effector name
      * @param force The force to put on te body parts
      */
-    static rf<Predicate> makeMoveTorqueJointMessage(Types::Joint joint, double force);
+    static std::shared_ptr<Predicate> makeMoveTorqueJointMessage(Types::Joint joint, double force);
     
     /** Move a universal joint
      *
@@ -150,7 +150,7 @@ namespace bats
      * @param deltaAngle1 The angle to move the joint by along the first axis in radians
      * @param deltaAngle2 The angle to move the joint by along the second axis in radians
      */
-    static rf<Predicate> makeMoveUniversalJointMessage(Types::Joint joint, double deltaAngle1, double deltaAngle2);
+    static std::shared_ptr<Predicate> makeMoveUniversalJointMessage(Types::Joint joint, double deltaAngle1, double deltaAngle2);
     
     /** Beam
      *
@@ -163,7 +163,7 @@ namespace bats
      *
      * @param pos The position to beam to. This should be on the own half of the field (x < 0)
      */
-    static rf<Predicate> makeBeamMessage(Eigen::Vector3d const& pos);
+    static std::shared_ptr<Predicate> makeBeamMessage(Eigen::Vector3d const& pos);
     
     /** Say something
      *
@@ -176,9 +176,9 @@ namespace bats
      *
      * @param message The message to shout
      */
-    static rf<Predicate> makeSayMessage(std::string message);
+    static std::shared_ptr<Predicate> makeSayMessage(std::string message);
 
-	sigc::signal<void, rf<BeamEvent> > beam_signal;
+	sigc::signal<void, std::shared_ptr<BeamEvent> > beam_signal;
   };
   
   typedef Singleton<AgentSocketComm> SAgentSocketComm;

@@ -2,11 +2,12 @@
 #include "../../../Action/RC3DAction/rc3daction.hh"
 
 using namespace bats;
+using namespace std;
 
 bool MoveUniversalJoint::run()
 {
-  rf<StateVarNode> jointNode = rf_cast<StateVarNode>(d_goal->findDeep("Joint"));
-  rf<StateVarNode> speedNode = rf_cast<StateVarNode>(d_goal->findDeep("Speed"));
+  shared_ptr<StateVarNode> jointNode = static_pointer_cast<StateVarNode>(d_goal->findDeep("Joint"));
+  shared_ptr<StateVarNode> speedNode = static_pointer_cast<StateVarNode>(d_goal->findDeep("Speed"));
 
   if (!speedNode || !jointNode)
   {
@@ -15,7 +16,7 @@ bool MoveUniversalJoint::run()
   
   d_lastSpeeds[(unsigned)(jointNode->getVar().second.mean() - d_joint)] = speedNode->getVar().second.mean();
   
-  d_action = new MoveUniversalJointAction(d_joint, d_lastSpeeds[0], d_lastSpeeds[1]);
+  d_action = make_shared<MoveUniversalJointAction>(d_joint, d_lastSpeeds[0], d_lastSpeeds[1]);
   
   addToActionCommandBehaviors();
   

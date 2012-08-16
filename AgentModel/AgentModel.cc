@@ -6,9 +6,9 @@ AgentModel::AgentModel()
   d_unum(0),
   d_torso(0)
 {
-  d_kickMaxDistance = new NormalDistribution(1);
+  d_kickMaxDistance = make_shared<NormalDistribution>(1);
   d_kickMaxDistance->init(VectorXd::Constant(1, 100), VectorXd::Constant(1, 20));
-  d_kickMaxSpeed = new NormalDistribution(1);
+  d_kickMaxSpeed = make_shared<NormalDistribution>(1);
   d_kickMaxSpeed->init(VectorXd::Constant(1,100), VectorXd::Constant(1,20));
 
   d_jointNameMap["head1"] = Types::HEAD1;

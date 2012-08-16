@@ -16,13 +16,13 @@ void Behavior::reset()
       
     for (AST::Node::iterator seqIter = d_tree->begin(); seqIter != d_tree->end(); ++seqIter)
     {
-      rf<AST::Node> stepNode = *seqIter;
+      shared_ptr<AST::Node> stepNode = *seqIter;
       for (AST::Node::iterator slotIter = stepNode->begin(); slotIter != stepNode->end(); ++slotIter)
       {
-        rf<AST::Node> slotNode = *slotIter;
+        shared_ptr<AST::Node> slotNode = *slotIter;
         for (AST::Node::iterator behIter = slotNode->begin(); behIter != slotNode->end(); ++behIter)
         {
-          rf<BehaviorNode> bNode = rf_cast<BehaviorNode>(*behIter);
+          shared_ptr<BehaviorNode> bNode = static_pointer_cast<BehaviorNode>(*behIter);
           bNode->getBehavior()->reset();
         }
       }

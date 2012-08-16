@@ -1,8 +1,8 @@
 #include "ast.ih"
 
-unsigned AST::Node::selectAll(vector<rf<AST::Node> > &res, Path const &select) const
+unsigned AST::Node::selectAll(vector<shared_ptr<AST::Node> > &res, Path const &select) const
 {
-  vector<rf<AST::Node> > search_space;
+  vector<shared_ptr<AST::Node> > search_space;
 
   Path p = select;
 
@@ -27,7 +27,7 @@ unsigned AST::Node::selectAll(vector<rf<AST::Node> > &res, Path const &select) c
 
   unsigned cnt = 0;
 
-  for (vector<rf<AST::Node> >::iterator i = search_space.begin();
+  for (vector<shared_ptr<AST::Node> >::iterator i = search_space.begin();
        i != search_space.end(); ++i) {
     if (p.path.empty()) {
       res.push_back(*i);

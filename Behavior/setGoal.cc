@@ -1,8 +1,8 @@
 #include "behavior.ih"
 
-ConfidenceInterval Behavior::setGoal(rf<Goal> g)
+ConfidenceInterval Behavior::setGoal(shared_ptr<Goal> g)
 {
-  rf<State> currentState = getCurrentState();
+  shared_ptr<State> currentState = getCurrentState();
   assert(g);  //without a goal, getting the capability makes no sense
   ConfidenceInterval c = getCapability(currentState, g);
   d_c = c;

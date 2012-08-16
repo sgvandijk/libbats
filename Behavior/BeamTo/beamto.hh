@@ -69,9 +69,9 @@ namespace bats
      * @param slot Slot number in the step
      * @returns goal: X ^ Y
      */
-    virtual rf<Goal> generateGoal(unsigned step, unsigned slot);
+    virtual std::shared_ptr<Goal> generateGoal(unsigned step, unsigned slot);
     
-    virtual rf<State> getCurrentState();
+    virtual std::shared_ptr<State> getCurrentState();
 
     /** Get the capability of the behavior to achieve goal g from state s
      *
@@ -79,7 +79,7 @@ namespace bats
      * @param g Expected goal: none
      * @returns High confidence before kickoff and after a goal when the position lies on the own half of the field (negative X), low otherwise
      */
-    virtual ConfidenceInterval getCapability(rf<State> s, rf<Goal> g);
+    virtual ConfidenceInterval getCapability(std::shared_ptr<State> s, std::shared_ptr<Goal> g);
   
   public:
     BeamTo(std::string const &id, std::string const& behaviorTree);

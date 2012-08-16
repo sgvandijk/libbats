@@ -7,7 +7,7 @@ unsigned WorldModel::otherTeamMateCloserTo(Vector3d const& posLocal, bool standi
   double dist = posLocal.norm();
   unsigned count = 0;
 
-  for (rf<PlayerInfo> teamMate : loc.teamMates)
+  for (shared_ptr<PlayerInfo> teamMate : loc.teamMates)
   {
     if (!teamMate->isAlive || teamMate->isMe)
       continue;

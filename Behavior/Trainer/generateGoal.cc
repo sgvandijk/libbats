@@ -1,10 +1,10 @@
 #include "trainer.ih"
 
-rf<Goal> Trainer::generateGoal(unsigned step, unsigned slot)
+shared_ptr<Goal> Trainer::generateGoal(unsigned step, unsigned slot)
 {
-  rf<Goal> goal = new Goal();
-  rf<OrNode> dis = goal->addDisjunct();
-  rf<AndNode> con = dis->addConjunct();
+  shared_ptr<Goal> goal = make_shared<Goal>();
+  shared_ptr<OrNode> dis = goal->addDisjunct();
+  shared_ptr<AndNode> con = dis->addConjunct();
 
   // con->addVar("Var", 0, 1);
   

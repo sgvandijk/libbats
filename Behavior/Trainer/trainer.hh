@@ -110,9 +110,9 @@ namespace bats
     
     Types::PlayMode d_playMode;
     
-    virtual rf<Goal> generateGoal(unsigned step, unsigned slot);
-    virtual rf<State> getCurrentState();
-    virtual ConfidenceInterval getCapability(rf<State> s, rf<Goal> g);
+    virtual std::shared_ptr<Goal> generateGoal(unsigned step, unsigned slot);
+    virtual std::shared_ptr<State> getCurrentState();
+    virtual ConfidenceInterval getCapability(std::shared_ptr<State> s, std::shared_ptr<Goal> g);
   
     /** Called when a run starts */
     virtual void onRunStart() {}

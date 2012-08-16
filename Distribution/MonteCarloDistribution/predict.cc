@@ -1,6 +1,6 @@
 #include "montecarlodistribution.ih"
 
-void MonteCarloDistribution::predict(MatrixXd const& F, rf<Distribution> controlModel)
+void MonteCarloDistribution::predict(MatrixXd const& F, shared_ptr<Distribution> controlModel)
 {
   for (unsigned i = 0; i < d_nParticles; ++i)
   {

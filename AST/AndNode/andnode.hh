@@ -66,7 +66,7 @@ namespace bats
       */
     void addVar(std::string const &name, double r0, double r1)
     {
-      addChild(new StateVarNode(name,r0,r1));
+      addChild(std::make_shared<StateVarNode>(name,r0,r1));
     }
 
     /**
@@ -74,13 +74,13 @@ namespace bats
      */
     void addVar(std::string const &name, std::string const &val)
     {
-      addChild(new StateVarNode(name, val));
+      addChild(std::make_shared<StateVarNode>(name, val));
     }
     
     /**
       * Add state variables based on a 3D distribution. The variables get the names nameX, nameY and nameZ. The range of a variable is set to \f$ (\mu - {1 over 2} \sqrt{s^2}, \mu + {1 over 2} \sqrt{s^2}) \f$
       */
-    void addVar(std::string const &name, rf<Distribution> const &pos)
+    void addVar(std::string const &name, std::shared_ptr<Distribution> const &pos)
     {
       Eigen::Vector3d mu = pos->getMu();//.cast<Eigen::Vector3d>();
       Eigen::Matrix3d sigma = pos->getSigma();//.cast<Eigen::Matrix3d>();

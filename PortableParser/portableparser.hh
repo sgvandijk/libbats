@@ -68,7 +68,7 @@ namespace bats {
     Parser::ParseEntry *d_pCurrentState;
 
     // The stack (there are faster stacks than this one..).
-    std::stack< rf<Predicate> > d_stck;
+    std::stack< std::shared_ptr<Predicate> > d_stck;
 
     std::string d_tokenStr;
 
@@ -91,8 +91,8 @@ namespace bats {
     {
       d_done = false;
       d_pCurrentState = s_initializerState;
-      d_stck = std::stack< rf<Predicate> >();
-      d_stck.push(new Predicate(Predicate::type_list));
+      d_stck = std::stack< std::shared_ptr<Predicate> >();
+      d_stck.push(std::make_shared<Predicate>(Predicate::type_list));
     }
 
     /**
@@ -115,13 +115,13 @@ namespace bats {
 
       case Parser::PushPred:
 		//		std::cerr << "<<PUSH" << (d_pCurrentState->value-Parser::s_unifiedTable)/256 << ">>";
-        d_stck.push(d_stck.top()->push(new Predicate(d_tokenStr,Predicate::type_node)));
+        d_stck.push(d_stck.top()->push(std::make_shared<Predicate>(d_tokenStr,Predicate::type_node)));
         d_tokenStr.clear();
         return false;
 
       case Parser::AddToPred:
 		//		std::cerr << "<<ADD" << (d_pCurrentState->value-Parser::s_unifiedTable)/256 << ">>";
-        d_stck.top()->push(new Predicate(d_tokenStr,Predicate::type_leaf));
+        d_stck.top()->push(std::make_shared<Predicate>(d_tokenStr,Predicate::type_leaf));
         d_tokenStr.clear();
         return false;
 
@@ -208,7 +208,7 @@ namespace bats {
      *
      *  @returns the parsed predicate.
      */
-    inline rf<Predicate> parseLine(std::string const &data)
+    inline std::shared_ptr<Predicate> parseLine(std::string const &data)
     {
       unsigned count = 0;
       while (count < data.length()) {
@@ -237,7 +237,7 @@ namespace bats {
     /**
      *  @returns the parsed predicate.
      */
-    rf<Predicate> getPredicate() const
+    std::shared_ptr<Predicate> getPredicate() const
     {
       return d_stck.top();
     }

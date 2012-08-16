@@ -41,7 +41,7 @@ void KalmanLocalizer::updateBallGlobal()
   // TODO: tweak this
   MatrixXd Q = MatrixXd::Identity(6, 6) * 0.0005;
   
-  rf<NormalDistribution> controlModel = new NormalDistribution(6);
+  shared_ptr<NormalDistribution> controlModel = make_shared<NormalDistribution>(6);
   controlModel->init(B * u, Q);
   ball->posVelGlobal->predict(F, controlModel);
 
@@ -53,7 +53,7 @@ void KalmanLocalizer::updateBallGlobal()
     // TODO: capture when we don't see ball
     if (ball->isVisible)
     {
-      rf<NormalDistribution> obsModel = new NormalDistribution(6);
+      shared_ptr<NormalDistribution> obsModel = make_shared<NormalDistribution>(6);
       Transform3d globalRotationTrans = Transform3d(d_globalRotation.matrix().transpose());
 
       VectorXd meas = ball->posVelRaw->getMu();

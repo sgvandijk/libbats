@@ -40,8 +40,6 @@
 #ifndef _BATS_BEHAVIOR_HH_
 #define _BATS_BEHAVIOR_HH_
 
-#include "../Ref/rf.hh"
-#include "../RefAble/refable.hh"
 #include "../AST/ast.hh"
 #include "../Predicate/predicate.hh"
 #include "../Action/action.hh"
@@ -75,13 +73,13 @@ namespace bats
    * following methods:
    *
    * <dl>
-   *   <dt>rf<Goal> generateGoal(unsigned step, unsigned slot)</dt>
+   *   <dt>std::shared_ptr<Goal> generateGoal(unsigned step, unsigned slot)</dt>
    *
    *   <dd>This method is called to generate a subgoal for the
    *   subbehaviors in a slot. The goal is a State description tree
    *   containing nodes of type andType and varType.</dd>
    *
-   *   <dt>rf<State> getCurrentState()</dt>
+   *   <dt>std::shared_ptr<State> getCurrentState()</dt>
    *
    *   <dd>For different behaviors different descriptions of the
    *   current state are important. Implement this method to let the
@@ -96,7 +94,7 @@ namespace bats
    *
    * </dl>
    */
-  class Behavior : public RefAble
+  class Behavior : std::enable_shared_from_this<Behavior>
   {
   protected:
     /// The behavior's name
@@ -113,7 +111,7 @@ namespace bats
      *  - Slots: every sequence step has 1 or more slots. These nodes are of type orType, because only one behavior in a slot can be picked (exclusive or)
      *  - Behaviors: in every slot there can be 1 or more behaviors. These nodes are of type behaviorType
      */
-    rf<AST::Node> d_tree;
+    std::shared_ptr<AST::Node> d_tree;
     
     /// Current step index of the sequence
     int d_curStep;
@@ -122,7 +120,7 @@ namespace bats
     double d_curStepStart;
     
     /// The goal we are trying to achieve
-    rf<Goal> d_goal;
+    std::shared_ptr<Goal> d_goal;
   
     /// Whether the behavior was reset before the current getCapability call, true between achieveGoal and reset, false otherwise.
     bool d_reset;
@@ -134,7 +132,7 @@ namespace bats
     ConfidenceInterval d_c;
   
     /// Action this behavior wants to perform. This is only used by primitive behaviors
-    rf<Action> d_action;
+    std::shared_ptr<Action> d_action;
     
     /// Whether the behavior should commit (defined in the configuration)
     bool d_commit;
@@ -152,7 +150,7 @@ namespace bats
     double d_lastUpdate;
 
     /// List of subbehaviors that this behavior chose last time step
-    std::vector<rf<Behavior> > d_lastChosen;
+    std::vector<std::shared_ptr<Behavior> > d_lastChosen;
     
     /// Standard low capability
     double d_standard_capability_low;
@@ -177,29 +175,29 @@ namespace bats
      * @param step Step number in the sequence
      * @param slot Slot number in the step
      */
-    virtual rf<Goal> generateGoal(unsigned step, unsigned slot)
+    virtual std::shared_ptr<Goal> generateGoal(unsigned step, unsigned slot)
     {
       // The default state is just this simple empty structure.
       // Subclasses may override as needed.
-      rf<Goal> goal = new Goal();
-      rf<OrNode> dis = goal->addDisjunct();
-      rf<AndNode> con = dis->addConjunct();
+      std::shared_ptr<Goal> goal = std::make_shared<Goal>();
+      std::shared_ptr<OrNode> dis = goal->addDisjunct();
+      std::shared_ptr<AndNode> con = dis->addConjunct();
       return goal;
     };
     
     /// Get the current state. This state is passed to getCapability
-    virtual rf<State> getCurrentState()
+    virtual std::shared_ptr<State> getCurrentState()
     {
       // The default state is just this simple empty structure.
       // Subclasses may override as needed.
-      rf<State> state = new State();
-      rf<OrNode> dis = state->addDisjunct();
-      rf<AndNode> con = dis->addConjunct();
+      std::shared_ptr<State> state = std::make_shared<State>();
+      std::shared_ptr<OrNode> dis = state->addDisjunct();
+      std::shared_ptr<AndNode> con = dis->addConjunct();
       return state;
     };
     
     /// Get the capability of the behavior to achieve goal g from state s
-    virtual ConfidenceInterval getCapability(rf<State> s, rf<Goal> g)
+    virtual ConfidenceInterval getCapability(std::shared_ptr<State> s, std::shared_ptr<Goal> g)
     {
       // By default, behaviors are capable. Subclasses should override
       // if custom logic is required.
@@ -216,25 +214,25 @@ namespace bats
     bool doLastChosen();
     
     /// Recursively generate an empty configuration template
-    void generateConf(std::ostream& out, rf<AST::Node> node, unsigned& index);
+    void generateConf(std::ostream& out, std::shared_ptr<AST::Node> node, unsigned& index);
 
     /// Add this behavior to the list of action-command behaviors, signalling that this behavior wants to perform an action
-    void addToActionCommandBehaviors() { s_actionCommandBehaviors.insert(this); }
+    void addToActionCommandBehaviors() { s_actionCommandBehaviors.insert(shared_from_this()); }
     
     /// Remove this behavior from the list of action-command behaviors
-    void removeFromActionCommandBehaviors() { s_actionCommandBehaviors.erase(this); }
+    void removeFromActionCommandBehaviors() { s_actionCommandBehaviors.erase(shared_from_this()); }
     
     /// Global map containing all the agent's behaviors
-    static std::map<std::string, rf<Behavior> > s_behaviors;
+    static std::map<std::string, std::shared_ptr<Behavior> > s_behaviors;
     
     /// The root behavior of the agent's hierarchical behavior structure
-    static rf<Behavior> s_win;
+    static std::shared_ptr<Behavior> s_win;
     
     /// list of behaviors that want to perform an action
-    static std::set<rf<Behavior> > s_actionCommandBehaviors;
+    static std::set<std::shared_ptr<Behavior> > s_actionCommandBehaviors;
 
     /// Stack of currently running agents
-    static std::list<rf<Behavior> > s_behStack;
+    static std::list<std::shared_ptr<Behavior> > s_behStack;
 
     /** Get a parameter from the XML configuration
      *
@@ -304,7 +302,7 @@ namespace bats
      * @param step Step number of the slot in the sequence
      * @param slot Slot number in the step
      */
-    void addToSlot(rf<Behavior> behavior, unsigned step, unsigned slot);
+    void addToSlot(std::shared_ptr<Behavior> behavior, unsigned step, unsigned slot);
 
 	  /// Called when the full behavior tree is constructed
     virtual void constructed() {};
@@ -313,7 +311,7 @@ namespace bats
     virtual void update();
     
     /// Set goal, returns the capability of achieving it from the current state
-    ConfidenceInterval setGoal(rf<Goal> g);
+    ConfidenceInterval setGoal(std::shared_ptr<Goal> g);
         
     /// Get the capability of this behavior of achieving the last set goal
     ConfidenceInterval getCapability() const { return d_c; }
@@ -328,7 +326,7 @@ namespace bats
     virtual bool achieveGoal();
     
     /// Get the action command that this behavior wants to send to the server
-    rf<Action> getAction() const { return d_action; }
+    std::shared_ptr<Action> getAction() const { return d_action; }
     
     /// Generate an empty configuration template describing the slots that this behavior has
     void generateConf(std::ostream& out);
@@ -360,7 +358,7 @@ namespace bats
     double getLastUpdate() { return d_lastUpdate; }
     
     /// Get the set of behaviors that want to perform action commands
-    static std::set<rf<Behavior> > getActionCommandBehaviors() { return s_actionCommandBehaviors; }
+    static std::set<std::shared_ptr<Behavior> > getActionCommandBehaviors() { return s_actionCommandBehaviors; }
     
     /// Clear the set of behaviors that want to perform action commands
     static void clearActionCommandBehaviors() { s_actionCommandBehaviors.clear(); }
@@ -369,20 +367,20 @@ namespace bats
     static void dumpStack();
     
     /// A signal that can be used to listen to events thrown by the behavior
-    static sigc::signal<void, rf<BehaviorEvent> > behavior_signal;
+    static sigc::signal<void, std::shared_ptr<BehaviorEvent> > behavior_signal;
     
     /// A signal that can be used to get notified of successfull runs of achieveGoal
-    static sigc::signal<void, rf<AchieveGoalSuccessEvent> > achieveGoal_success_signal;
+    static sigc::signal<void, std::shared_ptr<AchieveGoalSuccessEvent> > achieveGoal_success_signal;
   };
   
   /// A simple class used to sort BehaviorNodes by descending capability
   class CapabilityCompare
   {
     public:
-      bool operator()(rf<AST::Node> a, rf<AST::Node> b) 
+      bool operator()(std::shared_ptr<AST::Node> a, std::shared_ptr<AST::Node> b) 
       {
-        ConfidenceInterval c1 = rf_cast<BehaviorNode>(a)->getBehavior()->getCapability();
-        ConfidenceInterval c2 = rf_cast<BehaviorNode>(b)->getBehavior()->getCapability();
+        ConfidenceInterval c1 = std::static_pointer_cast<BehaviorNode>(a)->getBehavior()->getCapability();
+        ConfidenceInterval c2 = std::static_pointer_cast<BehaviorNode>(b)->getBehavior()->getCapability();
         
         c1.round();
         c2.round();
@@ -392,7 +390,7 @@ namespace bats
       }
   };
 
-  typedef rf<Behavior> RBehavior;
+  typedef std::shared_ptr<Behavior> RBehavior;
           
 };
 

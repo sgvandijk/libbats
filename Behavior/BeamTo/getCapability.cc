@@ -1,6 +1,6 @@
 #include "beamto.ih"
 
-ConfidenceInterval BeamTo::getCapability(rf<State> s, rf<Goal> g)
+ConfidenceInterval BeamTo::getCapability(shared_ptr<State> s, shared_ptr<Goal> g)
 {
 	WorldModel& wm = SWorldModel::getInstance();
 	

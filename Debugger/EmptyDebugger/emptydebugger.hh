@@ -20,9 +20,9 @@ namespace bats
       
       virtual void plot(std::string const& curve, float value) {}
 
-      virtual void draw(rf<Shape> shape) {}
-      virtual void drawForPeriod(rf<Shape> shape, double durationSeconds) {}
-      virtual void drawUntil(rf<Shape> shape, double time) {}
+      virtual void draw(std::shared_ptr<Shape> shape) {}
+      virtual void drawForPeriod(std::shared_ptr<Shape> shape, double durationSeconds) {}
+      virtual void drawUntil(std::shared_ptr<Shape> shape, double time) {}
 
       virtual bool isEnabled() { return false; }
       virtual bool isVerbose() { return false; }

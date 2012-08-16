@@ -1,6 +1,6 @@
 #include "ast.ih"
 
-unsigned AST::Node::findAllDeep(vector<rf<AST::Node> > &res, string const &query) const
+unsigned AST::Node::findAllDeep(vector<shared_ptr<AST::Node> > &res, string const &query) const
 {
   unsigned cnt = 0;
 

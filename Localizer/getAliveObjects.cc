@@ -1,9 +1,9 @@
 #include "localizer.ih"
 
-Localizer::ObjectVector Localizer::getAliveObjects(std::vector<rf<DynamicObjectInfo>> objects, std::function<bool(rf<DynamicObjectInfo>)> pred)
+Localizer::ObjectVector Localizer::getAliveObjects(std::vector<shared_ptr<DynamicObjectInfo>> objects, std::function<bool(shared_ptr<DynamicObjectInfo>)> pred)
 {
   ObjectVector filtered = ObjectVector();
-  for (rf<DynamicObjectInfo> object : objects)
+  for (shared_ptr<DynamicObjectInfo> object : objects)
   {
     if (!object->isAlive)
       continue;

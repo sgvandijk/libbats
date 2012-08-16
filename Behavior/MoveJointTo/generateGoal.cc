@@ -1,19 +1,19 @@
 #include "movejointto.ih"
 
-rf<Goal> MoveJointTo::generateGoal(unsigned step, unsigned slot)
+shared_ptr<Goal> MoveJointTo::generateGoal(unsigned step, unsigned slot)
 {
   //WorldModel& wm = SWorldModel::getInstance();
 
 
-  rf<Goal> goal = new Goal();
-  rf<OrNode> dis = goal->addDisjunct();
-  rf<AndNode> con = dis->addConjunct();
+  shared_ptr<Goal> goal = make_shared<Goal>();
+  shared_ptr<OrNode> dis = goal->addDisjunct();
+  shared_ptr<AndNode> con = dis->addConjunct();
   AgentModel& am = SAgentModel::getInstance();
 
 	
   // Get our own goal.
-  rf<StateVarNode> angleNode = rf_cast<StateVarNode>(d_goal->findDeep("Angle"));
-  rf<StateVarNode> speedNode = rf_cast<StateVarNode>(d_goal->findDeep("Speed"));
+  shared_ptr<StateVarNode> angleNode = static_pointer_cast<StateVarNode>(d_goal->findDeep("Angle"));
+  shared_ptr<StateVarNode> speedNode = static_pointer_cast<StateVarNode>(d_goal->findDeep("Speed"));
 
   double goalAngle = 0;
   double speed = 0;
@@ -29,7 +29,7 @@ rf<Goal> MoveJointTo::generateGoal(unsigned step, unsigned slot)
     else
       goalAngle = am.getJoint(d_joint)->angle->getMu()(0);
 
-    rf<StateVarNode> maxSpeedNode = rf_cast<StateVarNode>(d_goal->findDeep("MaxSpeed"));
+    shared_ptr<StateVarNode> maxSpeedNode = static_pointer_cast<StateVarNode>(d_goal->findDeep("MaxSpeed"));
     double maxSpeed = 0;
 	
     if (maxSpeedNode)
@@ -38,11 +38,11 @@ rf<Goal> MoveJointTo::generateGoal(unsigned step, unsigned slot)
       maxSpeed = maxSpeedRange.mean();
     }
 
-    rf<NormalDistribution> angle = am.getJoint(d_joint)->angle;
+    shared_ptr<NormalDistribution> angle = am.getJoint(d_joint)->angle;
     //double da = Math::normalizeRadBalanced(goalAngle - angle.getMu());
     double da = goalAngle - angle->getMu()(0);
 	
-    rf<StateVarNode> gainNode = rf_cast<StateVarNode>(d_goal->findDeep("Gain"));
+    shared_ptr<StateVarNode> gainNode = static_pointer_cast<StateVarNode>(d_goal->findDeep("Gain"));
     double gain = d_gain;
 	
     if (gainNode)

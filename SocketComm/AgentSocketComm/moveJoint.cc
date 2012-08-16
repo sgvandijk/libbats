@@ -5,13 +5,13 @@ void AgentSocketComm::moveJoint(Types::Joint joint, double deltaAngle)
   send(makeMoveJointMessage(joint, deltaAngle));
 }
 
-rf<Predicate> AgentSocketComm::makeMoveJointMessage(Types::Joint joint, double deltaAngle)
+shared_ptr<Predicate> AgentSocketComm::makeMoveJointMessage(Types::Joint joint, double deltaAngle)
 {
   AgentModel& am = SAgentModel::getInstance();
 
-  rf<Predicate> msg;
+  shared_ptr<Predicate> msg;
   
-  rf<Joint> j = am.getJoint(joint);
+  shared_ptr<Joint> j = am.getJoint(joint);
 
   switch (j->type) {
 

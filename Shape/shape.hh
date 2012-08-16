@@ -3,14 +3,12 @@
 
 #include <Eigen/Core>
 #include <list>
-#include "../RefAble/refable.hh"
-#include "../Ref/rf.hh"
 #include "../Types/types.hh"
 #include "../Localizer/localizer.hh"
 
 namespace bats
 {
-  struct Shape : public RefAble
+  struct Shape
   {
     Shape()
     : color(0,0,0,1), strokeWidth(0.01)
@@ -204,11 +202,11 @@ namespace bats
   /** A series of lines tracing the observed position of a player's body. */
   struct PlayerSkeleton : public Shape
   {
-    PlayerSkeleton(rf<bats::PlayerInfo> const& playerInfo, Eigen::Vector4d const& color, std::string const& category, float thickness = 2)
+    PlayerSkeleton(std::shared_ptr<bats::PlayerInfo> const& playerInfo, Eigen::Vector4d const& color, std::string const& category, float thickness = 2)
     : Shape(color, category), playerInfo(playerInfo), thickness(thickness)
     {}
     
-    rf<bats::PlayerInfo> playerInfo;
+    std::shared_ptr<bats::PlayerInfo> playerInfo;
     float thickness;
   };
   

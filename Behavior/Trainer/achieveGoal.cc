@@ -20,7 +20,7 @@ bool Trainer::achieveGoal()
       break;
     
     case START1:
-    	cer.addAction(new BeamAction(d_agentStartPos));
+      cer.addAction(make_shared<BeamAction>(d_agentStartPos));
       resetJoints();
       break;
       
@@ -35,7 +35,7 @@ bool Trainer::achieveGoal()
       break;
 
     case START3:
-    	cer.addAction(new BeamAction(d_agentStartPos));
+      cer.addAction(make_shared<BeamAction>(d_agentStartPos));
       resetJoints();
       break;
       

@@ -121,8 +121,8 @@ namespace bats {
      *  @returns the parsed message.
      *  @throws runtime_error
      */
-    rf<Predicate> parse(unsigned char const *data, unsigned len);
-    rf<Predicate> parse(std::string const &msg)
+    std::shared_ptr<Predicate> parse(unsigned char const *data, unsigned len);
+    std::shared_ptr<Predicate> parse(std::string const &msg)
     { return parse(reinterpret_cast<unsigned char const*>(msg.c_str()),msg.length()); }
 
 
@@ -131,7 +131,7 @@ namespace bats {
      *  the message, which can be send to the
      *  simulation server.
      */
-    std::string generate(rf<Predicate> const &_pred);
+    std::string generate(std::shared_ptr<Predicate> const &_pred);
 
   };
 

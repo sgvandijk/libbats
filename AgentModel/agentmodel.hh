@@ -47,8 +47,6 @@
 
 #include "../BodyPart/bodypart.hh"
 #include "../Distribution/NormalDistribution/normaldistribution.hh"
-#include "../RefAble/refable.hh"
-#include "../Ref/rf.hh"
 #include "../Singleton/singleton.hh"
 #include "../Types/types.hh"
 #include "../Math/math.hh"
@@ -99,7 +97,7 @@ namespace bats
      * @param updateJoints If set to true, the joint angles in the
      * body will be updated with values from the Cochlea
      */
-    void updatePosture(bool integrateControl = false, rf<BodyPart> torso = 0, bool updateJoints = true);
+    void updatePosture(bool integrateControl = false, std::shared_ptr<BodyPart> torso = 0, bool updateJoints = true);
 
 
     /** @returns the name of the Ruby Scene Graph (rsg) file that the simulator uses for this agent. */
@@ -127,7 +125,7 @@ namespace bats
     std::string getJointName(Types::Joint const id) const;
     
     /** @returns the information of joint @a joint */
-    rf<Joint> getJoint(Types::Joint joint) const;
+    std::shared_ptr<Joint> getJoint(Types::Joint joint) const;
 
     /** @returns the position of joint in agent coordinates */
     Eigen::Vector3d getJointPosition(Types::Joint joint) const;
@@ -142,7 +140,7 @@ namespace bats
     void setControl(Eigen::VectorXd const& control);
 
     /** @returns the information of body part @a part */
-    rf<Limb> getBodyPart(Types::BodyPart part) const;
+    std::shared_ptr<Limb> getBodyPart(Types::BodyPart part) const;
 
     Types::BodyPart getLimbID(std::string const& limb) const;
 
@@ -193,7 +191,7 @@ namespace bats
     /** @returns FallDirection (enum) in which direction the agent is falling */
     FallDirection getDirectionOfFall() { return d_fallDirection; }
     
-    rf<BodyPart> getBodyCopy();
+    std::shared_ptr<BodyPart> getBodyCopy();
 
     /** @returns The maximum joint velocity, in radians per time step: 351.77 / 180 * pi / 50 */
     double getMaxJointVel() const;
@@ -206,7 +204,7 @@ namespace bats
     std::string d_rsg;
     unsigned d_unum;
     
-    rf<BodyPart> d_torso;
+    std::shared_ptr<BodyPart> d_torso;
     double d_weight;
     Eigen::Vector3d d_COM;
     
@@ -221,18 +219,18 @@ namespace bats
     FallDirection d_fallDirection;
 
     std::map<std::string, Types::Joint> d_jointNameMap;
-    std::map<Types::Joint, rf<Joint> > d_joints;
+    std::map<Types::Joint, std::shared_ptr<Joint> > d_joints;
     
     std::map<std::string, Types::BodyPart> d_limbNameMap;
-    std::map<Types::BodyPart, rf<Limb> > d_limbs;
+    std::map<Types::BodyPart, std::shared_ptr<Limb> > d_limbs;
     
     double d_tLastControl;
     
     // The modeled maximum kicking distance of the agent.
-    rf<NormalDistribution> d_kickMaxDistance;
+    std::shared_ptr<NormalDistribution> d_kickMaxDistance;
 
     // The modeled maximum kicking speed of the agent.
-    rf<NormalDistribution> d_kickMaxSpeed;
+    std::shared_ptr<NormalDistribution> d_kickMaxSpeed;
 
     /** Recursive method to traverse XML to initialize body model
      *
@@ -240,12 +238,12 @@ namespace bats
      * @param joint Joint current body part should be connected to
      * @returns Mass accumulated by this body part and recursive calls
      */
-    double initBody(XMLNode& node, rf<Joint> joint);
+    double initBody(XMLNode& node, std::shared_ptr<Joint> joint);
     
     void updateCOM();
     void checkDirectionOfFall();
 
-    rf<BodyPart> getBodyPartCopy(rf<BodyPart> part);
+    std::shared_ptr<BodyPart> getBodyPartCopy(std::shared_ptr<BodyPart> part);
   };
 
   typedef Singleton<AgentModel> SAgentModel;
@@ -268,7 +266,7 @@ namespace bats
     return j == d_jointNameMap.end() ? Types::NJOINTS : j->second;
   }
   
-  inline rf<Joint> AgentModel::getJoint(Types::Joint joint) const
+  inline std::shared_ptr<Joint> AgentModel::getJoint(Types::Joint joint) const
   {
     return d_joints.find(joint)->second;
   }
@@ -299,7 +297,7 @@ namespace bats
     return getJoint(joint)->transform.translation();
   }
 
-  inline rf<Limb> AgentModel::getBodyPart(Types::BodyPart part) const
+  inline std::shared_ptr<Limb> AgentModel::getBodyPart(Types::BodyPart part) const
   {
     return d_limbs.find(part)->second;
   }

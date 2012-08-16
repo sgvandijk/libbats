@@ -43,12 +43,11 @@
 #include <string>
 #include <sstream>
 #include <Eigen/Core>
-#include "../RefAble/refable.hh"
 
 namespace bats
 {
   /** The basic class for events thrown by libbats */
-  class BatsEvent : public RefAble
+  class BatsEvent
   {
     public:
       BatsEvent() {}

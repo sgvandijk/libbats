@@ -39,7 +39,7 @@ void KalmanLocalizer::updateSelfGlobal()
   // uncertain about movement, trust mostly vision
   MatrixXd Q = VectorXd::Constant(6, 0.0001).asDiagonal();
   
-  rf<NormalDistribution> controlModel = new NormalDistribution(6);
+  shared_ptr<NormalDistribution> controlModel = make_shared<NormalDistribution>(6);
   controlModel->init(VectorXd::Zero(6), Q);
   me->posVelGlobal->predict(F, controlModel);
   
@@ -48,10 +48,10 @@ void KalmanLocalizer::updateSelfGlobal()
    */
   if (d_haveNewVisionData)
   {
-    rf<NormalDistribution> obsModel = new NormalDistribution(6);
+    shared_ptr<NormalDistribution> obsModel = make_shared<NormalDistribution>(6);
     Transform3d globalRotationTrans(d_globalRotation.matrix().transpose());
     
-    for (rf<ObjectInfo> landmark : landmarks)
+    for (shared_ptr<ObjectInfo> landmark : landmarks)
     {
       if (!landmark->isVisible)
         continue;

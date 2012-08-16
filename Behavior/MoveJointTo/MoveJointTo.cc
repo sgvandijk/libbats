@@ -25,8 +25,8 @@ MoveJointTo::MoveJointTo(string const &id, string const& behaviorTree)
     d_joint = (Types::Joint)atoi(jointNode.getContent().c_str());
   }
   
-  d_tree = new AST::Node(sequenceType);
-  d_tree->addChild(new AST::Node(andType));
-  d_tree->getChild(0)->addChild(new AST::Node(orType));
+  d_tree = make_shared<AST::Node>(sequenceType);
+  d_tree->addChild(make_shared<AST::Node>(andType));
+  d_tree->getChild(0)->addChild(make_shared<AST::Node>(orType));
 }
 

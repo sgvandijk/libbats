@@ -2,24 +2,24 @@
 
 void AgentModel::updateCOM()
 {
-  list<rf<BodyPart> > partQueue;
+  list<shared_ptr<BodyPart> > partQueue;
   partQueue.push_back(d_torso);
   Vector3d com;
   com.setZero();
   
   while (!partQueue.empty())
   {
-    rf<BodyPart> part = partQueue.front();
+    shared_ptr<BodyPart> part = partQueue.front();
     partQueue.pop_front();
-    while (rf<Joint> joint = rf_dynamic_cast<Joint>(part))
+    while (shared_ptr<Joint> joint = dynamic_pointer_cast<Joint>(part))
       part = joint->bodyPart;
     
-    rf<Limb> limb = rf_dynamic_cast<Limb>(part);
+    shared_ptr<Limb> limb = dynamic_pointer_cast<Limb>(part);
     
     com += limb->transform.translation() * limb->relativeWeight;
-    for (vector<rf<Joint> >::iterator iter = limb->joints.begin(); iter != limb->joints.end(); ++iter)
+    for (vector<shared_ptr<Joint> >::iterator iter = limb->joints.begin(); iter != limb->joints.end(); ++iter)
     {
-      rf<Joint> joint = *iter;
+      shared_ptr<Joint> joint = *iter;
       partQueue.push_back(joint->bodyPart);
     }
   }

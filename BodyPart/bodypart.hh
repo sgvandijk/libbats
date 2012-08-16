@@ -1,7 +1,6 @@
 #ifndef BATS_BODYPART_HH
 #define BATS_BODYPART_HH
 
-#include "../Ref/rf.hh"
 #include "../Distribution/NormalDistribution/normaldistribution.hh"
 #include "../Types/types.hh"
 #include <Eigen/Geometry>
@@ -11,7 +10,7 @@ namespace bats {
   /**
    * Body part information
    */
-  struct BodyPart : public RefAble
+  struct BodyPart
   {
     virtual ~BodyPart() {}
     
@@ -54,7 +53,7 @@ namespace bats {
     Eigen::Vector3d size;
     
     /// List of joints attached to this limb
-    std::vector<rf<Joint> > joints;
+    std::vector<std::shared_ptr<Joint> > joints;
 
     // This bodypart's identifier
     Types::BodyPart id;
@@ -71,7 +70,7 @@ namespace bats {
     Joint()
       : rate(0), torque(0), control(0)
     {
-      angle = new NormalDistribution(1);
+      angle = std::make_shared<NormalDistribution>(1);
       angle->init(Eigen::VectorXd::Zero(1), Eigen::MatrixXd::Zero(1,1));
     }
     
@@ -97,7 +96,7 @@ namespace bats {
     std::pair<double, double> bounds;
 
     /// Joint angle
-    rf<NormalDistribution> angle;
+    std::shared_ptr<NormalDistribution> angle;
     
     /// Joint rate, as given by server
     double rate;
@@ -109,7 +108,7 @@ namespace bats {
     double control;
     
     /// Body part connected by this joint
-    rf<BodyPart> bodyPart;
+    std::shared_ptr<BodyPart> bodyPart;
     
     /// Anchor points of joint on body parts, relative to their center
     std::pair<Eigen::Vector3d, Eigen::Vector3d> anchors;

@@ -5,11 +5,11 @@ void TrainerSocketComm::setPlayMode(Types::PlayMode mode)
   send(makeSetPlayModeMessage(mode));
 }
 
-rf<Predicate> TrainerSocketComm::makeSetPlayModeMessage(Types::PlayMode mode)
+shared_ptr<Predicate> TrainerSocketComm::makeSetPlayModeMessage(Types::PlayMode mode)
 {
   //  WorldModel& wm = SWorldModel::getInstance();
   
-  rf<Predicate> msg = new Predicate("playMode");
+  shared_ptr<Predicate> msg = make_shared<Predicate>("playMode");
   string modeStr;
   switch (mode)
   {

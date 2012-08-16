@@ -3,10 +3,10 @@
 BeamTo::BeamTo(string const &id, string const& behaviorTree)
   : Behavior("BeamTo", id, behaviorTree)
 {
-  d_tree = new AST::Node(sequenceType);
-  d_tree->addChild(new AST::Node(andType));
-  d_tree->getChild(0)->addChild(new AST::Node(orType));
-  d_tree->getChild(0)->addChild(new AST::Node(orType));
+  d_tree = make_shared<AST::Node>(sequenceType);
+  d_tree->addChild(make_shared<AST::Node>(andType));
+  d_tree->getChild(0)->addChild(make_shared<AST::Node>(orType));
+  d_tree->getChild(0)->addChild(make_shared<AST::Node>(orType));
 
   AgentModel& am = SAgentModel::getInstance();
 

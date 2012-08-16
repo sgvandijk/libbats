@@ -1,6 +1,6 @@
   #include "kalmanlocalizer.ih"
 
-Cochlea::InfoID KalmanLocalizer::getCochleaIdForObject(rf<ObjectInfo> object) const
+Cochlea::InfoID KalmanLocalizer::getCochleaIdForObject(shared_ptr<ObjectInfo> object) const
 {
   if (object->isBall)
   {
@@ -9,7 +9,7 @@ Cochlea::InfoID KalmanLocalizer::getCochleaIdForObject(rf<ObjectInfo> object) co
   
   if (object->isPlayer)
   {
-    rf<PlayerInfo> player = rf_static_cast<PlayerInfo>(object);
+    shared_ptr<PlayerInfo> player = static_pointer_cast<PlayerInfo>(object);
     return (Cochlea::InfoID)((player->isTeamMate ? Cochlea::iVisionTeamMate1 : Cochlea::iVisionOpponent1) - 1 + player->unum);
   }
   

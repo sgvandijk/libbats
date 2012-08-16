@@ -1,6 +1,6 @@
 #include "kalmanlocalizer.ih"
 
-void KalmanLocalizer::onBeam(rf<BeamEvent> event)
+void KalmanLocalizer::onBeam(shared_ptr<BeamEvent> event)
 {
   d_globalRotation = AngleAxisd(event->getWhere()[2] / 180.0 * M_PI -.5 * M_PI, Vector3d::UnitZ());
 
@@ -17,7 +17,7 @@ void KalmanLocalizer::onBeam(rf<BeamEvent> event)
     VectorXd m = VectorXd::Zero(6);
     me->posVelGlobal->init(joinPositionAndVelocityVectors(pos, Vector3d(0,0,0)), s2);
     ball->posVelGlobal->init(m, s2);
-//     for (rf<PlayerInfo> player : players)
+//     for (shared_ptr<PlayerInfo> player : players)
 //     {
 //       m = player->posVelGlobal->getMu();
 //       player->posVelGlobal->init(m, s2);

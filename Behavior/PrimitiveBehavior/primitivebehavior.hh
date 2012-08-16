@@ -60,7 +60,7 @@ namespace bats
    *   chosen. Here the behavior should have its logic and set its
    *   action command if necessary</dd>
    *
-   *   <dt>rf<State> getCurrentState()</dt>
+   *   <dt>std::shared_ptr<State> getCurrentState()</dt>
    *
    *   <dd>For different behaviors different descriptions of the
    *   current state are important. Implement this method to let the
@@ -83,7 +83,7 @@ namespace bats
      * getCurrentstate and getCapability however, since they are
      * used in setGoal.
      */
-    virtual rf<Goal> generateGoal(unsigned step, unsigned slot)
+    virtual std::shared_ptr<Goal> generateGoal(unsigned step, unsigned slot)
     {
       return 0;
     }

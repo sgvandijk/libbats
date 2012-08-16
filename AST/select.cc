@@ -3,9 +3,9 @@
 /**
  * \TODO: This can be optimized a very lot!!
  */
-rf<AST::Node> AST::Node::select(Path const &select) const
+shared_ptr<AST::Node> AST::Node::select(Path const &select) const
 {
-  vector<rf<AST::Node> > search_space;
+  vector<shared_ptr<AST::Node> > search_space;
 
   Path p = select;
 
@@ -17,7 +17,7 @@ rf<AST::Node> AST::Node::select(Path const &select) const
     // the top level of the tree.
     p.path.pop_front();
     if (p.path.empty())
-      return (d_nodes.empty()?rf<AST::Node>(0):d_nodes.front());
+      return (d_nodes.empty()?shared_ptr<AST::Node>(0):d_nodes.front());
     else
       findAll(search_space,p.path.front());
   } else // Search in all predicates with value path[0].
@@ -25,7 +25,7 @@ rf<AST::Node> AST::Node::select(Path const &select) const
 
   p.path.pop_front();
 
-  for (vector<rf<AST::Node> >::iterator i = search_space.begin();
+  for (vector<shared_ptr<AST::Node> >::iterator i = search_space.begin();
        i != search_space.end(); ++i)
     if (p.path.empty())
       return *i;

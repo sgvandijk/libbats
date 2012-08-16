@@ -48,9 +48,9 @@ namespace bats
   class Beam : public PrimitiveBehavior
   {
     protected:
-      rf<State> getCurrentState();
+      std::shared_ptr<State> getCurrentState();
     
-      ConfidenceInterval getCapability(rf<State> s, rf<Goal> g);
+      ConfidenceInterval getCapability(std::shared_ptr<State> s, std::shared_ptr<Goal> g);
     
       bool run();
       

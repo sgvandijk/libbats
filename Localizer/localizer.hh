@@ -88,8 +88,8 @@ namespace bats
   class Localizer
   {
   public:
-    typedef std::vector<rf<bats::PlayerInfo> > PlayerVector;
-    typedef std::vector<rf<bats::ObjectInfo> > ObjectVector;
+    typedef std::vector<std::shared_ptr<bats::PlayerInfo> > PlayerVector;
+    typedef std::vector<std::shared_ptr<bats::ObjectInfo> > ObjectVector;
     
     virtual ~Localizer() {}
 
@@ -111,37 +111,37 @@ namespace bats
     ObjectVector landmarks;
     
     /** Gets localisation information about the running agent. */
-    rf<bats::PlayerInfo> me;
+    std::shared_ptr<bats::PlayerInfo> me;
     
     /** Gets localisation information about the ball. */
-    rf<bats::DynamicObjectInfo> ball;
+    std::shared_ptr<bats::DynamicObjectInfo> ball;
     
     /** Gets a vector of all objects. */
     ObjectVector objects;
     
-    rf<bats::ObjectInfo> goal1Us;
-    rf<bats::ObjectInfo> goal2Us;
-    rf<bats::ObjectInfo> goal1Them;
-    rf<bats::ObjectInfo> goal2Them;
+    std::shared_ptr<bats::ObjectInfo> goal1Us;
+    std::shared_ptr<bats::ObjectInfo> goal2Us;
+    std::shared_ptr<bats::ObjectInfo> goal1Them;
+    std::shared_ptr<bats::ObjectInfo> goal2Them;
     
-    rf<bats::ObjectInfo> flag1Us;
-    rf<bats::ObjectInfo> flag2Us;
-    rf<bats::ObjectInfo> flag1Them;
-    rf<bats::ObjectInfo> flag2Them;
+    std::shared_ptr<bats::ObjectInfo> flag1Us;
+    std::shared_ptr<bats::ObjectInfo> flag2Us;
+    std::shared_ptr<bats::ObjectInfo> flag1Them;
+    std::shared_ptr<bats::ObjectInfo> flag2Them;
     
-    rf<bats::ObjectInfo> center;
+    std::shared_ptr<bats::ObjectInfo> center;
     
-    PlayerVector getFilteredPlayers(std::function<bool(rf<PlayerInfo>)> pred, bool aliveOnly = true);
-    ObjectVector getFilteredObjects(std::vector<rf<ObjectInfo>> objects, std::function<bool(rf<ObjectInfo>)> pred);
-    ObjectVector getAliveObjects(std::vector<rf<DynamicObjectInfo>> objects, std::function<bool(rf<DynamicObjectInfo>)> pred = 0);
+    PlayerVector getFilteredPlayers(std::function<bool(std::shared_ptr<PlayerInfo>)> pred, bool aliveOnly = true);
+    ObjectVector getFilteredObjects(std::vector<std::shared_ptr<ObjectInfo>> objects, std::function<bool(std::shared_ptr<ObjectInfo>)> pred);
+    ObjectVector getAliveObjects(std::vector<std::shared_ptr<DynamicObjectInfo>> objects, std::function<bool(std::shared_ptr<DynamicObjectInfo>)> pred = 0);
     
     // TODO use std::function instead of template
     
     template <typename _Predicate, typename ObjectType>
-    unsigned count(std::vector<rf<ObjectType>> objects, _Predicate pred)
+    unsigned count(std::vector<std::shared_ptr<ObjectType>> objects, _Predicate pred)
     {
       unsigned count = 0;
-      for (rf<ObjectType> object : objects)
+      for (std::shared_ptr<ObjectType> object : objects)
       {
         if (bool(pred(object)))
           count++;
@@ -149,7 +149,7 @@ namespace bats
       return count;
     };
 
-    rf<ObjectInfo> getObjectById(Types::Object object) const { return d_objectInfos[object]; }
+    std::shared_ptr<ObjectInfo> getObjectById(Types::Object object) const { return d_objectInfos[object]; }
 
     /** Get the local transformation matrix
      *
@@ -201,9 +201,9 @@ namespace bats
     virtual void setGlobalPosition(Eigen::Vector3d &position) { };
 
     /** Add a new global measurement of an object to integrate */
-    virtual void addGlobalMeasurement(rf<DynamicObjectInfo> dynamicObject, rf<Distribution> measurement) {};
+    virtual void addGlobalMeasurement(std::shared_ptr<DynamicObjectInfo> dynamicObject, std::shared_ptr<Distribution> measurement) {};
 
-    virtual void onBeam(rf<BeamEvent> event) {}
+    virtual void onBeam(std::shared_ptr<BeamEvent> event) {}
 
     /** Set camera offset due to calibration error */
     void setCameraOffset(Eigen::Vector3d const& offset)
@@ -231,7 +231,7 @@ namespace bats
 
     Eigen::Vector3d rotateGlobalToLocal(Eigen::Vector3d const& glob) { return Eigen::Transform3d(getLocalTransformation().linear() * Eigen::Transform3d(getGlobalTransformation().inverse()).linear()) * glob; }
   protected:
-    rf<ObjectInfo> d_objectInfos[Types::NOBJECTS];
+    std::shared_ptr<ObjectInfo> d_objectInfos[Types::NOBJECTS];
     
     /** The camera offset due to calibration error. */
     Eigen::Vector3d d_cameraOffset;

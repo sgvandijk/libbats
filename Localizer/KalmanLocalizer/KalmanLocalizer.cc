@@ -26,7 +26,7 @@ KalmanLocalizer::KalmanLocalizer()
   //
   // Create the ball
   //
-  objects.push_back(ball = new DynamicObjectInfo(bats::Types::BALL, wm.getBallRadius()));
+  objects.push_back(ball = make_shared<DynamicObjectInfo>(bats::Types::BALL, wm.getBallRadius()));
   
   //
   // Create objects for players of both teams
@@ -35,38 +35,38 @@ KalmanLocalizer::KalmanLocalizer()
   // fewer players, as teams may use any uniform number between 1 and 11,
   // though the keeper will always have unum==1.
   for (unsigned unum = 1; unum <= 11; ++unum)
-    opponents.push_back(new PlayerInfo(Types::getOpponentWithUnum(unum), playerRadius));
+    opponents.push_back(make_shared<PlayerInfo>(Types::getOpponentWithUnum(unum), playerRadius));
   for (unsigned unum = 1; unum <= wm.getNumberOfPlayers(); ++unum)
-    teamMates.push_back(new PlayerInfo(Types::getTeamMateWithUnum(unum), playerRadius));
+    teamMates.push_back(make_shared<PlayerInfo>(Types::getTeamMateWithUnum(unum), playerRadius));
   
   // Add them to the players list
-  for (rf<PlayerInfo> teamMate : teamMates)
+  for (shared_ptr<PlayerInfo> teamMate : teamMates)
     players.push_back(teamMate);
-  for (rf<PlayerInfo> opponent : opponents)
+  for (shared_ptr<PlayerInfo> opponent : opponents)
     players.push_back(opponent);
-  for (rf<PlayerInfo> player : players)
+  for (shared_ptr<PlayerInfo> player : players)
   {
     if (player->isMe)
       me = player;
     objects.push_back(player);
   }
   
-  landmarks.push_back(flag1Us   = d_objectInfos[Types::FLAG1US]     = new ObjectInfo(Types::FLAG1US,   /*radius*/landmarkRadius, /*dynamic*/false));
-  landmarks.push_back(flag2Us   = d_objectInfos[Types::FLAG2US]     = new ObjectInfo(Types::FLAG2US,   /*radius*/landmarkRadius, /*dynamic*/false));
-  landmarks.push_back(flag1Them = d_objectInfos[Types::FLAG1THEM]   = new ObjectInfo(Types::FLAG1THEM, /*radius*/landmarkRadius, /*dynamic*/false));
-  landmarks.push_back(flag2Them = d_objectInfos[Types::FLAG2THEM]   = new ObjectInfo(Types::FLAG2THEM, /*radius*/landmarkRadius, /*dynamic*/false));
-  landmarks.push_back(goal1Us   = d_objectInfos[Types::GOAL1US]     = new ObjectInfo(Types::GOAL1US,   /*radius*/landmarkRadius, /*dynamic*/false));
-  landmarks.push_back(goal2Us   = d_objectInfos[Types::GOAL2US]     = new ObjectInfo(Types::GOAL2US,   /*radius*/landmarkRadius, /*dynamic*/false));
-  landmarks.push_back(goal1Them = d_objectInfos[Types::GOAL1THEM]   = new ObjectInfo(Types::GOAL1THEM, /*radius*/landmarkRadius, /*dynamic*/false));
-  landmarks.push_back(goal2Them = d_objectInfos[Types::GOAL2THEM]   = new ObjectInfo(Types::GOAL2THEM, /*radius*/landmarkRadius, /*dynamic*/false));
-  landmarks.push_back(center    = d_objectInfos[Types::FIELDCENTER] = new ObjectInfo(Types::FIELDCENTER, /*radius*/landmarkRadius, /*dynamic*/false));
+  landmarks.push_back(flag1Us   = d_objectInfos[Types::FLAG1US]     = make_shared<ObjectInfo>(Types::FLAG1US,   /*radius*/landmarkRadius, /*dynamic*/false));
+  landmarks.push_back(flag2Us   = d_objectInfos[Types::FLAG2US]     = make_shared<ObjectInfo>(Types::FLAG2US,   /*radius*/landmarkRadius, /*dynamic*/false));
+  landmarks.push_back(flag1Them = d_objectInfos[Types::FLAG1THEM]   = make_shared<ObjectInfo>(Types::FLAG1THEM, /*radius*/landmarkRadius, /*dynamic*/false));
+  landmarks.push_back(flag2Them = d_objectInfos[Types::FLAG2THEM]   = make_shared<ObjectInfo>(Types::FLAG2THEM, /*radius*/landmarkRadius, /*dynamic*/false));
+  landmarks.push_back(goal1Us   = d_objectInfos[Types::GOAL1US]     = make_shared<ObjectInfo>(Types::GOAL1US,   /*radius*/landmarkRadius, /*dynamic*/false));
+  landmarks.push_back(goal2Us   = d_objectInfos[Types::GOAL2US]     = make_shared<ObjectInfo>(Types::GOAL2US,   /*radius*/landmarkRadius, /*dynamic*/false));
+  landmarks.push_back(goal1Them = d_objectInfos[Types::GOAL1THEM]   = make_shared<ObjectInfo>(Types::GOAL1THEM, /*radius*/landmarkRadius, /*dynamic*/false));
+  landmarks.push_back(goal2Them = d_objectInfos[Types::GOAL2THEM]   = make_shared<ObjectInfo>(Types::GOAL2THEM, /*radius*/landmarkRadius, /*dynamic*/false));
+  landmarks.push_back(center    = d_objectInfos[Types::FIELDCENTER] = make_shared<ObjectInfo>(Types::FIELDCENTER, /*radius*/landmarkRadius, /*dynamic*/false));
   
   // Populate the set of all landmarks
-  for (rf<ObjectInfo> landmark : landmarks)
+  for (shared_ptr<ObjectInfo> landmark : landmarks)
     objects.push_back(landmark);
   
   // Populate the set of all objects
-  for (rf<ObjectInfo> object : objects)
+  for (shared_ptr<ObjectInfo> object : objects)
     d_objectInfos[object->objectId] = object;
   
   //

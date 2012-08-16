@@ -3,7 +3,6 @@
 
 #include "../Singleton/singleton.hh"
 #include "../BatsEvent/batsevent.hh"
-#include "../Ref/rf.hh"
 
 #include "../Shape/shape.hh"
 
@@ -37,9 +36,9 @@ namespace bats
     
     virtual void plot(std::string const& curve, float value) = 0;
     
-    virtual void draw(rf<Shape> shape) = 0;
-    virtual void drawForPeriod(rf<Shape> shape, double durationSeconds) = 0;      
-    virtual void drawUntil(rf<Shape> shape, double time) = 0; 
+    virtual void draw(std::shared_ptr<Shape> shape) = 0;
+    virtual void drawForPeriod(std::shared_ptr<Shape> shape, double durationSeconds) = 0;      
+    virtual void drawUntil(std::shared_ptr<Shape> shape, double time) = 0; 
     
     /** Indicates whether debugging is enabled.  If this value is false, then calls to other methods on this type have no effect. */
     virtual bool isEnabled() = 0;

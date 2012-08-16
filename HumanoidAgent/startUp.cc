@@ -32,7 +32,7 @@ void HumanoidAgent::startUp()
   //  WorldModel& wm = SWorldModel::getInstance();
   SAgentSocketComm::getInstance().connect();
 
-  rf<Predicate> scene = new Predicate("scene");
+  shared_ptr<Predicate> scene = make_shared<Predicate>("scene");
   scene->pushLeaf("rsg/agent/" + am.getRSG());
     
   _debugLevel4(*scene);

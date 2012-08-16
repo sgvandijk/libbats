@@ -2,10 +2,10 @@
 
 bool Behavior::achieveGoal()
 {
-  behavior_signal(new AchieveGoalStartEvent(d_name, d_id));
+  behavior_signal(make_shared<AchieveGoalStartEvent>(d_name, d_id));
   
   string msg;
-  s_behStack.push_back(this);
+  s_behStack.push_back(shared_from_this());
   
   try {
     if (!d_tree)
@@ -21,7 +21,7 @@ bool Behavior::achieveGoal()
 		{
       succes = doLastChosen();
       msg = succes ? ": doLastChosen: succes" : ": doLastChosen: fail";
-      behavior_signal(new BehaviorEvent(d_name, d_id, msg));
+      behavior_signal(make_shared<BehaviorEvent>(d_name, d_id, msg));
     }
     else
     {
@@ -35,7 +35,7 @@ bool Behavior::achieveGoal()
         d_curStepStart = SClock::getInstance().getTime();
         succes = doNextStep();
         msg = succes ? ": doNextStep: succes" : ": fail";
-        behavior_signal(new BehaviorEvent(d_name, d_id, msg));
+        behavior_signal(make_shared<BehaviorEvent>(d_name, d_id, msg));
         if (!succes)
           d_curStepStart = prevStepStart;
       }
@@ -49,15 +49,15 @@ bool Behavior::achieveGoal()
       {
         succes = doCurrentStep();
         msg = succes ? ": doCurrentStep: succes" : ": fail";
-        behavior_signal(new BehaviorEvent(d_name, d_id, msg));
+        behavior_signal(make_shared<BehaviorEvent>(d_name, d_id, msg));
       }
     }
     s_behStack.pop_back();
     
     if (succes)
     {
-      behavior_signal(new AchieveGoalSuccessEvent(d_name, d_id));
-      achieveGoal_success_signal(new AchieveGoalSuccessEvent(d_name, d_id));
+      behavior_signal(make_shared<AchieveGoalSuccessEvent>(d_name, d_id));
+      achieveGoal_success_signal(make_shared<AchieveGoalSuccessEvent>(d_name, d_id));
     }
     
     return succes;

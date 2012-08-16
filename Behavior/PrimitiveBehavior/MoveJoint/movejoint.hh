@@ -65,7 +65,7 @@ namespace bats
 
     double d_max, d_min;
     
-    rf<State> getCurrentState() { return 0; }
+    std::shared_ptr<State> getCurrentState() { return 0; }
 
     /** Get the capability of the behavior to achieve goal g from state s
      *
@@ -73,7 +73,7 @@ namespace bats
      * @param g Expected goal: Speed - desired angular motor speed in radians per second
      * @returns Always high confidence
      */
-    ConfidenceInterval getCapability(rf<State> s, rf<Goal> g) { return ConfidenceInterval(1.0, 0); }
+    ConfidenceInterval getCapability(std::shared_ptr<State> s, std::shared_ptr<Goal> g) { return ConfidenceInterval(1.0, 0); }
 
     virtual bool run();
     

@@ -5,7 +5,7 @@ void KalmanLocalizer::updatePlayersGlobal()
   VectorXd myPosVelGlobal = me->posVelGlobal->getMu();
   MatrixXd mySigma = me->posVelGlobal->getSigma();
 
-  for (rf<PlayerInfo> player : players)
+  for (shared_ptr<PlayerInfo> player : players)
   {
     VectorXd oldPosVelGlobal = player->posVelGlobal->getMu();
     
@@ -43,7 +43,7 @@ void KalmanLocalizer::updatePlayersGlobal()
     // TODO: velocity change
     MatrixXd Q = MatrixXd::Identity(6, 6) * maxDist / 2;
     
-    rf<NormalDistribution> controlModel = new NormalDistribution(6);
+    shared_ptr<NormalDistribution> controlModel = make_shared<NormalDistribution>(6);
     controlModel->init(B * u, Q);
     player->posVelGlobal->predict(F, controlModel);
 
@@ -53,7 +53,7 @@ void KalmanLocalizer::updatePlayersGlobal()
     if (d_haveNewVisionData)
     {
       /// TODO: cache obsModel
-      rf<NormalDistribution> obsModel = new NormalDistribution(6);
+      shared_ptr<NormalDistribution> obsModel = make_shared<NormalDistribution>(6);
       /// TODO: cache trans of global rotation matrix
       Transform3d globalRotationTrans = Transform3d(d_globalRotation.matrix().transpose());
       if (player->isVisible)

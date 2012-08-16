@@ -49,15 +49,15 @@ namespace bats
   /// Node to hold a behavior
   class BehaviorNode : public AST::Node
   {
-      rf<Behavior> d_behavior;
+      std::shared_ptr<Behavior> d_behavior;
       
     public:
-      BehaviorNode(rf<Behavior> behavior) : Node(behaviorType), d_behavior(behavior) {}
+      BehaviorNode(std::shared_ptr<Behavior> behavior) : Node(behaviorType), d_behavior(behavior) {}
       
       /**
         * @returns the behavior in this node
         */
-      rf<Behavior> getBehavior() { return d_behavior; }
+      std::shared_ptr<Behavior> getBehavior() { return d_behavior; }
   };
 }
 

@@ -1,6 +1,6 @@
 #include "robovizdebugger.ih"
 
-void RoboVizDebugger::drawPlayerSkeleton(rf<bats::PlayerInfo> const info, float thickness, Eigen::Vector4d const& color, const std::string* setName)
+void RoboVizDebugger::drawPlayerSkeleton(shared_ptr<bats::PlayerInfo> const info, float thickness, Eigen::Vector4d const& color, const std::string* setName)
 {
   WorldModel& wm = bats::SWorldModel::getInstance();  
 

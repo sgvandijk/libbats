@@ -1,7 +1,7 @@
 #include "cochlea.ih"
 #include "../Math/math.hh"
 
-Transform3d Cochlea::parseTransform(rf<Predicate> const &pred)
+Transform3d Cochlea::parseTransform(shared_ptr<Predicate> const &pred)
 {
   assert(pred);
   
@@ -9,9 +9,9 @@ Transform3d Cochlea::parseTransform(rf<Predicate> const &pred)
   
   // 3 values for x,y,z translation
   Vector3d trans = Vector3d();
-  trans(0) = *rf_cast<Predicate>(pred->getChild(0));
-  trans(1) = *rf_cast<Predicate>(pred->getChild(1));
-  trans(2) = *rf_cast<Predicate>(pred->getChild(2));
+  trans(0) = *static_pointer_cast<Predicate>(pred->getChild(0));
+  trans(1) = *static_pointer_cast<Predicate>(pred->getChild(1));
+  trans(2) = *static_pointer_cast<Predicate>(pred->getChild(2));
 
   Vector3d forward = Vector3d(0,0,0);
   Vector3d up = Vector3d(0,0,0);
@@ -21,19 +21,19 @@ Transform3d Cochlea::parseTransform(rf<Predicate> const &pred)
   if (pred->size() == 12)
   {
     // 3 values for forward vector
-    forward(0) = *rf_cast<Predicate>(pred->getChild(3));
-    forward(1) = *rf_cast<Predicate>(pred->getChild(4));
-    forward(2) = *rf_cast<Predicate>(pred->getChild(5));
+    forward(0) = *static_pointer_cast<Predicate>(pred->getChild(3));
+    forward(1) = *static_pointer_cast<Predicate>(pred->getChild(4));
+    forward(2) = *static_pointer_cast<Predicate>(pred->getChild(5));
     
     // 3 values for right vector
-    right(0) = *rf_cast<Predicate>(pred->getChild(6));
-    right(1) = *rf_cast<Predicate>(pred->getChild(7));
-    right(2) = *rf_cast<Predicate>(pred->getChild(8));
+    right(0) = *static_pointer_cast<Predicate>(pred->getChild(6));
+    right(1) = *static_pointer_cast<Predicate>(pred->getChild(7));
+    right(2) = *static_pointer_cast<Predicate>(pred->getChild(8));
     
     // 3 values for up vector
-    up(0) = *rf_cast<Predicate>(pred->getChild(9));
-    up(1) = *rf_cast<Predicate>(pred->getChild(10));
-    up(2) = *rf_cast<Predicate>(pred->getChild(11));
+    up(0) = *static_pointer_cast<Predicate>(pred->getChild(9));
+    up(1) = *static_pointer_cast<Predicate>(pred->getChild(10));
+    up(2) = *static_pointer_cast<Predicate>(pred->getChild(11));
     
     forward /= 1000;
     right /= 1000;

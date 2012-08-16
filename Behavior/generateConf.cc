@@ -6,7 +6,7 @@ void Behavior::generateConf(ostream& out)
   generateConf(out, d_tree, index);
 }
 
-void Behavior::generateConf(ostream& out, rf<AST::Node> node, unsigned& index)
+void Behavior::generateConf(ostream& out, shared_ptr<AST::Node> node, unsigned& index)
 {
   unsigned subIndex = 0;
   if (!node)

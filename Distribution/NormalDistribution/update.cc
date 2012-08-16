@@ -1,6 +1,6 @@
 #include "normaldistribution.ih"
 
-void NormalDistribution::update(rf<Distribution> obsModel)
+void NormalDistribution::update(shared_ptr<Distribution> obsModel)
 {
   // Innovation
   VectorXd y = obsModel->getMu() - d_mu;

@@ -37,9 +37,9 @@ namespace bats
       
       void plot(std::string const& curve, float value);
       
-      void draw(rf<Shape> shape) { d_shapes.push_back(shape); }
-      void drawForPeriod(rf<Shape> shape, double durationSeconds) {}
-      void drawUntil(rf<Shape> shape, double time) {}
+      void draw(std::shared_ptr<Shape> shape) { d_shapes.push_back(shape); }
+      void drawForPeriod(std::shared_ptr<Shape> shape, double durationSeconds) {}
+      void drawUntil(std::shared_ptr<Shape> shape, double time) {}
       
       Glib::Dispatcher redraw_dispatch;
       Glib::Dispatcher dbg_text_dispatch;
@@ -64,7 +64,7 @@ namespace bats
       
       std::map<std::string, Curve> d_curves;
       
-      std::vector<rf<Shape> > d_shapes;
+      std::vector<std::shared_ptr<Shape> > d_shapes;
       
       GtkDebugger ();
 
@@ -72,7 +72,7 @@ namespace bats
       void onThinkEnd();
       void onDbgText();
 
-      void onBehaviorEvent(rf<BehaviorEvent> event) {}
+      void onBehaviorEvent(std::shared_ptr<BehaviorEvent> event) {}
       
       void drawField(Cairo::RefPtr<Cairo::Context> context);
       void drawSelf(Cairo::RefPtr<Cairo::Context> context);

@@ -5,9 +5,9 @@ void AgentSocketComm::syn()
   send(makeSynMessage());
 }
 
-rf<Predicate> AgentSocketComm::makeSynMessage()
+shared_ptr<Predicate> AgentSocketComm::makeSynMessage()
 {
-  rf<Predicate> syncPred = new Predicate("syn");
+  shared_ptr<Predicate> syncPred = make_shared<Predicate>("syn");
   return syncPred;
 }
 

@@ -1,6 +1,6 @@
 #include "cochlea.ih"
 
-Vector4d Cochlea::parsePolar(rf<Predicate> const &pred)
+Vector4d Cochlea::parsePolar(shared_ptr<Predicate> const &pred)
 {
   assert(pred);
 

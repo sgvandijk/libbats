@@ -30,14 +30,14 @@ namespace bats
       
       virtual void plot(std::string const& curve, float value) {}
       
-      virtual void draw(rf<Shape> shape) { d_shapes.push_back(shape); }
+      virtual void draw(std::shared_ptr<Shape> shape) { d_shapes.push_back(shape); }
       
-      virtual void drawForPeriod(rf<Shape> shape, double durationSeconds) {
+      virtual void drawForPeriod(std::shared_ptr<Shape> shape, double durationSeconds) {
         double time = SWorldModel::getInstance().getTime();
         drawUntil(shape, time + durationSeconds);
       }
       
-      virtual void drawUntil(rf<Shape> shape, double time) { 
+      virtual void drawUntil(std::shared_ptr<Shape> shape, double time) { 
         ShapeUntil shapeUntil = ShapeUntil();
         shapeUntil.shape = shape;
         shapeUntil.time = time;
@@ -48,7 +48,7 @@ namespace bats
       virtual bool isVerbose() { return d_isVerbose; }
       virtual void setVerbose(bool isVerbose) { d_isVerbose = isVerbose; }
 
-      struct ShapeUntil { public: rf<Shape> shape; double time; };
+      struct ShapeUntil { public: std::shared_ptr<Shape> shape; double time; };
 
       void drawSelf();
       void drawBall();
@@ -63,12 +63,12 @@ namespace bats
       int d_sockfd;
       struct addrinfo* d_p;
 
-      std::vector<rf<Shape> > d_shapes;
+      std::vector<std::shared_ptr<Shape> > d_shapes;
       std::list<ShapeUntil> d_shapesUntil;
 
       RoboVizDebugger ();
 
-      const std::string getSetName(rf<Shape> shape);
+      const std::string getSetName(std::shared_ptr<Shape> shape);
       const std::string getSetName(const std::string suffix);
       
       int writeCharToBuf(unsigned char* buf, unsigned char value) const;
@@ -97,13 +97,13 @@ namespace bats
       void drawPolygon(std::list<Eigen::Vector3d> const& vertices, Eigen::Vector4d const& color, const std::string* setName);
       void drawAnnotation(const std::string* text, float x, float y, float z, float r, float g, float b, const std::string* setName);
       void drawAgentAnnotation(const std::string* text, unsigned unum, Types::Side side, float r, float g, float b);
-      void drawPlayerSkeleton(rf<bats::PlayerInfo> const info, float thickness, Eigen::Vector4d const& color, const std::string* setName);
+      void drawPlayerSkeleton(std::shared_ptr<bats::PlayerInfo> const info, float thickness, Eigen::Vector4d const& color, const std::string* setName);
       void drawTransformationAxes(Eigen::Matrix4d const& matrix, float thickness, float axisLength, const std::string* setName);
       void drawProgressCircle(Eigen::Vector3d const& center, double radius, double progress, Eigen::Vector4d color, const std::string* setName);
 
       void onThinkEnd();
       void drawShapes();
-      void drawShape(rf<Shape> shape);
+      void drawShape(std::shared_ptr<Shape> shape);
       //bool removeShapeUntilIfExpired(ShapeUntil& shapeUntil);
   };
 

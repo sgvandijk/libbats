@@ -12,10 +12,10 @@ namespace bats
   {
   public:
     BATSPlayerClass(unsigned idx);
-    rf<BehaviorTree> getBehaviorTree() const { return d_behaviorTree; }
+    std::shared_ptr<BehaviorTree> getBehaviorTree() const { return d_behaviorTree; }
     
   protected:
-    rf<BehaviorTree> d_behaviorTree;
+    std::shared_ptr<BehaviorTree> d_behaviorTree;
   };
     
 }

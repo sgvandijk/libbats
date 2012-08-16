@@ -1,6 +1,6 @@
 #include "beam.ih"
 
-ConfidenceInterval Beam::getCapability(rf<State> s, rf<Goal> g)
+ConfidenceInterval Beam::getCapability(shared_ptr<State> s, shared_ptr<Goal> g)
 {
   if (!g->findDeep("X"))
   {

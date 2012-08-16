@@ -42,7 +42,7 @@
 
 #include <map>
 #include <string>
-#include "../Ref/rf.hh"
+#include <memory>
 #include "../Singleton/singleton.hh"
 
 namespace bats
@@ -50,7 +50,7 @@ namespace bats
   class Behavior;
   
   template<typename B>
-  rf<Behavior> createBehavior(std::string const& id, std::string const& behaviorTree)
+  std::shared_ptr<Behavior> createBehavior(std::string const& id, std::string const& behaviorTree)
   {
     return new B(id, behaviorTree);
   }
@@ -60,7 +60,7 @@ namespace bats
     friend class Singleton<BehaviorFactory>;
     
     private:
-      typedef rf<Behavior> (*createFunction)(std::string const&, std::string const&);
+      typedef std::shared_ptr<Behavior> (*createFunction)(std::string const&, std::string const&);
     
       std::map<std::string, createFunction> d_createFunctions;
       
@@ -73,7 +73,7 @@ namespace bats
         d_createFunctions[key] = f;
       }
       
-      rf<Behavior> createBehavior(std::string const& key, std::string const& id, std::string const& behaviorTree);
+      std::shared_ptr<Behavior> createBehavior(std::string const& key, std::string const& id, std::string const& behaviorTree);
     
   };
   

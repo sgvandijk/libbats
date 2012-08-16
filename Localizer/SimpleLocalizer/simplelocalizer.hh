@@ -40,6 +40,7 @@
 #ifndef _BATS_SIMPLELOCALIZER_HH_
 #define _BATS_SIMPLELOCALOZER_HH_
 
+#include <memory>
 #include "../localizer.hh"
 #include "../../Distribution/NormalDistribution/normaldistribution.hh"
 
@@ -53,12 +54,12 @@ namespace bats
       Eigen::Transform3d d_localTransform;
       Eigen::Transform3d d_globalTransform;
       
-      rf<NormalDistribution> d_positionsRaw[Types::NOBJECTS];
-      rf<NormalDistribution> d_positionsLocal[Types::NOBJECTS];
-      rf<NormalDistribution> d_positionsGlobal[Types::NOBJECTS];
+      std::shared_ptr<NormalDistribution> d_positionsRaw[Types::NOBJECTS];
+      std::shared_ptr<NormalDistribution> d_positionsLocal[Types::NOBJECTS];
+      std::shared_ptr<NormalDistribution> d_positionsGlobal[Types::NOBJECTS];
       
-      rf<NormalDistribution> d_velocitiesLocal[Types::NOBJECTS];
-      rf<NormalDistribution> d_velocitiesGlobal[Types::NOBJECTS];
+      std::shared_ptr<NormalDistribution> d_velocitiesLocal[Types::NOBJECTS];
+      std::shared_ptr<NormalDistribution> d_velocitiesGlobal[Types::NOBJECTS];
       
       SimpleLocalizer();
       SimpleLocalizer(SimpleLocalizer const& other); //NI
@@ -84,11 +85,11 @@ namespace bats
 
       virtual Eigen::Vector3d getObjectMovement (Types::Object object) {return Eigen::Vector3d();}
       
-      virtual rf<Distribution> getPositionLocal(Types::Object object) { return d_positionsLocal[object]; }
-      virtual rf<Distribution> getVelocityLocal(Types::Object object) { return d_velocitiesLocal[object]; }
+      virtual std::shared_ptr<Distribution> getPositionLocal(Types::Object object) { return d_positionsLocal[object]; }
+      virtual std::shared_ptr<Distribution> getVelocityLocal(Types::Object object) { return d_velocitiesLocal[object]; }
 
-      virtual rf<Distribution> getPositionGlobal(Types::Object object) { return d_positionsGlobal[object]; }
-      virtual rf<Distribution> getVelocityGlobal(Types::Object object) { return d_velocitiesGlobal[object]; }
+      virtual std::shared_ptr<Distribution> getPositionGlobal(Types::Object object) { return d_positionsGlobal[object]; }
+      virtual std::shared_ptr<Distribution> getVelocityGlobal(Types::Object object) { return d_velocitiesGlobal[object]; }
       
 
       virtual Eigen::Transform3d getLocalTransformation() const { return d_localTransform; }

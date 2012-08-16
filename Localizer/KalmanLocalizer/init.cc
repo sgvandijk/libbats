@@ -2,7 +2,7 @@
 
 void KalmanLocalizer::init()
 {
-  sigc::slot<void, rf<BeamEvent> > sl = sigc::mem_fun(*this, &KalmanLocalizer::onBeam);
+  sigc::slot<void, shared_ptr<BeamEvent> > sl = sigc::mem_fun(*this, &KalmanLocalizer::onBeam);
   SAgentSocketComm::getInstance().beam_signal.connect(sl);
 }
 

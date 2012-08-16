@@ -44,7 +44,6 @@
 
 #include <Eigen/Core>
 
-#include "../Ref/rf.hh"
 #include "../Singleton/singleton.hh"
 #include "../Types/types.hh"
 

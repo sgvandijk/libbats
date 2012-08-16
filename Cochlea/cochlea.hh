@@ -40,7 +40,6 @@
 #ifndef _BATS_COCHLEA_HH_
 #define _BATS_COCHLEA_HH_
 
-#include "../Ref/rf.hh"
 #include "../Singleton/singleton.hh"
 #include "../Predicate/predicate.hh"
 #include "../Types/types.hh"
@@ -460,15 +459,15 @@ namespace bats
 
     Cochlea();
     
-    Eigen::Vector4d parseVect(rf<Predicate> const &pred);
+    Eigen::Vector4d parseVect(std::shared_ptr<Predicate> const &pred);
 
-    Eigen::Vector4d parsePolar(rf<Predicate> const &pred);
+    Eigen::Vector4d parsePolar(std::shared_ptr<Predicate> const &pred);
 
-    Eigen::Vector4d parseScalar(rf<Predicate> const &pred);
+    Eigen::Vector4d parseScalar(std::shared_ptr<Predicate> const &pred);
 
-    Eigen::Transform3d parseTransform(rf<Predicate> const &pred);
+    Eigen::Transform3d parseTransform(std::shared_ptr<Predicate> const &pred);
 
-    void integrate(rf<Predicate> const &pred);
+    void integrate(std::shared_ptr<Predicate> const &pred);
     
     void synthesizeDerivedData();
   };

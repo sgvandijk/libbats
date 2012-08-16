@@ -40,6 +40,7 @@
 #ifndef _BATS_ORNODE_HH_
 #define _BATS_ORNODE_HH_
 
+#include <memory>
 #include "../ast.hh"
 #include "../AndNode/andnode.hh"
 
@@ -54,9 +55,9 @@ namespace bats
     /**
       *  @returns a new conjunction which has been appended to the children of this node
       */
-    rf<AndNode> addConjunct()
+    std::shared_ptr<AndNode> addConjunct()
     {
-      return rf_cast<AndNode>(addChild(new OrNode));
+      return std::static_pointer_cast<AndNode>(addChild(std::make_shared<OrNode>()));
     }
 
   };

@@ -57,7 +57,7 @@ namespace bats
   {
     friend class Singleton<Cerebellum>;
       
-    std::vector<rf<Action> > d_actions;
+    std::vector<std::shared_ptr<Action> > d_actions;
         
     double d_prevJointValues[Types::NJOINTS];
 
@@ -71,7 +71,7 @@ namespace bats
      *
      * @param a The action to perform
      */
-    void addAction(rf<Action> a);
+    void addAction(std::shared_ptr<Action> a);
         
     /** Output action commands
      *

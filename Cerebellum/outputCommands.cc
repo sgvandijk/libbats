@@ -2,27 +2,27 @@
 
 void Cerebellum::outputCommands(AgentSocketComm& comm)
 {
-  rf<Action> actions[Types::NJOINTS];
+  shared_ptr<Action> actions[Types::NJOINTS];
   double counts[Types::NJOINTS];
   memset(reinterpret_cast<char*>(counts), 0, Types::NJOINTS * sizeof(double));
 
-  rf<MoveJointAction> mja;
-  //rf<MoveHingeJointAction> mhja;
-  //rf<MoveUniversalJointAction> muja;
-  rf<BeamAction> ba;
+  shared_ptr<MoveJointAction> mja;
+  //shared_ptr<MoveHingeJointAction> mhja;
+  //shared_ptr<MoveUniversalJointAction> muja;
+  shared_ptr<BeamAction> ba;
 
   string sayMessage = "";
   
   _debugLevel4("output commands");
 
-  for (vector<rf<Action> >::iterator iter = d_actions.begin(); iter != d_actions.end(); ++iter)
+  for (vector<shared_ptr<Action> >::iterator iter = d_actions.begin(); iter != d_actions.end(); ++iter)
     {
       _debugLevel4("action type: " << (*iter)->type);
     
       switch ((*iter)->type)
         {
         case RC3DAction::MOVEJOINT:
-          mja = rf_cast<MoveJointAction>(*iter);
+          mja = static_pointer_cast<MoveJointAction>(*iter);
           _debugLevel2("joint: " << (int)mja->joint << " " << mja->speed);
           if (!actions[mja->joint])
             {
@@ -32,19 +32,19 @@ void Cerebellum::outputCommands(AgentSocketComm& comm)
           else
             {
               _debugLevel2("+ joint: " << (int)mja->joint << " " << mja->speed);
-              rf_cast<MoveJointAction>(actions[mja->joint])->speed += mja->speed;
+              static_pointer_cast<MoveJointAction>(actions[mja->joint])->speed += mja->speed;
               counts[mja->joint]++;
             }
           break;
         
         case RC3DAction::BEAM:
-          ba = rf_cast<BeamAction>(*iter);
+          ba = static_pointer_cast<BeamAction>(*iter);
           _debugLevel4("beam: " << ba->pos);
           comm.beam(ba->pos);
           break;
       
         case RC3DAction::SAY:
-          sayMessage += rf_cast<SayAction>(*iter)->message;
+          sayMessage += static_pointer_cast<SayAction>(*iter)->message;
           break;
         
         default:
@@ -61,7 +61,7 @@ void Cerebellum::outputCommands(AgentSocketComm& comm)
       speed1 = 0;
       speed2 = 0;
       Types::Joint joint = (Types::Joint)i;
-      rf<Joint> j = am.getJoint(joint);
+      shared_ptr<Joint> j = am.getJoint(joint);
       _debugLevel4(joint << " " << j);
       if (j)
         {
@@ -70,13 +70,13 @@ void Cerebellum::outputCommands(AgentSocketComm& comm)
             //        bool moveIt = false;
             if (actions[i])
               {
-                speed1 = rf_cast<MoveJointAction>(actions[i])->speed;// / counts[i];
+                speed1 = static_pointer_cast<MoveJointAction>(actions[i])->speed;// / counts[i];
                 //          moveIt = true;
               }
             ++i;
             if (actions[i])
               {
-                speed2 = rf_cast<MoveJointAction>(actions[i])->speed;// / counts[i];
+                speed2 = static_pointer_cast<MoveJointAction>(actions[i])->speed;// / counts[i];
                 _debugLevel4("speed: " << speed2);
                 //          moveIt = true;
               }
@@ -90,7 +90,7 @@ void Cerebellum::outputCommands(AgentSocketComm& comm)
 
           case Types::HINGE_JOINT:
             if (actions[i]) {
-              speed1 = rf_cast<MoveJointAction>(actions[i])->speed;// / counts[i];
+              speed1 = static_pointer_cast<MoveJointAction>(actions[i])->speed;// / counts[i];
               _debugLevel4("speed: " << speed1);
             }
 
@@ -109,7 +109,7 @@ void Cerebellum::outputCommands(AgentSocketComm& comm)
           case Types::TORQUE_JOINT:
             if (actions[i])
               {
-                speed1 = rf_cast<MoveJointAction>(actions[i])->speed;// / counts[i];
+                speed1 = static_pointer_cast<MoveJointAction>(actions[i])->speed;// / counts[i];
                 _debugLevel4("speed: " << speed1);
               }
 

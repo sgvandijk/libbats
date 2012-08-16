@@ -10,7 +10,7 @@ void Trainer::resetJoints()
   {
     double angle = am.getJoint((Types::Joint)j)->angle->getMu()(0);
     double speed = -0.1 * angle;
-    cer.addAction(new MoveJointAction((Types::Joint)j, speed));
+    cer.addAction(make_shared<MoveJointAction>((Types::Joint)j, speed));
   }
 }
 

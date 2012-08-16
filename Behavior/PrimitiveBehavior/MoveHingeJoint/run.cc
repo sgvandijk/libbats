@@ -2,10 +2,11 @@
 #include "../../../Action/RC3DAction/rc3daction.hh"
 
 using namespace bats;
+using namespace std;
 
 bool MoveHingeJoint::run()
 {
-  rf<StateVarNode> speedNode = rf_cast<StateVarNode>(d_goal->findDeep("Speed"));
+  shared_ptr<StateVarNode> speedNode = static_pointer_cast<StateVarNode>(d_goal->findDeep("Speed"));
 
   if (!speedNode)
   {
@@ -13,7 +14,7 @@ bool MoveHingeJoint::run()
   }
     
   double speed = speedNode->getVar().second.mean();
-  d_action = new MoveHingeJointAction(d_joint, speed);
+  d_action = make_shared<MoveHingeJointAction>(d_joint, speed);
   
   addToActionCommandBehaviors();
   

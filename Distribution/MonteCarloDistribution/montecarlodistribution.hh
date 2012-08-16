@@ -98,7 +98,7 @@ namespace bats
      * @param F State transition model. Relates current state to next state
      * @param controlModel Control-input model. Expected state change given control u
      */
-    virtual void predict(Eigen::MatrixXd const& F, rf<Distribution> controlModel) = 0;
+    virtual void predict(Eigen::MatrixXd const& F, std::shared_ptr<Distribution> controlModel) = 0;
       
     /** Update distribution.
      *
@@ -106,7 +106,7 @@ namespace bats
      * 
      * @param obsModel Observation model. Relates state to a measurement
      */
-    virtual void update(rf<Distribution> obsModel) = 0;
+    virtual void update(std::shared_ptr<Distribution> obsModel) = 0;
 
   private:
     unsigned d_size;

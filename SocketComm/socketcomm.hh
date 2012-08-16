@@ -148,7 +148,7 @@ namespace bats {
      * server is ready to recieve.
      * @param pred The message to be sent
      */
-    void send(rf<Predicate> pred) { d_oMessageQueue.push(pred); }
+    void send(std::shared_ptr<Predicate> pred) { d_oMessageQueue.push(pred); }
 
     /** Checks whether a new message has arrived from the server
      *
@@ -163,7 +163,7 @@ namespace bats {
      * Gives the next message recieved from the server
      * @returns The first message in the queue
      */
-    rf<Predicate> nextMessage();
+    std::shared_ptr<Predicate> nextMessage();
 
     /** Receive messages from the server when available */
     void receive();
@@ -185,7 +185,7 @@ namespace bats {
      * Get the current predicate from the internal parser
      * \todo can this be private/is this deprecated?
      */
-    rf<Predicate> getPred() const
+    std::shared_ptr<Predicate> getPred() const
     {
       return d_parser.getPredicate();
     }
@@ -195,12 +195,12 @@ namespace bats {
     
     unsigned char d_buffer[BUFFER_SIZE];
 
-    typedef std::queue<rf<Predicate> > MessageQueue;
+    typedef std::queue<std::shared_ptr<Predicate> > MessageQueue;
 
     MessageQueue   d_oMessageQueue, d_iMessageQueue;
     PortableParser d_parser;
 
-    rf<Predicate> d_currentPred;
+    std::shared_ptr<Predicate> d_currentPred;
 
     bool d_parseInput;
     bool d_skipWhenLagging;

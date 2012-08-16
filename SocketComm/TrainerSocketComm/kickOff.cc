@@ -2,13 +2,13 @@
 
 void TrainerSocketComm::kickOff()
 {
-  rf<Predicate> msg = makeKickOffMessage();
+  shared_ptr<Predicate> msg = makeKickOffMessage();
   send(msg);
 }
 
-rf<Predicate> TrainerSocketComm::makeKickOffMessage()
+shared_ptr<Predicate> TrainerSocketComm::makeKickOffMessage()
 {
-  rf<Predicate> msg = new Predicate("kickOff");
+  shared_ptr<Predicate> msg = make_shared<Predicate>("kickOff");
   msg->pushLeaf("Left");
   return msg;
 }

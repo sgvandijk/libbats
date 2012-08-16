@@ -66,9 +66,9 @@ namespace bats
     /** Gets transformation from agent (torso) space to global space, including both translation and rotation. */
     virtual inline Eigen::Transform3d getGlobalTransformation() const;
     
-    virtual void addGlobalMeasurement(rf<DynamicObjectInfo> dynamicObject, rf<Distribution> measurement);
+    virtual void addGlobalMeasurement(std::shared_ptr<DynamicObjectInfo> dynamicObject, std::shared_ptr<Distribution> measurement);
     
-    void onBeam(rf<BeamEvent> event);
+    void onBeam(std::shared_ptr<BeamEvent> event);
 
     /**
      * @return a unit vector in the in the local frame's x/y plane that points in
@@ -100,7 +100,7 @@ namespace bats
   private:
     friend class Singleton<Localizer>;
     
-    typedef std::pair<bats::rf<bats::ObjectInfo>, bats::rf<bats::ObjectInfo>> LandmarkPair;
+    typedef std::pair<std::shared_ptr<bats::ObjectInfo>, std::shared_ptr<bats::ObjectInfo>> LandmarkPair;
     typedef std::pair<LandmarkPair, LandmarkPair> LandmarkPairPair;
 
     double d_lastRotationCheck;
@@ -153,7 +153,7 @@ namespace bats
     void updatePlayersGlobal();
     void globalToLocal();
 
-    Cochlea::InfoID getCochleaIdForObject(rf<ObjectInfo> object) const;
+    Cochlea::InfoID getCochleaIdForObject(std::shared_ptr<ObjectInfo> object) const;
   };
 
   Eigen::Transform3d KalmanLocalizer::getLocalTransformation() const

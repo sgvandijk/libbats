@@ -40,11 +40,10 @@
 #ifndef __INC_BATS_AST_HH_
 #define __INC_BATS_AST_HH_
 
+#include <memory>
 #include <vector>
 #include <Eigen/Core>
-#include "../Ref/rf.hh"
 #include "../Path/path.hh"
-#include "../RefAble/refable.hh"
 
 namespace bats {
 
@@ -70,7 +69,7 @@ namespace bats {
     /**
      *  Inherit from this node to create specific tree nodes.
      */
-    class Node : public RefAble {
+    class Node {
 
       //Node(Node const &); // NI
       //Node &operator=(Node const &); //
@@ -78,7 +77,7 @@ namespace bats {
     public:
 
       /// A vector of Nodes
-      typedef std::vector< rf<Node> > NodeVector;
+      typedef std::vector< std::shared_ptr<Node> > NodeVector;
 
       typedef NodeVector::const_iterator const_iterator;
       typedef NodeVector::iterator iterator;
@@ -135,7 +134,7 @@ namespace bats {
       /**
        *  @returns the child at index.
        */
-      rf<Node> getChild(unsigned index)
+      std::shared_ptr<Node> getChild(unsigned index)
       {
         assert(index < d_nodes.size());
         return d_nodes[index];
@@ -144,7 +143,7 @@ namespace bats {
       /**
        *  @returns the child at index.
        */
-      rf<Node> const getChild(unsigned index) const
+      std::shared_ptr<Node> const getChild(unsigned index) const
       {
         assert(index < d_nodes.size());
         return d_nodes[index];
@@ -158,12 +157,12 @@ namespace bats {
         return d_nodes.size() > 0;
       }
 
-      rf<Node> operator[](unsigned index) { return getChild(index); }
+      std::shared_ptr<Node> operator[](unsigned index) { return getChild(index); }
 
       /**
        *  Adds a child node to this node.
        */
-      rf<Node> addChild(rf<Node> child) { d_nodes.push_back(child); return child; }
+      std::shared_ptr<Node> addChild(std::shared_ptr<Node> child) { d_nodes.push_back(child); return child; }
 
       /**
        *  @returns true if this is a leaf node (has no children).
@@ -184,13 +183,13 @@ namespace bats {
        *  In most cases query will be the name or value of the node. The
        *  match() method is used to match the query to a node.
        */
-      rf<Node> find(std::string const &query) const;
+      std::shared_ptr<Node> find(std::string const &query) const;
 
       /**
        *  Finds all nodes witch match query and appends them to res.
        *  @returns the number of matches.
        */
-      unsigned findAll(std::vector<rf<Node> > &res, std::string const &query) const;
+      unsigned findAll(std::vector<std::shared_ptr<Node> > &res, std::string const &query) const;
       
       /**
        *  Finds the first node in the entire tree witch matches query and returns it, using a depth-first search.
@@ -199,7 +198,7 @@ namespace bats {
        *           never exit! (So we need loop detection)
        *
        */
-      rf<Node> findDeep(std::string const &query) const;
+      std::shared_ptr<Node> findDeep(std::string const &query) const;
 
 			Eigen::Vector3d getVector(std::string const &name) const;
 			
@@ -211,7 +210,7 @@ namespace bats {
        *
        *  @returns the number of hits.
        */
-      unsigned findAllDeep(std::vector<rf<Node> > &res, std::string const &query) const;
+      unsigned findAllDeep(std::vector<std::shared_ptr<Node> > &res, std::string const &query) const;
 
       /* --- Path System Interface --- */
 
@@ -220,12 +219,12 @@ namespace bats {
        *  and pushes them into res.
        *  @return ths number of hits.
        */
-      unsigned selectAll(std::vector<rf<Node> > &res, Path const &select) const;
+      unsigned selectAll(std::vector<std::shared_ptr<Node> > &res, Path const &select) const;
 
       /**
        *  @returns the first predicate that complies with select.
        */
-      rf<Node> select(Path const &select) const;
+      std::shared_ptr<Node> select(Path const &select) const;
 
 
       /* --- Tree Matching System --- */

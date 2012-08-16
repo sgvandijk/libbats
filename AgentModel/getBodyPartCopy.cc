@@ -1,21 +1,21 @@
 #include "agentmodel.ih"
 
-rf<BodyPart> AgentModel::getBodyPartCopy(rf<BodyPart> part)
+shared_ptr<BodyPart> AgentModel::getBodyPartCopy(shared_ptr<BodyPart> part)
 {
-  if (rf<Limb> l = rf_dynamic_cast<Limb>(part))
+  if (shared_ptr<Limb> l = dynamic_pointer_cast<Limb>(part))
   {
-    rf<Limb> copy = new Limb();
+    shared_ptr<Limb> copy = make_shared<Limb>();
     copy->name = l->name;
     copy->weight = l->weight;
     copy->relativeWeight = l->relativeWeight;
     copy->size = l->size;
     for (unsigned j = 0; j < l->joints.size(); ++j)
-      copy->joints.push_back(rf_static_cast<Joint>(getBodyPartCopy(l->joints[j])));
+      copy->joints.push_back(static_pointer_cast<Joint>(getBodyPartCopy(l->joints[j])));
     return copy;
   }
-  else if (rf<Joint> j = rf_dynamic_cast<Joint>(part))
+  else if (shared_ptr<Joint> j = dynamic_pointer_cast<Joint>(part))
   {
-    rf<Joint> copy = new Joint();
+    shared_ptr<Joint> copy = make_shared<Joint>();
     copy->name = j->name;
     copy->axis = j->axis;
     copy->perceptor = j->perceptor;

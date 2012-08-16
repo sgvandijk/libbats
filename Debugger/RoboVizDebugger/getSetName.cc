@@ -3,11 +3,11 @@
 
 const std::string RoboVizDebugger::getSetName(const std::string suffix)
 {
-  bats::WorldModel& wm = SWorldModel::getInstance();
-  bats::AgentModel& am = SAgentModel::getInstance();
+  WorldModel& wm = SWorldModel::getInstance();
+  AgentModel& am = SAgentModel::getInstance();
 
   unsigned unum = am.getUnum();
-  std::string sideLabel = wm.getSide()==Types::LEFT ? "L" : "R";
+  string sideLabel = wm.getSide()==Types::LEFT ? "L" : "R";
 
   // TODO prevent against illegal characters?
   ostringstream setName;
@@ -17,10 +17,10 @@ const std::string RoboVizDebugger::getSetName(const std::string suffix)
   return setName.str();
 }
 
-const std::string RoboVizDebugger::getSetName(bats::rf<Shape> shape)
+const std::string RoboVizDebugger::getSetName(shared_ptr<Shape> shape)
 {
   // If the shape specifies a category, use it as a suffix
-  std::string suffix = shape->category;
+  string suffix = shape->category;
 
   // Otherwise use "Extra"
   if (suffix.empty())

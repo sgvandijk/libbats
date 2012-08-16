@@ -58,18 +58,18 @@ namespace bats
     /**
       *  @returns a new disjunction which has been appended to the children of this node
       */
-    rf<OrNode> addDisjunct()
+    std::shared_ptr<OrNode> addDisjunct()
     {
-      return rf_cast<OrNode>(addChild(new OrNode));
+      return std::static_pointer_cast<OrNode>(addChild(std::make_shared<OrNode>()));
     }
 
     /** 
       *  @returns a new disjunction which has been appended to the children of this node, containing a new conjunction
       */
-    rf<AndNode> addBoth()
+    std::shared_ptr<AndNode> addBoth()
     {
-    	rf<OrNode> dis(rf_cast<OrNode>(addChild(new OrNode)));
-      return rf_cast<AndNode>(dis->addConjunct());
+      std::shared_ptr<OrNode> dis(std::static_pointer_cast<OrNode>(addChild(std::make_shared<OrNode>())));
+      return std::static_pointer_cast<AndNode>(dis->addConjunct());
     }
 
     /**
@@ -77,9 +77,9 @@ namespace bats
       */
     Eigen::Vector3d getVector(std::string const &name) const
     {
-      rf<StateVarNode> X = rf_cast<StateVarNode>(findDeep(name + "X"));
-      rf<StateVarNode> Y = rf_cast<StateVarNode>(findDeep(name + "Y"));
-      rf<StateVarNode> Z = rf_cast<StateVarNode>(findDeep(name + "Z"));
+      std::shared_ptr<StateVarNode> X = std::static_pointer_cast<StateVarNode>(findDeep(name + "X"));
+      std::shared_ptr<StateVarNode> Y = std::static_pointer_cast<StateVarNode>(findDeep(name + "Y"));
+      std::shared_ptr<StateVarNode> Z = std::static_pointer_cast<StateVarNode>(findDeep(name + "Z"));
 
       if (!X || !Y || !Z)
         throw std::runtime_error("Vector var node '" + name + "' not found in Goal");
@@ -96,7 +96,7 @@ namespace bats
       */
     double getMean(std::string const &name) const
     {
-      rf<StateVarNode> node = rf_cast<StateVarNode>(findDeep(name));     	
+      std::shared_ptr<StateVarNode> node = std::static_pointer_cast<StateVarNode>(findDeep(name));     	
       assert(node);
       StateVar x = node->getVar();
       return x.second.mean();
