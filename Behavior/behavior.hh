@@ -94,7 +94,7 @@ namespace bats
    *
    * </dl>
    */
-  class Behavior : std::enable_shared_from_this<Behavior>
+  class Behavior : public std::enable_shared_from_this<Behavior>
   {
   protected:
     /// The behavior's name

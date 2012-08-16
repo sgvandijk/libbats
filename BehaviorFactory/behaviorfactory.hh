@@ -52,7 +52,7 @@ namespace bats
   template<typename B>
   std::shared_ptr<Behavior> createBehavior(std::string const& id, std::string const& behaviorTree)
   {
-    return new B(id, behaviorTree);
+    return std::make_shared<B>(id, behaviorTree);
   }
   
   class BehaviorFactory

@@ -45,7 +45,7 @@ namespace bats
       }
       
       unsigned idx = atoi(PCNode.getProp("index").c_str());
-      std::shared_ptr<PlayerClass> pc = s_playerClasses[idx] = new T(idx);
+      std::shared_ptr<PlayerClass> pc = s_playerClasses[idx] = std::make_shared<T>(idx);
     }
   }
   
