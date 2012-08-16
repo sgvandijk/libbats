@@ -2,6 +2,7 @@ cmake_minimum_required (VERSION 2.6)
 project (libbats)
 
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/)
+set(BUILD_SHARED_LIBS ON CACHE BOOL "Choose whether to build a shared library")
 
 INCLUDE(FindPkgConfig)
 
