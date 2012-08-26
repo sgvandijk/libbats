@@ -49,7 +49,7 @@ void KalmanLocalizer::updateSelfGlobal()
   if (d_haveNewVisionData)
   {
     shared_ptr<NormalDistribution> obsModel = make_shared<NormalDistribution>(6);
-    Transform3d globalRotationTrans(d_globalRotation.matrix().transpose());
+    Affine3d globalRotationTrans(d_globalRotation.matrix().transpose());
     
     for (shared_ptr<ObjectInfo> landmark : landmarks)
     {

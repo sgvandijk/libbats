@@ -420,7 +420,7 @@ namespace bats
     double getDt(InfoID id) const { return d_dt[id]; }
     
     /**
-     * Gets a Transform3d with ground truth data about the agent's global position.
+     * Gets a Affine3d with ground truth data about the agent's global position.
      * This value is not available during competitions, and will only be available
      * during development if the server is configured to sent it:
      * 
@@ -432,7 +432,7 @@ namespace bats
      * Note that this matrix represents the frame of the agent's camera, which is
      * translated relative to the torso, and includes rotation of the neck joints.
      */
-    Eigen::Transform3d getSelfTransform() const { return d_selfTransform; }
+    Eigen::Affine3d getSelfTransform() const { return d_selfTransform; }
     
     // Needed when having fixed sized Eigen member
     EIGEN_MAKE_ALIGNED_OPERATOR_NEW
@@ -449,7 +449,7 @@ namespace bats
     std::vector<VisibleLine> d_lines;
     std::vector<Eigen::Vector3d> d_lineEnds;
     
-    Eigen::Transform3d d_selfTransform;
+    Eigen::Affine3d d_selfTransform;
     HearMessage d_hearMessage;
 
     std::string d_teamName;
@@ -465,7 +465,7 @@ namespace bats
 
     Eigen::Vector4d parseScalar(std::shared_ptr<Predicate> const &pred);
 
-    Eigen::Transform3d parseTransform(std::shared_ptr<Predicate> const &pred);
+    Eigen::Affine3d parseTransform(std::shared_ptr<Predicate> const &pred);
 
     void integrate(std::shared_ptr<Predicate> const &pred);
     

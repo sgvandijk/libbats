@@ -55,7 +55,7 @@ void KalmanLocalizer::updatePlayersGlobal()
       /// TODO: cache obsModel
       shared_ptr<NormalDistribution> obsModel = make_shared<NormalDistribution>(6);
       /// TODO: cache trans of global rotation matrix
-      Transform3d globalRotationTrans = Transform3d(d_globalRotation.matrix().transpose());
+      Affine3d globalRotationTrans = Affine3d(d_globalRotation.matrix().transpose());
       if (player->isVisible)
       {
         VectorXd meas = player->posVelRaw->getMu();

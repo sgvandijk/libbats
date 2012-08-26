@@ -4,22 +4,22 @@ void KalmanLocalizer::globalToLocal()
 {
   AgentModel& am = bats::SAgentModel::getInstance();
 
-  Transform3d invGlobalTransform = Transform3d(d_globalTransform.inverse());
+  Affine3d invGlobalTransform = Affine3d(d_globalTransform.inverse());
 
   Vector3d localUp = Math::getUp(invGlobalTransform);
   Vector3d localRight = localUp.cross(Vector3d::UnitX().cross(localUp)).normalized();
   Vector3d localForward = localUp.cross(Vector3d::UnitY().cross(localUp)).normalized();
   
-  Transform3d invLocalTransform = Math::makeTransform(localRight, localForward, localUp);
+  Affine3d invLocalTransform = Math::makeTransform(localRight, localForward, localUp);
   d_localTransform = invLocalTransform.inverse();
   
   //cerr << "local  trans:" << endl << d_localTransform.matrix()  << endl;
   //cerr << "global trans:" << endl << d_globalTransform.matrix() << endl;
    
-  Transform3d globalToLocal = d_localTransform * invGlobalTransform;
+  Affine3d globalToLocal = d_localTransform * invGlobalTransform;
   
-  Transform3d globalToLocalRot = Transform3d(globalToLocal.linear());
-  Transform3d globalToLocalRotTrans = Transform3d(globalToLocalRot.matrix().transpose());
+  Affine3d globalToLocalRot = Affine3d(globalToLocal.linear());
+  Affine3d globalToLocalRotTrans = Affine3d(globalToLocalRot.matrix().transpose());
   
   Vector3d lookDir = d_localTransform * Math::getForward(am.getBodyPart(Types::HEAD)->transform);
   Vector3d lookDirPolar = Math::cartesianToPolar(lookDir);

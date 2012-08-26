@@ -1,9 +1,9 @@
 #include "math.ih"
 
-Transform3d Math::makeRotation(Vector3d const angles)
+Affine3d Math::makeRotation(Vector3d const angles)
 {
 
-  return Eigen::Transform3d(Eigen::AngleAxisd(angles(0), Eigen::Vector3d::UnitX()) *
+  return Eigen::Affine3d(Eigen::AngleAxisd(angles(0), Eigen::Vector3d::UnitX()) *
 			    Eigen::AngleAxisd(angles(1), Eigen::Vector3d::UnitY()) *
 			    Eigen::AngleAxisd(angles(2), Eigen::Vector3d::UnitZ()));
 
@@ -15,7 +15,7 @@ Transform3d Math::makeRotation(Vector3d const angles)
   double sx = sin(angles.x());
   double sy = sin(angles.y());
   double sz = sin(angles.z());
-  Eigen::Transform3d rot;
+  Eigen::Affine3d rot;
   rot.matrix() <<
     (cz * cy),  (cz * sy * sx - cx * sz),  (sz * sx + cz * cx * sy), 0,
     (cy * sz),  (cz * cx + sz * sy * sx),  (cx * sz * sy - cz * sx), 0,

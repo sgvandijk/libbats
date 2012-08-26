@@ -51,8 +51,8 @@ namespace bats
   {
       friend class Singleton<Localizer>;
       
-      Eigen::Transform3d d_localTransform;
-      Eigen::Transform3d d_globalTransform;
+      Eigen::Affine3d d_localTransform;
+      Eigen::Affine3d d_globalTransform;
       
       std::shared_ptr<NormalDistribution> d_positionsRaw[Types::NOBJECTS];
       std::shared_ptr<NormalDistribution> d_positionsLocal[Types::NOBJECTS];
@@ -92,8 +92,8 @@ namespace bats
       virtual std::shared_ptr<Distribution> getVelocityGlobal(Types::Object object) { return d_velocitiesGlobal[object]; }
       
 
-      virtual Eigen::Transform3d getLocalTransformation() const { return d_localTransform; }
-      virtual Eigen::Transform3d getGlobalTransformation() const { return d_globalTransform; }
+      virtual Eigen::Affine3d getLocalTransformation() const { return d_localTransform; }
+      virtual Eigen::Affine3d getGlobalTransformation() const { return d_globalTransform; }
 
       // Needed when having fixed sized Eigen member
       EIGEN_MAKE_ALIGNED_OPERATOR_NEW

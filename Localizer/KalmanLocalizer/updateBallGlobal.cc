@@ -54,7 +54,7 @@ void KalmanLocalizer::updateBallGlobal()
     if (ball->isVisible)
     {
       shared_ptr<NormalDistribution> obsModel = make_shared<NormalDistribution>(6);
-      Transform3d globalRotationTrans = Transform3d(d_globalRotation.matrix().transpose());
+      Affine3d globalRotationTrans = Affine3d(d_globalRotation.matrix().transpose());
 
       VectorXd meas = ball->posVelRaw->getMu();
       MatrixXd sigma = ball->posVelRaw->getSigma();

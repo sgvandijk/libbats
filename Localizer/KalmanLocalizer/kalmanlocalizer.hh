@@ -61,10 +61,10 @@ namespace bats
     void resetBall();
 
     /** Gets transformation from agent (torso) space to local space, including both translation and rotation. */
-    virtual inline Eigen::Transform3d getLocalTransformation() const;
+    virtual inline Eigen::Affine3d getLocalTransformation() const;
 
     /** Gets transformation from agent (torso) space to global space, including both translation and rotation. */
-    virtual inline Eigen::Transform3d getGlobalTransformation() const;
+    virtual inline Eigen::Affine3d getGlobalTransformation() const;
     
     virtual void addGlobalMeasurement(std::shared_ptr<DynamicObjectInfo> dynamicObject, std::shared_ptr<Distribution> measurement);
     
@@ -109,13 +109,13 @@ namespace bats
     std::vector<LandmarkPairPair> d_rightCrossProductPairs;
     
     /** Transformation from agent (torso) space to global space, excluding translation. */
-    Eigen::Transform3d d_globalRotation;
+    Eigen::Affine3d d_globalRotation;
     /** Transformation from agent (torso) space to global space, excluding rotation. */
-    Eigen::Transform3d d_globalTranslation;
+    Eigen::Affine3d d_globalTranslation;
     /** Transformation from agent (torso) space to global space, including both translation and rotation. */
-    Eigen::Transform3d d_globalTransform;
+    Eigen::Affine3d d_globalTransform;
     /** Transformation from agent (torso) space to local space, including both translation and rotation. */
-    Eigen::Transform3d d_localTransform;
+    Eigen::Affine3d d_localTransform;
     
     /** True if we received vision data this cycle. */
     bool d_haveNewVisionData;
@@ -156,12 +156,12 @@ namespace bats
     Cochlea::InfoID getCochleaIdForObject(std::shared_ptr<ObjectInfo> object) const;
   };
 
-  Eigen::Transform3d KalmanLocalizer::getLocalTransformation() const
+  Eigen::Affine3d KalmanLocalizer::getLocalTransformation() const
   {
     return d_localTransform;
   }
 
-  Eigen::Transform3d KalmanLocalizer::getGlobalTransformation() const
+  Eigen::Affine3d KalmanLocalizer::getGlobalTransformation() const
   {
     return d_globalTransform;
   }
@@ -188,12 +188,12 @@ namespace bats
   
   Eigen::Matrix3d KalmanLocalizer::cutPositionMatrix(Eigen::MatrixXd const& posVel) const
   {
-    return posVel.corner<3,3>(Eigen::TopLeft);
+    return posVel.topLeftCorner<3,3>();
   }
 
   Eigen::Matrix3d KalmanLocalizer::cutVelocityMatrix(Eigen::MatrixXd const& posVel) const
   {
-    return posVel.corner<3,3>(Eigen::BottomRight);
+    return posVel.bottomRightCorner<3,3>();
   }
 
   Eigen::VectorXd KalmanLocalizer::joinPositionAndVelocityVectors(Eigen::Vector3d const& loc, Eigen::Vector3d const& vel) const
@@ -207,8 +207,8 @@ namespace bats
   {
     Eigen::MatrixXd locVel = Eigen::MatrixXd::Zero(6,6);
     locVel.fill(0);
-    locVel.corner<3,3>(Eigen::TopLeft) = loc;
-    locVel.corner<3,3>(Eigen::BottomRight) = vel;
+    locVel.topLeftCorner<3,3>() = loc;
+    locVel.bottomRightCorner<3,3>() = vel;
     return locVel;
   }
 }

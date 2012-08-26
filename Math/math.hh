@@ -241,46 +241,46 @@ namespace bats
      * @param up Direction of the z-axis
      * @param trans Translation
      */
-    static Eigen::Transform3d makeTransform(Eigen::Vector3d const& right, Eigen::Vector3d const& forward, Eigen::Vector3d const& up, Eigen::Vector3d const& trans = Eigen::Vector3d(0,0,0))
+    static Eigen::Affine3d makeTransform(Eigen::Vector3d const& right, Eigen::Vector3d const& forward, Eigen::Vector3d const& up, Eigen::Vector3d const& trans = Eigen::Vector3d(0,0,0))
     {
       Eigen::Matrix4d mat;
       mat << right.transpose(), 0,
              forward.transpose(), 0,
              up.transpose(), 0,
              trans.transpose(), 1;
-      return Eigen::Transform3d(mat.transpose());
+      return Eigen::Affine3d(mat.transpose());
     }
 
     /** Make a rotation matrix given a vector of Euler angles
      *
      * @param angles Vector giving the rotation around x, y and z-axis in radians
      */
-    static Eigen::Transform3d makeRotation(Eigen::Vector3d const angles);
+    static Eigen::Affine3d makeRotation(Eigen::Vector3d const angles);
 
     /** Get the direction of the x-axis of a transformation
      */
-    static Eigen::Vector3d getRight(Eigen::Transform3d const& trans)
+    static Eigen::Vector3d getRight(Eigen::Affine3d const& trans)
     {
       return trans.matrix().col(0).start<3>();
     }
 
     /** Get the direction of the y-axis of a transformation
      */
-    static Eigen::Vector3d getForward(Eigen::Transform3d const& trans)
+    static Eigen::Vector3d getForward(Eigen::Affine3d const& trans)
     {
       return trans.matrix().col(1).start<3>();
     }
 
     /** Get the direction of the z-axis of a transformation
      */
-    static Eigen::Vector3d getUp(Eigen::Transform3d const& trans)
+    static Eigen::Vector3d getUp(Eigen::Affine3d const& trans)
     {
       return trans.matrix().col(2).start<3>();
     }
 
     /** Get the translation part of a transformation
      */
-    static Eigen::Vector3d getTrans(Eigen::Transform3d const& trans)
+    static Eigen::Vector3d getTrans(Eigen::Affine3d const& trans)
     {   // in the original bats::Vector3D this function was called trans
       return trans.matrix().col(3).start<3>();
     }

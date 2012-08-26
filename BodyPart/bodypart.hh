@@ -22,10 +22,10 @@ namespace bats {
      * This matrix contains the position and orientation of the body part
      * relative to the torso.
      * 
-     * Using the returned Transform3d to transform a vector will convert
+     * Using the returned Affine3d to transform a vector will convert
      * from the frame of this body part into the frame of the torso.
      */
-    Eigen::Transform3d transform;
+    Eigen::Affine3d transform;
 
     Eigen::Vector3d getPosition()
     {

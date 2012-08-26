@@ -33,7 +33,7 @@ void Cochlea::integrate(shared_ptr<Predicate> const &pred)
 
   Eigen::Matrix4d mat;
   mat.setZero();
-  d_selfTransform = Transform3d(mat);
+  d_selfTransform = Affine3d(mat);
   
   // Loop through all predicates under the main predicate
   for (Predicate::const_iterator i = pred->begin();

@@ -83,13 +83,13 @@ void SimpleLocalizer::update()
   Vector3d wfNorm = worldForward.normalized();// * wflInv;
   Vector3d uNorm = up.normalized();
 
-  Transform3d invGlobalTransform = Math::makeTransform(wrNorm, wfNorm, uNorm);
+  Affine3d invGlobalTransform = Math::makeTransform(wrNorm, wfNorm, uNorm);
   d_globalTransform = invGlobalTransform.inverse();
   
   Vector3d right = up.cross(Vector3d(1, 0, 0).cross(up)).normalized();
   Vector3d forward = up.cross(Vector3d(0, 1, 0).cross(up)).normalized();
   
-  Transform3d invLocalTransform = Math::makeTransform(right, forward, uNorm);
+  Affine3d invLocalTransform = Math::makeTransform(right, forward, uNorm);
   d_localTransform = invLocalTransform.inverse();
   
   // Transform all positions into local and global coordinates

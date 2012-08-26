@@ -102,5 +102,5 @@ Cochlea::Cochlea()
 
   Eigen::Matrix4d mat;
   mat.setZero();
-  d_selfTransform = Eigen::Transform3d(mat);
+  d_selfTransform = Eigen::Affine3d(mat);
 }

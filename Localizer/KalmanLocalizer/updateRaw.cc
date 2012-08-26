@@ -10,7 +10,7 @@ void KalmanLocalizer::updateRaw()
   WorldModel& wm = bats::SWorldModel::getInstance();
   AgentModel& am = bats::SAgentModel::getInstance();
   
-  Transform3d invHeadTransform = am.getBodyPart(Types::HEAD)->transform;
+  Affine3d invHeadTransform = am.getBodyPart(Types::HEAD)->transform;
   
   //
   // Set everything as non-visible initially.  We will set these to true

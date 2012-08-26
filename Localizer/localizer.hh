@@ -158,7 +158,7 @@ namespace bats
      * frame. Multiplication of a vector in the agent frame with this matrix
      * results in the position of that vector with respect to the local frame.
      */
-    virtual Eigen::Transform3d getLocalTransformation() const = 0;
+    virtual Eigen::Affine3d getLocalTransformation() const = 0;
 
     /** Get the global transformation matrix
      *
@@ -168,7 +168,7 @@ namespace bats
      * results in the position of that vector with respect to the global
      * frame.
      */
-    virtual Eigen::Transform3d getGlobalTransformation() const = 0;
+    virtual Eigen::Affine3d getGlobalTransformation() const = 0;
     
     /** 
      * @return a unit vector in the local frame's x/y plane that points in
@@ -213,7 +213,7 @@ namespace bats
 
     Eigen::Vector3d localToGlobal(Eigen::Vector3d const& loc, bool zeroZ = false)
     {
-      Eigen::Vector3d global = Eigen::Transform3d(getGlobalTransformation() * getLocalTransformation().inverse()) * loc;
+      Eigen::Vector3d global = Eigen::Affine3d(getGlobalTransformation() * getLocalTransformation().inverse()) * loc;
       if (zeroZ)
         global.z() = 0;
       return global;
@@ -221,15 +221,15 @@ namespace bats
 
     Eigen::Vector3d globalToLocal(Eigen::Vector3d const& glob, bool zeroZ = false)
     {
-      Eigen::Vector3d local = Eigen::Transform3d(getLocalTransformation() * getGlobalTransformation().inverse()) * glob;
+      Eigen::Vector3d local = Eigen::Affine3d(getLocalTransformation() * getGlobalTransformation().inverse()) * glob;
       if (zeroZ)
         local.z() = 0;
       return local;
     }
       
-    Eigen::Vector3d rotateLocalToGlobal(Eigen::Vector3d const& loc) { return Eigen::Transform3d(getGlobalTransformation().linear() * Eigen::Transform3d(getLocalTransformation().inverse()).linear()) * loc; }
+    Eigen::Vector3d rotateLocalToGlobal(Eigen::Vector3d const& loc) { return Eigen::Affine3d(getGlobalTransformation().linear() * Eigen::Affine3d(getLocalTransformation().inverse()).linear()) * loc; }
 
-    Eigen::Vector3d rotateGlobalToLocal(Eigen::Vector3d const& glob) { return Eigen::Transform3d(getLocalTransformation().linear() * Eigen::Transform3d(getGlobalTransformation().inverse()).linear()) * glob; }
+    Eigen::Vector3d rotateGlobalToLocal(Eigen::Vector3d const& glob) { return Eigen::Affine3d(getLocalTransformation().linear() * Eigen::Affine3d(getGlobalTransformation().inverse()).linear()) * glob; }
   protected:
     std::shared_ptr<ObjectInfo> d_objectInfos[Types::NOBJECTS];
     

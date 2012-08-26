@@ -1,7 +1,7 @@
 #include "cochlea.ih"
 #include "../Math/math.hh"
 
-Transform3d Cochlea::parseTransform(shared_ptr<Predicate> const &pred)
+Affine3d Cochlea::parseTransform(shared_ptr<Predicate> const &pred)
 {
   assert(pred);
   

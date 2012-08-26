@@ -24,10 +24,10 @@ void KalmanLocalizer::updateGlobalRotation()
   Vector3d rotationDelta = twoCycleAveragedGyroRotation * dt;
 
   //
-  // Create a Transform3d representing the estimated rotational change in the timestep
+  // Create a Affine3d representing the estimated rotational change in the timestep
   // prior to that in which the gyro data was measured.
   //
-  Transform3d changeInRotation = Math::makeRotation(rotationDelta);
+  Affine3d changeInRotation = Math::makeRotation(rotationDelta);
 
   //
   // Integrate this step change in rotation into our global rotation.
@@ -45,7 +45,7 @@ void KalmanLocalizer::updateGlobalRotation()
   //    in which case the right/forward/up vectors are all zero
   // 3. The full transformation matrix, to two decimal places
   //
-  Transform3d gtCameraToGlobalTransform = cochlea.getSelfTransform();
+  Affine3d gtCameraToGlobalTransform = cochlea.getSelfTransform();
   
   Matrix3d gtCameraToGlobalRotation = gtCameraToGlobalTransform.matrix().block<3,3>(0,0);
   
@@ -58,7 +58,7 @@ void KalmanLocalizer::updateGlobalRotation()
     // Ground truth reported by the visual system are in the camera's coordinate frame.
     // So, convert them to torso (the frame of the gyro).
     //
-    Transform3d cameraToTorsoTransform = am.getBodyPart(Types::HEAD)->transform;
+    Affine3d cameraToTorsoTransform = am.getBodyPart(Types::HEAD)->transform;
         
     Matrix4d gtAgentToGlobalMatrix = gtCameraToGlobalTransform * cameraToTorsoTransform.inverse();
 
@@ -126,7 +126,7 @@ void KalmanLocalizer::updateGlobalRotation()
     // NOTE commented out after fixing bug integration step, but needs revisiting
 //   if (obsDiff.matrix().diagonal().minCoeff() < 0.96)
 //   {
-//     d_globalRotation = transform;//Transform3d(alpha * transform.matrix() + (1.0 - alpha) * d_globalRotation.matrix());
+//     d_globalRotation = transform;//Affine3d(alpha * transform.matrix() + (1.0 - alpha) * d_globalRotation.matrix());
 //   }
   }
 }

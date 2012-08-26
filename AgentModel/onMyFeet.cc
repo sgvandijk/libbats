@@ -6,7 +6,7 @@ bool AgentModel::onMyFeet() const
 
     Localizer& loc = SLocalizer::getInstance();
 
-    Transform3d trans = loc.getGlobalTransformation();
+    Affine3d trans = loc.getGlobalTransformation();
 
     return Math::getUp(trans).z() > 0.90 &&
             (d_footForces[0].z() > 0 ||

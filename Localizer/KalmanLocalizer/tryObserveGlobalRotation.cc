@@ -73,7 +73,7 @@ bool KalmanLocalizer::tryObserveGlobalRotation(Eigen::Matrix3d& transform)
     
   // The transform comprised of these three vectors represents the transform
   // from the world frame into the agent's torso frame
-  Transform3d invTransform = Math::makeTransform(right, forward, up);
+  Affine3d invTransform = Math::makeTransform(right, forward, up);
   
   // The inverse gives what we want: the transform from the agent's torso
   // frame into world coordinates (equivalent to the world frame's axis
