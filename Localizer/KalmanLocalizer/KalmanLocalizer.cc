@@ -15,8 +15,8 @@ KalmanLocalizer::KalmanLocalizer()
   d_globalTransform = AngleAxisd(-.5 * M_PI, Vector3d::UnitZ());
   d_globalRotation = Affine3d(d_globalTransform.rotation());
   
-  d_globalTranslation = Affine3d(MatrixXd::Identity(4,4));
-  d_localTransform = Affine3d(MatrixXd::Identity(4,4));
+  d_globalTranslation = Affine3d(Matrix4d::Identity());
+  d_localTransform = Affine3d(Matrix4d::Identity());
 
   d_cameraOffset = Vector3d(0,0,0);
   
