@@ -29,7 +29,7 @@ namespace bats {
 
     Eigen::Vector3d getPosition()
     {
-      return transform.translation().start<3>();
+      return transform.translation().head<3>();
     }
 
     // Needed when having fixed sized Eigen member

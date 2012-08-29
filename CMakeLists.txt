@@ -30,7 +30,7 @@ add_library(bats
 ${LIBBATS_SOURCES}
 )
 
-set(CMAKE_CXX_FLAGS "-std=c++0x -DEIGEN2_SUPPORT_STAGE30_FULL_EIGEN3_API")
+set(CMAKE_CXX_FLAGS "-std=c++0x")
 
 install(TARGETS bats DESTINATION lib)
 

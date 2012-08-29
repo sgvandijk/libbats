@@ -2,7 +2,6 @@
 
 #include "../NormalDistribution/normaldistribution.hh"
 #include "../../Random/random.hh"
-#include <Eigen/Array>
 
 using namespace bats;
 using namespace Eigen;

@@ -168,22 +168,22 @@ namespace bats
 
   Eigen::Vector3d KalmanLocalizer::cutPositionVector(Eigen::VectorXd const& posVel) const
   {
-    return posVel.start<3>();
+    return posVel.head<3>();
   }
   
   Eigen::Vector3d KalmanLocalizer::cutVelocityVector(Eigen::VectorXd const& posVel) const
   {
-    return posVel.end<3>();
+    return posVel.tail<3>();
   }
 
   void KalmanLocalizer::setPositionVector(Eigen::VectorXd& posVel, Eigen::Vector3d const& pos)
   {
-    posVel.start<3>() = pos;
+    posVel.head<3>() = pos;
   }
   
   void KalmanLocalizer::setVelocityVector(Eigen::VectorXd& posVel, Eigen::Vector3d const& vel)
   {
-    posVel.end<3>() = vel;
+    posVel.tail<3>() = vel;
   }
   
   Eigen::Matrix3d KalmanLocalizer::cutPositionMatrix(Eigen::MatrixXd const& posVel) const

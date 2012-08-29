@@ -64,9 +64,9 @@ void KalmanLocalizer::updateSelfGlobal()
 
       VectorXd globalMeas = VectorXd::Zero(6);
       // Location part
-      globalMeas.start<3>() = cutPositionVector(pos) - d_globalRotation * cutPositionVector(meas);
+      globalMeas.head<3>() = cutPositionVector(pos) - d_globalRotation * cutPositionVector(meas);
       // Velocity part
-      globalMeas.end<3>() = (globalMeas - oldLocVel).start<3>();
+      globalMeas.tail<3>() = (globalMeas - oldLocVel).head<3>();
       //cerr << "global meas:" << endl << globalMeas << endl;
       
       MatrixXd globalSigma = joinPositionAndVelocityMatrices(

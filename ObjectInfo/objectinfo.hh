@@ -112,7 +112,7 @@ namespace bats
     /** @return the position of this object in the local frame of the agent. */
     Eigen::Vector3d getPositionLocal(const bool zeroZ = false) const
     {
-      return setZeroZ(zeroZ, posVelLocal->getMu().start<3>());
+      return setZeroZ(zeroZ, posVelLocal->getMu().head<3>());
     }
     
     /**
@@ -122,14 +122,14 @@ namespace bats
     std::shared_ptr<Distribution> getPositionDistributionLocal() const
     {
       std::shared_ptr<NormalDistribution> d = std::make_shared<NormalDistribution>(3);
-      d->init(posVelLocal->getMu().start<3>(), posVelLocal->getSigma().block<3,3>(0,0));
+      d->init(posVelLocal->getMu().head<3>(), posVelLocal->getSigma().block<3,3>(0,0));
       return d;
     }
     
     /** @return the position of this object in the global frame. */
     Eigen::Vector3d getPositionGlobal(const bool zeroZ = false) const
     {
-      return setZeroZ(zeroZ, posVelGlobal->getMu().start<3>());
+      return setZeroZ(zeroZ, posVelGlobal->getMu().head<3>());
     }
     
     /**
@@ -139,32 +139,32 @@ namespace bats
     std::shared_ptr<Distribution> getPositionDistributionGlobal() const
     {
       std::shared_ptr<bats::NormalDistribution> d = std::make_shared<NormalDistribution>(3);
-      d->init(posVelGlobal->getMu().start<3>(), posVelGlobal->getSigma().block<3,3>(0,0));
+      d->init(posVelGlobal->getMu().head<3>(), posVelGlobal->getSigma().block<3,3>(0,0));
       return d;
     }
     
     /** @return the unfiltered position of this object in the torso (agent) frame. */
     Eigen::Vector3d getPositionRaw() const
     {
-      return posVelRaw->getMu().start<3>();
+      return posVelRaw->getMu().head<3>();
     }
     
     /** @return the velocity of this object in the global frame. */
     Eigen::Vector3d getVelocityGlobal(const bool zeroZ = false) const
     {
-      return setZeroZ(zeroZ, posVelGlobal->getMu().end<3>());
+      return setZeroZ(zeroZ, posVelGlobal->getMu().tail<3>());
     }
     
     /** @return the velocity of this object in the local frame. */
     Eigen::Vector3d getVelocityLocal(const bool zeroZ = false) const
     {
-      return setZeroZ(zeroZ, posVelLocal->getMu().end<3>());
+      return setZeroZ(zeroZ, posVelLocal->getMu().tail<3>());
     }
     
     /** @return the velocity of this object in the raw (camera) frame. */
     Eigen::Vector3d getVelocityRaw() const
     {
-      return posVelRaw->getMu().end<3>();
+      return posVelRaw->getMu().tail<3>();
     }
     
   private:

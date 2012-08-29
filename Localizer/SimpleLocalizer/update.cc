@@ -7,17 +7,17 @@ void SimpleLocalizer::update()
   WorldModel& wm = SWorldModel::getInstance();
   
   // Polar to Cartesian
-  Vector3d ballPos = Math::polarToCartesian(cochlea.getInfo(Cochlea::iVisionBall).start<3>());
+  Vector3d ballPos = Math::polarToCartesian(cochlea.getInfo(Cochlea::iVisionBall).head<3>());
 
-  Vector3d flag1LPos = Math::polarToCartesian(cochlea.getInfo(Cochlea::iVisionFlag1L).start<3>());
-  Vector3d flag1RPos = Math::polarToCartesian(cochlea.getInfo(Cochlea::iVisionFlag1R).start<3>());
-  Vector3d flag2LPos = Math::polarToCartesian(cochlea.getInfo(Cochlea::iVisionFlag2L).start<3>());
-  Vector3d flag2RPos = Math::polarToCartesian(cochlea.getInfo(Cochlea::iVisionFlag2R).start<3>());
+  Vector3d flag1LPos = Math::polarToCartesian(cochlea.getInfo(Cochlea::iVisionFlag1L).head<3>());
+  Vector3d flag1RPos = Math::polarToCartesian(cochlea.getInfo(Cochlea::iVisionFlag1R).head<3>());
+  Vector3d flag2LPos = Math::polarToCartesian(cochlea.getInfo(Cochlea::iVisionFlag2L).head<3>());
+  Vector3d flag2RPos = Math::polarToCartesian(cochlea.getInfo(Cochlea::iVisionFlag2R).head<3>());
 
-  Vector3d goal1LPos = Math::polarToCartesian(cochlea.getInfo(Cochlea::iVisionGoal1L).start<3>());
-  Vector3d goal1RPos = Math::polarToCartesian(cochlea.getInfo(Cochlea::iVisionGoal1R).start<3>());
-  Vector3d goal2LPos = Math::polarToCartesian(cochlea.getInfo(Cochlea::iVisionGoal2L).start<3>());
-  Vector3d goal2RPos = Math::polarToCartesian(cochlea.getInfo(Cochlea::iVisionGoal2R).start<3>());
+  Vector3d goal1LPos = Math::polarToCartesian(cochlea.getInfo(Cochlea::iVisionGoal1L).head<3>());
+  Vector3d goal1RPos = Math::polarToCartesian(cochlea.getInfo(Cochlea::iVisionGoal1R).head<3>());
+  Vector3d goal2LPos = Math::polarToCartesian(cochlea.getInfo(Cochlea::iVisionGoal2L).head<3>());
+  Vector3d goal2RPos = Math::polarToCartesian(cochlea.getInfo(Cochlea::iVisionGoal2R).head<3>());
 
   Types::Side team = wm.getSide();
   
@@ -52,7 +52,7 @@ void SimpleLocalizer::update()
 
   // for each team mate
   for (unsigned i = 0; i < wm.getNumberOfPlayers(); ++i) {
-    Vector3d playerPosPolar = cochlea.getInfo((Cochlea::InfoID)(Cochlea::iVisionTeamMate1 + i)).start<3>();
+    Vector3d playerPosPolar = cochlea.getInfo((Cochlea::InfoID)(Cochlea::iVisionTeamMate1 + i)).head<3>();
     if (playerPosPolar[0] != 0)
     {
       Vector3d playerPosCart = Math::polarToCartesian(playerPosPolar);
@@ -63,7 +63,7 @@ void SimpleLocalizer::update()
   }
   // for each opponent
   for (unsigned i = 0; i < wm.getNumberOfPlayers(); ++i) {
-    Vector3d opponentPosPolar = cochlea.getInfo((Cochlea::InfoID)(Cochlea::iVisionOpponent1 + i)).start<3>();
+    Vector3d opponentPosPolar = cochlea.getInfo((Cochlea::InfoID)(Cochlea::iVisionOpponent1 + i)).head<3>();
     if (opponentPosPolar[0] != 0)
     {
       Vector3d opponentPosCart = Math::polarToCartesian(opponentPosPolar);

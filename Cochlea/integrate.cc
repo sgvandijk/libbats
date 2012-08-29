@@ -244,9 +244,9 @@ void Cochlea::integrate(shared_ptr<Predicate> const &pred)
           {
             vect = parsePolar(static_pointer_cast<Predicate>((*j)->getChild(0)));
             vect2 = parsePolar(static_pointer_cast<Predicate>((*j)->getChild(1)));
-            d_lines.push_back(VisibleLine(vect.start<3>(), vect2.start<3>()));
-            d_lineEnds.push_back(vect.start<3>());
-            d_lineEnds.push_back(vect2.start<3>());
+            d_lines.push_back(VisibleLine(vect.head<3>(), vect2.head<3>()));
+            d_lineEnds.push_back(vect.head<3>());
+            d_lineEnds.push_back(vect2.head<3>());
           }
 
           break;

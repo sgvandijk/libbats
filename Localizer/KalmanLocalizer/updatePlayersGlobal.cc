@@ -80,25 +80,25 @@ void KalmanLocalizer::updatePlayersGlobal()
 
         if (player->lArmVisible)
         {
-          Vector3d rawDiff = player->posLArmLocal - meas.start<3>();
+          Vector3d rawDiff = player->posLArmLocal - meas.head<3>();
           Vector3d globalDiff = d_globalRotation * rawDiff;
           player->posLArmGlobal = globalDiff;
         }
         if (player->rArmVisible)
         {
-          Vector3d rawDiff = player->posRArmLocal - meas.start<3>();
+          Vector3d rawDiff = player->posRArmLocal - meas.head<3>();
           Vector3d globalDiff = d_globalRotation * rawDiff;
           player->posRArmGlobal = globalDiff;
         }
         if (player->lFootVisible)
         {
-          Vector3d rawDiff = player->posLFootLocal - meas.start<3>();
+          Vector3d rawDiff = player->posLFootLocal - meas.head<3>();
           Vector3d globalDiff = d_globalRotation * rawDiff;
           player->posLFootGlobal = globalDiff;
         }
         if (player->rFootVisible)
         {
-          Vector3d rawDiff = player->posRFootLocal - meas.start<3>();
+          Vector3d rawDiff = player->posRFootLocal - meas.head<3>();
           Vector3d globalDiff = d_globalRotation * rawDiff;
           player->posRFootGlobal = globalDiff;
         }

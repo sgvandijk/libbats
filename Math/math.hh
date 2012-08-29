@@ -261,28 +261,28 @@ namespace bats
      */
     static Eigen::Vector3d getRight(Eigen::Affine3d const& trans)
     {
-      return trans.matrix().col(0).start<3>();
+      return trans.matrix().col(0).head<3>();
     }
 
     /** Get the direction of the y-axis of a transformation
      */
     static Eigen::Vector3d getForward(Eigen::Affine3d const& trans)
     {
-      return trans.matrix().col(1).start<3>();
+      return trans.matrix().col(1).head<3>();
     }
 
     /** Get the direction of the z-axis of a transformation
      */
     static Eigen::Vector3d getUp(Eigen::Affine3d const& trans)
     {
-      return trans.matrix().col(2).start<3>();
+      return trans.matrix().col(2).head<3>();
     }
 
     /** Get the translation part of a transformation
      */
     static Eigen::Vector3d getTrans(Eigen::Affine3d const& trans)
     {   // in the original bats::Vector3D this function was called trans
-      return trans.matrix().col(3).start<3>();
+      return trans.matrix().col(3).head<3>();
     }
 
     /** Get the angle between two vectors

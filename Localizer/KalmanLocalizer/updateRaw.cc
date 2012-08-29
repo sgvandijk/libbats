@@ -58,28 +58,28 @@ void KalmanLocalizer::updateRaw()
       if (wm.getTime() - cochlea.getTimestamp(leftArmId) < 0.005)
       {
         player->lArmVisible = true;
-        Vector3d locPolar = cochlea.getInfo(leftArmId).start<3>();
+        Vector3d locPolar = cochlea.getInfo(leftArmId).head<3>();
         player->posLArmLocal = invHeadTransform * (Math::polarToCartesian(locPolar) + d_cameraOffset);
       }
 
       if (wm.getTime() - cochlea.getTimestamp(rightArmId) < 0.005)
       {
         player->rArmVisible = true;
-        Vector3d locPolar = cochlea.getInfo(rightArmId).start<3>();
+        Vector3d locPolar = cochlea.getInfo(rightArmId).head<3>();
         player->posRArmLocal = invHeadTransform * (Math::polarToCartesian(locPolar) + d_cameraOffset);
       }
 
       if (wm.getTime() - cochlea.getTimestamp(leftFootId) < 0.005)
       {
         player->lFootVisible = true;
-        Vector3d locPolar = cochlea.getInfo(leftFootId).start<3>();
+        Vector3d locPolar = cochlea.getInfo(leftFootId).head<3>();
         player->posLFootLocal = invHeadTransform * (Math::polarToCartesian(locPolar) + d_cameraOffset);
       }
 
       if (wm.getTime() - cochlea.getTimestamp(rightFootId) < 0.005)
       {
         player->rFootVisible = true;
-        Vector3d locPolar = cochlea.getInfo(rightFootId).start<3>();
+        Vector3d locPolar = cochlea.getInfo(rightFootId).head<3>();
         player->posRFootLocal = invHeadTransform * (Math::polarToCartesian(locPolar) + d_cameraOffset);
       }
     }
@@ -100,7 +100,7 @@ void KalmanLocalizer::updateRaw()
       if (object->isDynamic)
         static_pointer_cast<DynamicObjectInfo>(object)->isAlive = true;
 
-      Vector3d posPolar = cochlea.getInfo(infoId).start<3>();
+      Vector3d posPolar = cochlea.getInfo(infoId).head<3>();
       
       //
       // Use line sightings to reduce visual noise for flags, giving

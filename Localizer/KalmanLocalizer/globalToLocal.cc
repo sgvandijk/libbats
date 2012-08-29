@@ -71,7 +71,7 @@ void KalmanLocalizer::globalToLocal()
     // If we didn't see the object, but we estimate that it should be in field of view, it's dead
     if (!object->isVisible)
     {
-      Vector3d objPos = object->posVelLocal->getMu().start<3>();
+      Vector3d objPos = object->posVelLocal->getMu().head<3>();
       Vector3d headToObj = objPos - am.getBodyPart(Types::HEAD)->transform.translation();
       Vector3d objDirPolar = Math::cartesianToPolar(headToObj);
       Vector3d diff = objDirPolar - lookDirPolar;

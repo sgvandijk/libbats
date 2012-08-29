@@ -1,5 +1,5 @@
 #include "types.hh"
-
+#include <iostream>
 
 using namespace std;
 using namespace bats;
