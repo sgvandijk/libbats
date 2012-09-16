@@ -4,6 +4,7 @@
 #include "../Configurable/configurable.hh"
 #include "../Types/types.hh"
 #include <string>
+#include <Eigen/Core>
 
 namespace bats
 {
@@ -19,8 +20,7 @@ namespace bats
   {
   public:
     JointController(std::string const& id)
-      : Configurable("jointController", id),
-	d_id(id),
+      : Configurable("jointcontroller", id),
 	d_jointVelocities(Eigen::VectorXd::Zero(Types::NJOINTS))
     {}
 

@@ -3,7 +3,7 @@
 
 #include "../jointcontroller.hh"
 
-namespace bold
+namespace bats
 {
   /** Enumeration of possible gait types
    * 
@@ -19,7 +19,7 @@ namespace bold
   
   /** Parameters passed to a gait generator
    */
-  struct GaitParams
+  struct GaitParams : public JointControlParams
   {
     GaitParams()
       : type(GT_STAND),
@@ -37,14 +37,13 @@ namespace bold
   
   /** Abstract class for gait generators
    */
-  class GaitGenerator : public Jointcontroller
+  class GaitGenerator : public JointController
   {
   public:
     GaitGenerator(std::string const& id)
-      : Jointcontroller(id),
-	d_lastTime(0)
+      : JointController(id)
     {
-      setTag("gaitgenerator")
+      setTag("gaitgenerator");
     }
   };
   

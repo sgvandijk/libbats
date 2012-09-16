@@ -2,6 +2,7 @@
 #define BATS_CONFIGURABLE_HH
 
 #include <sstream>
+#include "../Conf/conf.hh"
 
 namespace bats
 {
@@ -75,7 +76,7 @@ namespace bats
   template <typename T>
   T Configurable::getConfParam(std::string const &xpath, T def) const
   {
-    std::string fullPath = std::string("/conf/" + d_tag + std::string("['@id=") + d_id + std::string("']") + xpath;
+    std::string fullPath = std::string("/conf/") + d_tag + std::string("['@id=") + d_id + std::string("']") + xpath;
     bats::XMLNodeSet ns(bats::SConf::getInstance().selectXPath(fullPath));
     if(ns && !ns.empty())
     {
