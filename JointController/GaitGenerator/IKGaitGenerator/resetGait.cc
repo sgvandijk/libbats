@@ -13,4 +13,6 @@ void IKGaitGenerator::resetGait()
   d_curStep.hipAngle = 0;
 
   d_jointVelocities = VectorXd::Zero(Types::NJOINTS);
+
+  d_lastTime = 0;
 }

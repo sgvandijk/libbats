@@ -8,12 +8,9 @@ namespace bats
   class IKGaitGenerator : public GaitGenerator
   {
   public:
-    IKGaitGenerator(std::string const& id)
-      : GaitGenerator(id)
-    {}
+    IKGaitGenerator(std::string const& id);
 
     virtual void run(JointControlParams* params);
-
 
   private:
     struct Step
@@ -42,8 +39,10 @@ namespace bats
     double d_offsetY;
     double d_offsetZ;
     double d_period;
-    double d_doubleSupportRatio;
     double d_maxTurnAngle;
+
+    double d_startupTime;
+    double d_lastTime;
 
     // State variables
     double d_phase;
@@ -53,6 +52,11 @@ namespace bats
     Step d_prevStep;
     Step d_curStep;
 
+    // Fill full body joint angle vector with leg vectors
+    void fillJointAngles(Eigen::VectorXd& jointAngles,
+			 Eigen::VectorXd const& lLegAngles,
+			 Eigen::VectorXd const& rLegAngles);
+ 
     // Resets everything to startgait from the beginning
     void resetGait();
 
@@ -63,9 +67,13 @@ namespace bats
     void updatePhase();
 
     // Determine what the next step is to take
-    void determineNextStep(Eigen::VectorXd const& targetDir, Eigen::VectorXd const& targetFaceDir);
+    void determineNextStep(Eigen::VectorXd const& targetDir,
+			   Eigen::VectorXd const& targetFaceDir);
 
     // Determine where the swing foot will end at the determined step
+    void determineSwingFootEnd();
+
+    // Determine the desired joint angles for this step
     Eigen::VectorXd doStep();
 
   };

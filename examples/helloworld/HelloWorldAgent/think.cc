@@ -36,10 +36,10 @@ void HelloWorldAgent::think()
     velocities[i] = 0.1 * (targets[i] - angles[i]);
   
   // Add actions to the Cerebellum
-  cer.addAction(new MoveJointAction(Types::LARM1, velocities[0]));
-  cer.addAction(new MoveJointAction(Types::LARM2, velocities[1]));
-  cer.addAction(new MoveJointAction(Types::RARM1, velocities[2]));
-  cer.addAction(new MoveJointAction(Types::RARM2, velocities[3]));
+  cer.addAction(make_shared<MoveJointAction>(Types::LARM1, velocities[0]));
+  cer.addAction(make_shared<MoveJointAction>(Types::LARM2, velocities[1]));
+  cer.addAction(make_shared<MoveJointAction>(Types::RARM1, velocities[2]));
+  cer.addAction(make_shared<MoveJointAction>(Types::RARM2, velocities[3]));
   
   // Tell Cerebellum to send the actions to the server
   cer.outputCommands(SAgentSocketComm::getInstance());

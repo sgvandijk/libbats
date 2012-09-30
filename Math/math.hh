@@ -301,6 +301,14 @@ namespace bats
         diff -= 2.0 * M_PI;
       return diff;
     }
+
+    static double saturate(double v, double min, double max) {
+      if (v < min)
+	v = min;
+      if (v > max)
+	v = max;
+      return v;
+    }
   };
 
 };

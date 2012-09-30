@@ -1,5 +1,5 @@
-#ifndef BATS_GAITGENERATOR_HH_
-#define BATS_GAITGENERATOR_HH_
+#ifndef BATS_GAITGENERATOR_HH
+#define BATS_GAITGENERATOR_HH
 
 #include "../jointcontroller.hh"
 

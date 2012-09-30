@@ -6,6 +6,8 @@
 #include "../../../AgentModel/agentmodel.hh"
 #include "../../../Cerebellum/cerebellum.hh"
 #include "../../../Localizer/KalmanLocalizer/kalmanlocalizer.hh"
+#include "../../../Debugger/RoboVizDebugger/robovizdebugger.hh"
 
 using namespace bats;
+using namespace std;
 

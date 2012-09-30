@@ -196,6 +196,19 @@ namespace bats
     /** @returns The maximum joint velocity, in radians per time step: 351.77 / 180 * pi / 50 */
     double getMaxJointVel() const;
 
+    /** Determine joint angles to achieve position of an ankle
+     *
+     * This method uses inverse kinematics to determine which angles
+     * the joints of a leg should take, in order to move the ankle to
+     * a certain position.
+     *
+     * @param anklePosition Desired position of the ankle, relative to torso
+     * @param leg Which leg to determine the angles for
+     * @param hipAngle The angle that the hip joint (LEG1) will have
+     * @returns a vector of length 6 with the angles for the leg joints
+     */
+    Eigen::VectorXd jointAnglesForAnklePosition(Eigen::Vector3d const& anklePosition, Types::Side leg, double hipAngle);
+
     // Needed when having fixed sized Eigen member
     EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 

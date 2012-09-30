@@ -11,7 +11,10 @@ namespace bats
   class Configurable
   {
   public:
-    Configurable(std::string const& tag, std::string const& id);
+    Configurable(std::string const& tag, std::string const& id)
+      : d_tag(tag),
+	d_id(id)
+    {}
 
     std::string getTag() const;
     std::string getID() const;
@@ -46,7 +49,8 @@ namespace bats
      * @returns the node of the requested parameter or @a def when the
      * parameter isn't found
      */
-    template <typename T> T getConfParam(std::string const &xpath, T def) const;
+    template <typename T>
+    T getConfParam(std::string const &xpath, T def) const;
 
   private:
     std::string d_tag;
@@ -54,24 +58,17 @@ namespace bats
   };
 
 
+  /*******************************
+   * 
+   * Inline method implementations
+   * 
+   *******************************/
 
-  /*
-   * Inline methods
-   */
-  std::string Configurable::getTag() const
-  {
-    return d_tag;
-  }
+  inline std::string Configurable::getTag() const  { return d_tag; }
 
-  std::string Configurable::getID() const
-  {
-    return d_id;
-  }
+  inline std::string Configurable::getID() const { return d_id; }
 
-  void Configurable::setTag(std::string const& tag)
-  {
-    d_tag = tag;
-  }
+  inline void Configurable::setTag(std::string const& tag) { d_tag = tag; }
 
   template <typename T>
   T Configurable::getConfParam(std::string const &xpath, T def) const
@@ -84,7 +81,7 @@ namespace bats
       s >> def;
     }
     return def;
-  };
+  }
 
 }
 
