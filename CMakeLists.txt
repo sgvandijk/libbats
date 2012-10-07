@@ -257,8 +257,9 @@ set(LIBBATS_INCLUDE_DIRS ${EIGEN3_INCLUDE_DIR} ${LIBXML2_INCLUDE_DIR} ${SigC++_I
 
 # Don't build Gtk
 if(GTKMM_FOUND)
-  list(APPEND LIBBATS_SOURCES  ./Debugger/GtkDebugger/onDebugText.cc ./Debugger/GtkDebugger/run.cc ./Debugger/GtkDebugger/onThinkEnd.cc ./Debugger/GtkDebugger/drawShapes.cc ./Debugger/GtkDebugger/GtkDebugger.cc ./Debugger/GtkDebugger/drawBall.cc ./Debugger/GtkDebugger/drawCurve.cc ./Debugger/GtkDebugger/plot.cc ./Debugger/GtkDebugger/drawPlayers.cc ./Debugger/GtkDebugger/start.cc ./Debugger/GtkDebugger/drawSelf.cc ./Debugger/GtkDebugger/init.cc ./Debugger/GtkDebugger/drawField.cc ./Debugger/GtkDebugger/reDraw.cc ./Debugger/GtkDebugger/onDrawingAreaExpose.cc
-JointController/GaitGenerator/IKGaitGenerator/run.cc JointController/GaitGenerator/IKGaitGenerator/resetGait.cc )
+  list(APPEND LIBBATS_SOURCES
+       ./Debugger/GtkDebugger/onDebugText.cc./Debugger/GtkDebugger/run.cc ./Debugger/GtkDebugger/onThinkEnd.cc ./Debugger/GtkDebugger/drawShapes.cc ./Debugger/GtkDebugger/GtkDebugger.cc ./Debugger/GtkDebugger/drawBall.cc ./Debugger/GtkDebugger/drawCurve.cc ./Debugger/GtkDebugger/plot.cc ./Debugger/GtkDebugger/drawPlayers.cc ./Debugger/GtkDebugger/start.cc ./Debugger/GtkDebugger/drawSelf.cc ./Debugger/GtkDebugger/init.cc ./Debugger/GtkDebugger/drawField.cc ./Debugger/GtkDebugger/reDraw.cc ./Debugger/GtkDebugger/onDrawingAreaExpose.cc
+  )
 
   list(APPEND LIBBATS_INCLUDE_DIRS )
 else(GTKMM_FOUND)

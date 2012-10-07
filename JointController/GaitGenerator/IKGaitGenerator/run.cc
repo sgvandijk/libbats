@@ -11,6 +11,10 @@ void IKGaitGenerator::run(JointControlParams *jcParams)
 
   // CHeck whether the last time this gaitgenerator ran was too long ago
   double now = clock.getTime();
+  double delta = now - d_lastTime;
+
+  cout << "Delta: " << delta << endl;
+
   if (now - d_lastTime > 0.05)
     resetGait();
 
@@ -21,8 +25,7 @@ void IKGaitGenerator::run(JointControlParams *jcParams)
   Vector3d targetFaceDir = gaitParams->params.segment<3>(3);
   Vector3d targetDir = targetPos.normalized();
 
-  double breakDist = 0.3;
-  double stopDist = 0.1;
+  cout << targetPos.transpose() << endl << targetFaceDir.transpose() << endl << targetDir << endl;
 
   // Update the walking speed to slowly go faster
   updateSpeed();

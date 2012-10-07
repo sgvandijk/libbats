@@ -37,16 +37,33 @@
  *
  */
 
-#ifndef HELLOWORLDAGENT_HH
-#define HELLOWORLDAGENT_HH
+#ifndef DRIBBLEAGENT_HH
+#define DRIBBLEAGENT_HH
 
 #include <HumanoidAgent/humanoidagent.hh>
+#include <JointController/GaitGenerator/IKGaitGenerator/ikgaitgenerator.hh>
 
 /**
-  *  A friendly robot
+  *  A dribbling robot
   */
-class HelloWorldAgent : public bats::HumanoidAgent
+class DribbleAgent : public bats::HumanoidAgent
 {
+public:
+
+  /**
+    *  The Constructor
+    *
+    *  Sets this agent's teamname to "Hello". Consider putting initialization stuff in init() instead of here.
+    */
+  DribbleAgent()
+    : bats::HumanoidAgent(std::string("Dribble"), "conf.xml")
+  {
+  }
+
+private:
+  // The agent's gait generator
+  std::shared_ptr<bats::GaitGenerator> d_gaitGenerator;
+
   /**
     * Initialize agent
     *
@@ -61,17 +78,6 @@ class HelloWorldAgent : public bats::HumanoidAgent
     */
   virtual void think();
   
-public:
-
-  /**
-    *  The Constructor
-    *
-    *  Sets this agent's teamname to "Hello". Consider putting initialization stuff in init() instead of here.
-    */
-  HelloWorldAgent()
-    : HumanoidAgent(std::string("Hello"), "../../xml/conf.xml")
-  {
-  }
 
 };
 

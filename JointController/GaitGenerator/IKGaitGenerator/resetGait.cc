@@ -15,4 +15,6 @@ void IKGaitGenerator::resetGait()
   d_jointVelocities = VectorXd::Zero(Types::NJOINTS);
 
   d_lastTime = 0;
+
+  d_stage = -1;
 }

@@ -1,6 +1,6 @@
 // This is an internal header file, used to include headers and namespaces
 // needed by the members of HelloWorldAgent
-#include "helloworldagent.hh"
+#include "dribbleagent.hh"
 
 #include <WorldModel/worldmodel.hh>
 #include <AgentModel/agentmodel.hh>
@@ -10,4 +10,5 @@
 
 using namespace bats;
 using namespace std;
+using namespace Eigen;
 
