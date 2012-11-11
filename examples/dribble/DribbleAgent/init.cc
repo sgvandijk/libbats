@@ -12,5 +12,10 @@ void DribbleAgent::init()
 
   // Initialize gait generator; use Inverse Kinematics implementation
   d_gaitGenerator = make_shared<IKGaitGenerator>("dribblegaitgenerator");
+
+  // Initialize walk paramaeter filter; stationary, facing forward
+  d_paramFilter = VectorXd(6);
+  d_paramFilter << 0, 0, 0, 0, 1, 0;
+
 }
 

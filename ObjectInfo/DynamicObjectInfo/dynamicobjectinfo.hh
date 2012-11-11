@@ -47,7 +47,8 @@ namespace bats
 {
   struct DynamicObjectInfo : ObjectInfo
   {
-    /** Gets whether localisation data relating to this object is considered to be current. */
+    /** Holds whether localisation data relating to this object is
+	considered to be current. */
     bool isAlive;
 
     DynamicObjectInfo(Types::Object objectId, double radius)

@@ -16,11 +16,13 @@
   <player-class index="11"/>
 
   <gaitgenerator id="dribblegaitgenerator">
-    <period>0.4</period>
-    <ellipselength>0.06</ellipselength>
-    <ellipseheight>0.03</ellipseheight>
-    <startuptime>1</startuptime>
-    <offsety>0.01</offsety>
+    <period>0.36</period>
+    <ellipselength>0.08</ellipselength>
+    <ellipseheight>0.02</ellipseheight>
+    <startuptime>2</startuptime>
+    <offsety>-0.01</offsety>
+    <offsetz>-0.20</offsetz>
+    <leanangle>10</leanangle>
   </gaitgenerator>
 </conf>    
 

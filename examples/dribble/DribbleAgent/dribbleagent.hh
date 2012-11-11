@@ -43,42 +43,43 @@
 #include <HumanoidAgent/humanoidagent.hh>
 #include <JointController/GaitGenerator/IKGaitGenerator/ikgaitgenerator.hh>
 
-/**
-  *  A dribbling robot
+/** A dribbling robot
   */
 class DribbleAgent : public bats::HumanoidAgent
 {
 public:
 
-  /**
-    *  The Constructor
-    *
-    *  Sets this agent's teamname to "Hello". Consider putting initialization stuff in init() instead of here.
-    */
+  /** The Constructor
+   *
+   *  Sets this agent's teamname to "Hello". Consider putting initialization stuff in init() instead of here.
+   */
   DribbleAgent()
     : bats::HumanoidAgent(std::string("Dribble"), "conf.xml")
   {
   }
-
+  
 private:
   // The agent's gait generator
   std::shared_ptr<bats::GaitGenerator> d_gaitGenerator;
 
-  /**
-    * Initialize agent
-    *
-    * Called a single time when starting up the agent. Put all your initialization stuff here.
-    */
+  // Used to smoothen walking parameters
+  Eigen::VectorXd d_paramFilter;
+
+  /** Initialize agent
+   *
+   * Called a single time when starting up the agent. Put all your initialization stuff here.
+   */
   virtual void init();
   
-  /**
-    * Think cycle
-    *
-    * Called at each cycle after a message from the server is received and parsed. Put all your thinking and acting stuff here.
-    */
+  /** Think cycle
+   *
+   * Called at each cycle after a message from the server is received and parsed. Put all your thinking and acting stuff here.
+   */
   virtual void think();
   
+  Eigen::Vector2d determineWhereToLook();
 
+  Eigen::VectorXd determineWhereToWalk();
 };
 
 #endif

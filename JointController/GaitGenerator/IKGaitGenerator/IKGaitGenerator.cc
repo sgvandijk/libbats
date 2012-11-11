@@ -11,7 +11,7 @@ IKGaitGenerator::IKGaitGenerator(std::string const& id)
   d_offsetZ = getConfParam("/offsetz", -0.19);
   d_period = getConfParam("/period", 0.5);
   d_maxTurnAngle = Math::degToRad(getConfParam("/maxturnangle", 10.0));
-  
+  d_leanAngle = Math::degToRad(getConfParam("/leanangle", 20.0));
   d_startupTime = getConfParam("/startuptime", 2.0);
 
   resetGait();

@@ -40,7 +40,7 @@ namespace bats
     double d_offsetZ;
     double d_period;
     double d_maxTurnAngle;
-
+    double d_leanAngle;
     double d_startupTime;
     double d_lastTime;
 

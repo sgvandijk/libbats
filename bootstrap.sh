@@ -120,6 +120,8 @@ set(DRIBBLE_SOURCES
 dribble.cc
 DribbleAgent/init.cc
 DribbleAgent/think.cc
+DribbleAgent/determineWhereToLook.cc
+DribbleAgent/determineWhereToWalk.cc
 )
 
 add_executable(dribble

@@ -9,8 +9,6 @@ VectorXd IKGaitGenerator::doStep()
     -(d_curStep.rEnd - d_curStep.rStart) :
     -(d_curStep.lEnd - d_curStep.lStart);
 
-  cout << "hipmove: " << hipMove.transpose() << endl;
-
   // Determine desired ankle positions
   Vector3d lAnklePos(0, 0, 0);
   Vector3d rAnklePos(0, 0, 0);
@@ -52,17 +50,14 @@ VectorXd IKGaitGenerator::doStep()
       alpha * d_curStep.hipAngle;
   }
   
-  cout << lAnklePos.transpose() << ", " << rAnklePos.transpose() << endl;
+  cout << "hipAngle: " << hipAngle << endl;
 
   // Determine desired joint angles
-
   VectorXd jointAngles = am.getJointAngles();
 
   VectorXd lAngles = am.jointAnglesForAnklePosition(lAnklePos, Types::LEFT, hipAngle);
   VectorXd rAngles = am.jointAnglesForAnklePosition(rAnklePos, Types::RIGHT, hipAngle);
-  lAngles(0) = rAngles(0) = hipAngle;
-
-  cout << lAngles.transpose() << ", " << rAngles.transpose() << endl;
+  lAngles(0) = rAngles(0) = -hipAngle;
 
   fillJointAngles(jointAngles, lAngles, rAngles);
 

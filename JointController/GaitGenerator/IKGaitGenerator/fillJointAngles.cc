@@ -10,12 +10,15 @@ void IKGaitGenerator::fillJointAngles(VectorXd& jointAngles, VectorXd const& lef
     jointAngles(j) = rightLegAngles(j - Types::RLEG1);
 
   // Keep feet horizontal
+  // Compensate forward/backward
   jointAngles(Types::LLEG5) = -(jointAngles(Types::LLEG2) + jointAngles(Types::LLEG4));
   jointAngles(Types::RLEG5) = -(jointAngles(Types::RLEG2) + jointAngles(Types::RLEG4));
 
+  // Compensate sideways
   jointAngles(Types::LLEG6) = -(jointAngles(Types::LLEG3));
   jointAngles(Types::RLEG6) = -(jointAngles(Types::RLEG3));
 
+  // Compensate turning
   // TODO: optimize, and put into Joint class
   Vector3d lhipAxis = am.getJoint(Types::LLEG1)->axis;
   Vector3d rhipAxis = am.getJoint(Types::LLEG1)->axis;
@@ -44,4 +47,7 @@ void IKGaitGenerator::fillJointAngles(VectorXd& jointAngles, VectorXd const& lef
   jointAngles(Types::LLEG6) -= lyAngle;
   jointAngles(Types::RLEG6) -= ryAngle;
 
+  // Lean
+  jointAngles(Types::LLEG2) += d_leanAngle;
+  jointAngles(Types::RLEG2) += d_leanAngle;
 }

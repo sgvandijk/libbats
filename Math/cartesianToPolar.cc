@@ -3,14 +3,14 @@
 
 Vector3d Math::cartesianToPolar(Vector3d const &cartesian)
 {
-	Vector3d polar;
+  Vector3d polar;
 	
   // XY-angle
   polar.y() = (normalizeRadBalanced(atan2(cartesian.y(),cartesian.x()) - .5 * M_PI));
-
+  
   double d_squared = cartesian.x() * cartesian.x() + cartesian.y() * cartesian.y();
   double d = sqrt(d_squared);
-
+  
   // Latitude-angle
   polar.z() = (normalizeRadBalanced(atan2(cartesian.z(), d)));
   

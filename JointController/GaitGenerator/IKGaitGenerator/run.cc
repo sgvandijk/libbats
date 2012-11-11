@@ -9,11 +9,9 @@ void IKGaitGenerator::run(JointControlParams *jcParams)
   Clock& clock = bats::SClock::getInstance();
   AgentModel& am = bats::SAgentModel::getInstance();
 
-  // CHeck whether the last time this gaitgenerator ran was too long ago
+  // Check whether the last time this gaitgenerator ran was too long ago
   double now = clock.getTime();
   double delta = now - d_lastTime;
-
-  cout << "Delta: " << delta << endl;
 
   if (now - d_lastTime > 0.05)
     resetGait();
@@ -23,9 +21,8 @@ void IKGaitGenerator::run(JointControlParams *jcParams)
   // Extract parameters
   Vector3d targetPos = gaitParams->params.head<3>();
   Vector3d targetFaceDir = gaitParams->params.segment<3>(3);
-  Vector3d targetDir = targetPos.normalized();
 
-  cout << targetPos.transpose() << endl << targetFaceDir.transpose() << endl << targetDir << endl;
+  Vector3d targetDir = targetPos.normalized();
 
   // Update the walking speed to slowly go faster
   updateSpeed();

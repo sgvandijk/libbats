@@ -4,18 +4,31 @@ void DribbleAgent::think()
 {
   AgentModel& am = SAgentModel::getInstance();
 
+  /**********
+   * WALKING
+   **********/
+  VectorXd whereToWalkTo = determineWhereToWalk();
+
+  cout << whereToWalkTo.transpose() << endl;
+
   // Initialize gait generator parameters
   GaitParams gaitParameters;
-  gaitParameters.params = VectorXd(6);
-  gaitParameters.params <<
-    0,1,0, // Walk direction
-    0,1,0; // Face direction
+  gaitParameters.params = whereToWalkTo;
 
   // Run gait generator
   d_gaitGenerator->run(&gaitParameters);
 
   // Get results
   VectorXd jointVelocities = d_gaitGenerator->getJointVelocities();
+
+  /**********
+   * LOOKING
+   **********/
+  VectorXd currentJointAngles = am.getJointAngles();
+
+  Vector2d whereToLookAt = determineWhereToLook();
+  jointVelocities(Types::HEAD1) = whereToLookAt(0) - currentJointAngles(Types::HEAD1);
+  jointVelocities(Types::HEAD2) = whereToLookAt(1) - currentJointAngles(Types::HEAD2);
 
   // Add actions to the Cerebellum
   Cerebellum& cer = SCerebellum::getInstance();

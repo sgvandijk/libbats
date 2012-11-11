@@ -2,6 +2,7 @@
 
 void IKGaitGenerator::resetGait()
 {
+  cout << "Resetting gait" << endl;
   d_phase = 0;
   d_speed = 0;
 
