@@ -7,11 +7,6 @@ void IKGaitGenerator::updatePhase()
 
   // Update phase
   double dt = SClock::getInstance().getDt();
-  cout << "phi: ----- " << d_phase << " " << dt << " " << d_period << " " << dphase << endl;
   d_phase += dphase * dt;
-
-  cout << "phi: " << d_phase << endl;
   d_phase = fmod(d_phase, 2 * M_PI);
-  cout << "phi: " << d_phase << endl;
-
 }

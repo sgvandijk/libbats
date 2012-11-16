@@ -3,23 +3,33 @@
 void DribbleAgent::think()
 {
   AgentModel& am = SAgentModel::getInstance();
+  WorldModel& wm = SWorldModel::getInstance();
+  
+  VectorXd jointVelocities;
+  if (wm.getPlayMode() != Types::PLAY_ON)
+  {
+    /**********
+     * STANDING
+     **********/
+    jointVelocities = stand();
+  }
+  else
+  {
+    /**********
+     * WALKING
+     **********/
+    VectorXd whereToWalkTo = determineWhereToWalk();
 
-  /**********
-   * WALKING
-   **********/
-  VectorXd whereToWalkTo = determineWhereToWalk();
+    // Initialize gait generator parameters
+    GaitParams gaitParameters;
+    gaitParameters.params = whereToWalkTo;
 
-  cout << whereToWalkTo.transpose() << endl;
+    // Run gait generator
+    d_gaitGenerator->run(&gaitParameters);
 
-  // Initialize gait generator parameters
-  GaitParams gaitParameters;
-  gaitParameters.params = whereToWalkTo;
-
-  // Run gait generator
-  d_gaitGenerator->run(&gaitParameters);
-
-  // Get results
-  VectorXd jointVelocities = d_gaitGenerator->getJointVelocities();
+    // Get results
+    jointVelocities = d_gaitGenerator->getJointVelocities();
+  }
 
   /**********
    * LOOKING

@@ -24,7 +24,7 @@ void IKGaitGenerator::determineNextStep(VectorXd const& targetDir, VectorXd cons
   double turnSign = targetFaceDir.x() < 0 ? -1 : 1;
   d_curStep.turn = turnSign * min(
     d_maxTurnAngle,
-    fabs(atan2(d_curStep.targetFaceDir.x(), d_curStep.targetFaceDir.y()))
+    0.5 * fabs(atan2(d_curStep.targetFaceDir.x(), d_curStep.targetFaceDir.y()))
     );
 
   // TODO: put this calculation somewhere central (Util/AgentModel)

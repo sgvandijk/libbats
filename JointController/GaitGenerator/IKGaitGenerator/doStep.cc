@@ -26,32 +26,34 @@ VectorXd IKGaitGenerator::doStep()
   {
     rAnklePos = d_curStep.rStart - alpha * hipMove;
 
-    lAnklePos = 
-      (1.0 - alpha) * d_curStep.lStart +
-      alpha * d_curStep.lEnd;
+    lAnklePos = d_curStep.lStart + alpha * hipMove;
     lAnklePos.z() = sin(alpha * M_PI) * d_ellipseHeight + d_curStep.offsetZ;
 
     hipAngle = d_curStep.turn > 0 ?
       (1.0 - alpha) * d_curStep.hipAngle :
       alpha * d_curStep.hipAngle;
+
+    double dSwing = -d_offsetX * sin(alpha * M_PI);
+    lAnklePos.x() += dSwing;
+    rAnklePos.x() += dSwing;
   }
   // stage = 1: swing right
   else
   {
     lAnklePos = d_curStep.lStart - alpha * hipMove;
-
-    rAnklePos =
-      (1.0 - alpha) * d_curStep.rStart +
-      alpha * d_curStep.rEnd;
+    
+    rAnklePos = d_curStep.rStart + alpha * hipMove;
     rAnklePos.z() = sin(alpha * M_PI) * d_ellipseHeight + d_curStep.offsetZ;
 
     hipAngle = d_curStep.turn < 0 ?
       (1.0 - alpha) * d_curStep.hipAngle :
       alpha * d_curStep.hipAngle;
+
+    double dSwing = d_offsetX * sin(alpha * M_PI);
+    lAnklePos.x() += dSwing;
+    rAnklePos.x() += dSwing;
   }
   
-  cout << "hipAngle: " << hipAngle << endl;
-
   // Determine desired joint angles
   VectorXd jointAngles = am.getJointAngles();
 

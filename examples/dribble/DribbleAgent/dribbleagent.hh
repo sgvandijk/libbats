@@ -76,9 +76,17 @@ private:
    * Called at each cycle after a message from the server is received and parsed. Put all your thinking and acting stuff here.
    */
   virtual void think();
-  
+
+  /** Determine joint velocities to move into a standing position
+   */
+  Eigen::VectorXd stand();
+
+  /** Determine joint angles for head joints in order to look at the ball
+   */
   Eigen::Vector2d determineWhereToLook();
 
+  /** Determine walking and facing directions
+   */
   Eigen::VectorXd determineWhereToWalk();
 };
 
