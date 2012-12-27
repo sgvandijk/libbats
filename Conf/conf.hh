@@ -64,6 +64,45 @@ namespace bats {
    *  This is a Singleton, use initialize() before using.
    */
   class Conf {
+  public:
+
+    ~Conf() { destroy(); }
+
+    /**
+     * Set the name of the file that Conf should load.
+     */
+    void setFile(std::string const &confFile);
+
+    /**
+     *  @returns the absolute root node of the config tree.
+     */
+    XMLNode getRoot();
+
+    /**
+     *  @returns a set of nodes which match the XPATH expression expr.
+     *  @see http://www.w3schools.com/xpath/
+     */
+    XMLNodeSet selectXPath(std::string const &expr) const;
+
+    /**
+     *  @returns the value of the value attribute of the node specified with
+     *           the xpath of /conf/parameters/name. If the parameter does not
+     *           exist the value def is returned.
+     */
+    template <typename T>
+    T getParam(std::string const &name, T def) const;
+    
+    /**
+     *  @returns the value of the value attribute of the node
+     *           specified with the xpath of
+     *           /conf/player-class[@idx=playerClassIdx]/parameters/name. If
+     *           the parameter does not exist the value def is
+     *           returned.
+     */
+    template <typename T>
+    T getParam(unsigned playerClassIdx, std::string const &name, T def) const;
+
+  private:
     friend class Singleton<Conf>;
     
     xmlDocPtr d_doc;
@@ -91,81 +130,50 @@ namespace bats {
      */
     Conf(std::string const &confFile);
 
-  public:
-
-    ~Conf() { destroy(); }
-
-    /**
-     * Set the name of the file that Conf should load.
-     */
-    void setFile(std::string const &confFile)
-    {
-      parseConf(confFile);
-
-      if (xpathCtx)
-        xmlXPathFreeContext(xpathCtx); 
-      xpathCtx = xmlXPathNewContext(d_doc);
-    }
-    
-    /**
-     * Get BATS specific parameter. Do not use.
-     * TODO: Move from library to BATS code
-     */
-		XMLNode getParam(std::string const &classType, std::string const &behaviorId);
-
-    /**
-     * Get BATS specific parameters. Do not use.
-     * TODO: Move from library to BATS code
-     */
-		XMLNodeSet getParams(std::string const& behaviorTree, std::string const &behaviorId, std::string const &subpath = "");
-		
-    /**
-     *  @returns the absolute root node of the config tree.
-     */
-    XMLNode getRoot() { return xmlDocGetRootElement(d_doc); }
-
-    /**
-     *  @returns the node with name inside the gamestate node with id gamestate.
-     */
-    XMLNode getSection(std::string const &gamestate,
-                       std::string const &name);
-
-    /**
-     *  @returns a set of nodes which match the XPATH expression expr.
-     *  @see http://www.w3schools.com/xpath/
-     */
-    XMLNodeSet selectXPath(std::string const &expr) const;
-
-    /**
-     *  @returns the value of the value attribute of the node specified with
-     *           the xpath of /conf/parameters/ + name. If the parameter does not
-     *           exist the value def is returned.
-     */
-    template <typename T> T getParam(std::string const &name, T def) const
-    {
-      XMLNodeSet ns = selectXPath(std::string("/conf/parameters/") + name);
-
-      if(ns && !ns.empty())
-      {
-        std::istringstream s(ns.front().getContent());
-        s >> def;
-      }
-      return def;
-    };
-
-    template <typename T> T getParam(unsigned playerClassIdx, std::string const &name, T def) const
-    {
-      std::ostringstream xpath("");
-      xpath << "/conf/player-class[@idx=" << playerClassIdx << "]/parameters/" << name;
-      XMLNodeSet ns = selectXPath(xpath.str());
-      if(ns && !ns.empty())
-      {
-        std::istringstream s(ns.front().getContent());
-        s >> def;
-      }
-      return def;
-    } 
   };
+
+  // Member implementations
+
+  inline void Conf::setFile(std::string const &confFile)
+  {
+    parseConf(confFile);
+    
+    if (xpathCtx)
+      xmlXPathFreeContext(xpathCtx); 
+    xpathCtx = xmlXPathNewContext(d_doc);
+  }
+
+  inline XMLNode Conf::getRoot()
+  {
+    return xmlDocGetRootElement(d_doc);
+  }
+
+  template <typename T>
+  T Conf::getParam(std::string const &name, T def) const
+  {
+    XMLNodeSet ns = selectXPath(std::string("/conf/parameters/") + name);
+    
+    if(ns && !ns.empty())
+    {
+      std::istringstream s(ns.front().getContent());
+      s >> def;
+    }
+    return def;
+  };
+
+  template <typename T>
+  T Conf::getParam(unsigned playerClassIdx, std::string const &name, T def) const
+  {
+    std::ostringstream xpath("");
+    xpath << "/conf/player-class[@idx=" << playerClassIdx << "]/parameters/" << name;
+    XMLNodeSet ns = selectXPath(xpath.str());
+    if(ns && !ns.empty())
+    {
+      std::istringstream s(ns.front().getContent());
+      s >> def;
+    }
+    return def;
+  } 
 
   typedef Singleton<Conf> SConf;
 };

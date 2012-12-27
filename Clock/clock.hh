@@ -50,10 +50,22 @@ namespace bats
     virtual ~Clock() {}
 
     virtual void update() = 0;
-    /** Gets the simulation time. Use WorldModel for game time.  */
+
+    /** The global time
+     *
+     * This is equivalent to the machine time, without a specified
+     * reference time. So you should only use this time to determine
+     * time differences. If you want the game time, use WorldModel
+     * instead.
+     */
     double getTime() const { return d_time; }
+
+    /** The time difference between the current and previous timesteps */
     double getDt() const { return d_dt; }
-    
+
+    /** Check whether given time is the previous time step */
+    bool isPreviousTimeStep(double time) { return time + d_dt == d_time; }
+
   protected:
     double d_time;
     double d_dt;

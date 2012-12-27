@@ -81,6 +81,7 @@ set(LIBBATS_SOURCES
 ./WorldModel/initWeights.cc
 ./WorldModel/getDirectionOfOpponentGoal.cc
 ./WorldModel/onMyBack.cc
+./MotionSequenceFactory/createMotionSequence.cc
 ./Cochlea/translateInfo.cc
 ./Cochlea/parsePolar.cc
 ./Cochlea/Cochlea.cc
@@ -108,11 +109,8 @@ set(LIBBATS_SOURCES
 ./AST/select.cc
 ./PlayerClass/static.cc
 ./Conf/selectxpath.cc
-./Conf/getParams.cc
-./Conf/getparam.cc
 ./Conf/parseConf.cc
 ./Conf/Conf.cc
-./Conf/getsection.cc
 ./Clock/RC3DClock/update.cc
 ./Math/makeRotation.cc
 ./Math/distanceLinePoint.cc
@@ -154,6 +152,10 @@ set(LIBBATS_SOURCES
 ./JointController/GaitGenerator/IKGaitGenerator/updateSpeed.cc
 ./JointController/GaitGenerator/IKGaitGenerator/fillJointAngles.cc
 ./JointController/GaitGenerator/IKGaitGenerator/run.cc
+./JointController/MotionSequencePlayer/runCurrentFrame.cc
+./JointController/MotionSequencePlayer/checkEndOfFrame.cc
+./JointController/MotionSequencePlayer/checkFirstRun.cc
+./JointController/MotionSequencePlayer/run.cc
 ./HumanoidAgent/startUp.cc
 ./HumanoidAgent/static.cc
 ./HumanoidAgent/run.cc
