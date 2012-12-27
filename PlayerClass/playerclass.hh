@@ -7,21 +7,26 @@
 
 namespace bats
 {
+  /** Player class
+   *
+   * Base class for implementing different classes that players can belong to.
+   */
   class PlayerClass
   {
   public:
+    /// Maps an index to a player class
     typedef std::map<unsigned, std::shared_ptr<PlayerClass> > PCMap;
     
-    PlayerClass(unsigned idx)
-    : d_idx(idx)
-    {
-    }
+    PlayerClass(unsigned idx);
     
+    /// Creates playerclasses from configuration file
     template<typename T>
     static void createPlayerClasses();
     
+    /// Get all created playerclasses
     static PCMap getPlayerClasses() { return s_playerClasses; }
     
+    /// Get the player class with the given index
     static std::shared_ptr<PlayerClass> getPlayerClass(unsigned idx) { return s_playerClasses[idx]; }
 
   protected:
@@ -30,6 +35,13 @@ namespace bats
     static PCMap s_playerClasses;
   };
   
+
+  // Member implementations
+  PlayerClass::PlayerClass(unsigned idx)
+    : d_idx(idx)
+  {
+  }
+
   template<typename T>
   void PlayerClass::createPlayerClasses()
   {
@@ -49,6 +61,7 @@ namespace bats
     }
   }
   
+
 }
 
 #endif
