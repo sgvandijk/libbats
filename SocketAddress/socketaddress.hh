@@ -66,7 +66,7 @@
 #include <string>
 #endif
 
-namespace mvds {
+namespace bats {
 
   /**
    *  A C++ wrapper for socketaddress

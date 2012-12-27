@@ -43,7 +43,7 @@
 
 #include "socket.hh"
 
-namespace mvds {
+namespace bats {
 
   Socket::Socket(int _domain, int _type, int _protocol)
   : refcnt(new unsigned)

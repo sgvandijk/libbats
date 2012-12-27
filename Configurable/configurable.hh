@@ -50,7 +50,7 @@ namespace bats
      * @returns the content of the requested parameter as a string, or
      * an empty string when the parameter isn't found
      */
-    std::string getConfParamContent(std::string const& &xpath) const;
+    std::string getConfParamContent(std::string const& xpath) const;
 
     /** Get a parameter of a specific type from the XML configuration
      * 
@@ -88,7 +88,7 @@ namespace bats
 
   inline void Configurable::setTag(std::string const& tag) { d_tag = tag; }
 
-  inline Configurable::getConfParamContent(std::string const& xpath) const
+  inline std::string Configurable::getConfParamContent(std::string const& xpath) const
   {
     std::string fullPath = std::string("/conf/") + d_tag + std::string("['@id=") + d_id + std::string("']") + xpath;
     bats::XMLNodeSet ns(bats::SConf::getInstance().selectXPath(fullPath));

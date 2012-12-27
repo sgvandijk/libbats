@@ -47,7 +47,7 @@
 
 #include "socketaddress.hh"
 
-namespace mvds {
+namespace bats {
 
   void SocketAddress::NSLookup(std::string const &_host_name)
   {

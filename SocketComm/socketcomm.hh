@@ -107,14 +107,14 @@ namespace bats {
      */
     void initSocket(std::string host, int port)
     {
-      d_socket = mvds::Socket(PF_INET,SOCK_STREAM,0);
-      d_socketAddress = mvds::SocketAddress(PF_INET,port,host);
+      d_socket = Socket(PF_INET,SOCK_STREAM,0);
+      d_socketAddress = SocketAddress(PF_INET,port,host);
     }
     
     /**
      * Get description of the address that is being used.
      */
-    mvds::SocketAddress getSocketAddress() { return d_socketAddress; }
+    SocketAddress getSocketAddress() { return d_socketAddress; }
     
     /**
      * Open a connection to the server
@@ -217,8 +217,8 @@ namespace bats {
     void initConnection();
   
   private:
-    mvds::Socket d_socket;
-    mvds::SocketAddress d_socketAddress;
+    Socket d_socket;
+    SocketAddress d_socketAddress;
 
   };
 }
