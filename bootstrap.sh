@@ -122,6 +122,7 @@ DribbleAgent/init.cc
 DribbleAgent/think.cc
 DribbleAgent/determineWhereToLook.cc
 DribbleAgent/determineWhereToWalk.cc
+DribbleAgent/stand.cc
 )
 
 add_executable(dribble
