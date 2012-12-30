@@ -205,7 +205,7 @@ namespace bats {
     bool d_parseInput;
     bool d_skipWhenLagging;
 
-    mvds::TimeVal t0, t1;
+    TimeVal t0, t1;
 
     SocketComm(SocketComm const &); // NI
     SocketComm &operator=(SocketComm const &); // NI

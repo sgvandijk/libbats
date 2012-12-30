@@ -2,7 +2,6 @@
 #include "../../AgentModel/agentmodel.hh"
 
 using namespace std;
-using namespace mvds;
 using namespace bats;
 using namespace Eigen;
 

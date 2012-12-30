@@ -5,11 +5,11 @@ Vector2d DribbleAgent::determineWhereToLook()
   Localizer& localizer = SLocalizer::getInstance();
   AgentModel& agentModel = SAgentModel::getInstance();
 
-  if (localizer.ball->isAlive)
+  if (localizer.getBall()->isAlive)
   {
     // We have a reliable idea where the ball is. Get the
     // position. Pass 'true' to set the z-coordinate to 0
-    Vector3d ballPosition = localizer.ball->getPositionLocal(true);
+    Vector3d ballPosition = localizer.getBall()->getPositionLocal(true);
 
     // Determine ball position relative to head, in agent frame
     Vector3d ballPositionAF =

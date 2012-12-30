@@ -26,7 +26,7 @@ KalmanLocalizer::KalmanLocalizer()
   //
   // Create the ball
   //
-  objects.push_back(ball = make_shared<DynamicObjectInfo>(bats::Types::BALL, wm.getBallRadius()));
+  d_objects.push_back(d_ball = make_shared<DynamicObjectInfo>(bats::Types::BALL, wm.getBallRadius()));
   
   //
   // Create objects for players of both teams
@@ -34,77 +34,104 @@ KalmanLocalizer::KalmanLocalizer()
   // NOTE that we need to make all 11 opponents, even if we are playing with
   // fewer players, as teams may use any uniform number between 1 and 11,
   // though the keeper will always have unum==1.
-  for (unsigned unum = 1; unum <= 11; ++unum)
-    opponents.push_back(make_shared<PlayerInfo>(Types::getOpponentWithUnum(unum), playerRadius));
   for (unsigned unum = 1; unum <= wm.getNumberOfPlayers(); ++unum)
-    teamMates.push_back(make_shared<PlayerInfo>(Types::getTeamMateWithUnum(unum), playerRadius));
+  {
+    shared_ptr<PlayerInfo> tm =
+      make_shared<PlayerInfo>(Types::getTeamMateWithUnum(unum), playerRadius);
+    if (tm->isMe)
+      d_me = tm;
+    d_teamMates.push_back(tm);
+  }
+
+  for (unsigned unum = 1; unum <= 11; ++unum)
+    d_opponents.push_back(make_shared<PlayerInfo>(Types::getOpponentWithUnum(unum), playerRadius));
   
   // Add them to the players list
-  for (shared_ptr<PlayerInfo> teamMate : teamMates)
-    players.push_back(teamMate);
-  for (shared_ptr<PlayerInfo> opponent : opponents)
-    players.push_back(opponent);
-  for (shared_ptr<PlayerInfo> player : players)
-  {
-    if (player->isMe)
-      me = player;
-    objects.push_back(player);
-  }
-  
-  landmarks.push_back(flag1Us   = d_objectInfos[Types::FLAG1US]     = make_shared<ObjectInfo>(Types::FLAG1US,   /*radius*/landmarkRadius, /*dynamic*/false));
-  landmarks.push_back(flag2Us   = d_objectInfos[Types::FLAG2US]     = make_shared<ObjectInfo>(Types::FLAG2US,   /*radius*/landmarkRadius, /*dynamic*/false));
-  landmarks.push_back(flag1Them = d_objectInfos[Types::FLAG1THEM]   = make_shared<ObjectInfo>(Types::FLAG1THEM, /*radius*/landmarkRadius, /*dynamic*/false));
-  landmarks.push_back(flag2Them = d_objectInfos[Types::FLAG2THEM]   = make_shared<ObjectInfo>(Types::FLAG2THEM, /*radius*/landmarkRadius, /*dynamic*/false));
-  landmarks.push_back(goal1Us   = d_objectInfos[Types::GOAL1US]     = make_shared<ObjectInfo>(Types::GOAL1US,   /*radius*/landmarkRadius, /*dynamic*/false));
-  landmarks.push_back(goal2Us   = d_objectInfos[Types::GOAL2US]     = make_shared<ObjectInfo>(Types::GOAL2US,   /*radius*/landmarkRadius, /*dynamic*/false));
-  landmarks.push_back(goal1Them = d_objectInfos[Types::GOAL1THEM]   = make_shared<ObjectInfo>(Types::GOAL1THEM, /*radius*/landmarkRadius, /*dynamic*/false));
-  landmarks.push_back(goal2Them = d_objectInfos[Types::GOAL2THEM]   = make_shared<ObjectInfo>(Types::GOAL2THEM, /*radius*/landmarkRadius, /*dynamic*/false));
-  landmarks.push_back(center    = d_objectInfos[Types::FIELDCENTER] = make_shared<ObjectInfo>(Types::FIELDCENTER, /*radius*/landmarkRadius, /*dynamic*/false));
+  d_players.insert(d_players.end(), d_teamMates.begin(), d_teamMates.end());
+  d_players.insert(d_players.end(), d_opponents.begin(), d_opponents.end());
+
+  d_objects.insert(d_objects.end(), d_players.begin(), d_players.end());
   
   // Populate the set of all landmarks
-  for (shared_ptr<ObjectInfo> landmark : landmarks)
-    objects.push_back(landmark);
+  d_landmarks.push_back(d_flag1Us =
+			make_shared<ObjectInfo>(Types::FLAG1US,
+						/*radius*/landmarkRadius,
+						/*dynamic*/false));
+  d_landmarks.push_back(d_flag2Us =
+			make_shared<ObjectInfo>(Types::FLAG2US,
+						/*radius*/landmarkRadius,
+						/*dynamic*/false));
+  d_landmarks.push_back(d_flag1Them =
+			make_shared<ObjectInfo>(Types::FLAG1THEM,
+						/*radius*/landmarkRadius,
+						/*dynamic*/false));
+  d_landmarks.push_back(d_flag2Them =
+			make_shared<ObjectInfo>(Types::FLAG2THEM,
+						/*radius*/landmarkRadius,
+						/*dynamic*/false));
+  d_landmarks.push_back(d_goal1Us   = 
+			make_shared<ObjectInfo>(Types::GOAL1US,
+						/*radius*/landmarkRadius,
+						/*dynamic*/false));
+  d_landmarks.push_back(d_goal2Us   =
+			make_shared<ObjectInfo>(Types::GOAL2US,
+						/*radius*/landmarkRadius,
+						/*dynamic*/false));
+  d_landmarks.push_back(d_goal1Them =
+			make_shared<ObjectInfo>(Types::GOAL1THEM,
+						/*radius*/landmarkRadius,
+						/*dynamic*/false));
+  d_landmarks.push_back(d_goal2Them =
+			make_shared<ObjectInfo>(Types::GOAL2THEM,
+						/*radius*/landmarkRadius,
+						/*dynamic*/false));
+  d_landmarks.push_back(d_center    =
+			make_shared<ObjectInfo>(Types::FIELDCENTER,
+						/*radius*/landmarkRadius,
+						/*dynamic*/false));
+
+  d_objects.insert(d_objects.end(), d_landmarks.begin(), d_landmarks.end());
   
   // Populate the set of all objects
-  for (shared_ptr<ObjectInfo> object : objects)
+  for (shared_ptr<ObjectInfo> object : d_objects)
     d_objectInfos[object->objectId] = object;
   
   //
   // Initialise fixed landmarks with known location details, and zero velocities, obviously 
   //
-  flag1Us->posVelGlobal->init(  joinPositionAndVelocityVectors(Vector3d(-halfFieldLength,  halfFieldWidth, 0), Vector3d(0,0,0)), MatrixXd::Identity(6, 6));
-  flag2Us->posVelGlobal->init(  joinPositionAndVelocityVectors(Vector3d(-halfFieldLength, -halfFieldWidth, 0), Vector3d(0,0,0)), MatrixXd::Identity(6, 6));
-  flag1Them->posVelGlobal->init(joinPositionAndVelocityVectors(Vector3d( halfFieldLength,  halfFieldWidth, 0), Vector3d(0,0,0)), MatrixXd::Identity(6, 6));
-  flag2Them->posVelGlobal->init(joinPositionAndVelocityVectors(Vector3d( halfFieldLength, -halfFieldWidth, 0), Vector3d(0,0,0)), MatrixXd::Identity(6, 6));
+  d_flag1Us->posVelGlobal->init(joinPositionAndVelocityVectors(Vector3d(-halfFieldLength,  halfFieldWidth, 0), Vector3d(0,0,0)), MatrixXd::Identity(6, 6));
+  d_flag2Us->posVelGlobal->init(  joinPositionAndVelocityVectors(Vector3d(-halfFieldLength, -halfFieldWidth, 0), Vector3d(0,0,0)), MatrixXd::Identity(6, 6));
+  d_flag1Them->posVelGlobal->init(joinPositionAndVelocityVectors(Vector3d( halfFieldLength,  halfFieldWidth, 0), Vector3d(0,0,0)), MatrixXd::Identity(6, 6));
+  d_flag2Them->posVelGlobal->init(joinPositionAndVelocityVectors(Vector3d( halfFieldLength, -halfFieldWidth, 0), Vector3d(0,0,0)), MatrixXd::Identity(6, 6));
   
-  goal1Us->posVelGlobal->init(  joinPositionAndVelocityVectors(Vector3d(-halfFieldLength,  halfGoalWidth, goalHeight), Vector3d(0,0,0)), MatrixXd::Identity(6, 6));
-  goal2Us->posVelGlobal->init(  joinPositionAndVelocityVectors(Vector3d(-halfFieldLength, -halfGoalWidth, goalHeight), Vector3d(0,0,0)), MatrixXd::Identity(6, 6));
-  goal1Them->posVelGlobal->init(joinPositionAndVelocityVectors(Vector3d( halfFieldLength,  halfGoalWidth, goalHeight), Vector3d(0,0,0)), MatrixXd::Identity(6, 6));
-  goal2Them->posVelGlobal->init(joinPositionAndVelocityVectors(Vector3d( halfFieldLength, -halfGoalWidth, goalHeight), Vector3d(0,0,0)), MatrixXd::Identity(6, 6));
+  d_goal1Us->posVelGlobal->init(  joinPositionAndVelocityVectors(Vector3d(-halfFieldLength,  halfGoalWidth, goalHeight), Vector3d(0,0,0)), MatrixXd::Identity(6, 6));
+  d_goal2Us->posVelGlobal->init(  joinPositionAndVelocityVectors(Vector3d(-halfFieldLength, -halfGoalWidth, goalHeight), Vector3d(0,0,0)), MatrixXd::Identity(6, 6));
+  d_goal1Them->posVelGlobal->init(joinPositionAndVelocityVectors(Vector3d( halfFieldLength,  halfGoalWidth, goalHeight), Vector3d(0,0,0)), MatrixXd::Identity(6, 6));
+  d_goal2Them->posVelGlobal->init(joinPositionAndVelocityVectors(Vector3d( halfFieldLength, -halfGoalWidth, goalHeight), Vector3d(0,0,0)), MatrixXd::Identity(6, 6));
 
-  center->posVelGlobal->init(   joinPositionAndVelocityVectors(Vector3d(0, 0, 0), Vector3d(0,0,0)), MatrixXd::Identity(6, 6));
+  d_center->posVelGlobal->init(   joinPositionAndVelocityVectors(Vector3d(0, 0, 0), Vector3d(0,0,0)), MatrixXd::Identity(6, 6));
 
   //
   // Store some known pairs of landmarks that can be used for orientation on
   // the field.
   //
-  d_forwardPairs.push_back(LandmarkPair(flag2Us, flag1Us));
-  d_forwardPairs.push_back(LandmarkPair(goal2Us, goal1Us));
-  d_forwardPairs.push_back(LandmarkPair(flag2Them, flag1Them));
-  d_forwardPairs.push_back(LandmarkPair(goal2Them, goal1Them));
+  d_forwardPairs.push_back(LandmarkPair(d_flag2Us, d_flag1Us));
+  d_forwardPairs.push_back(LandmarkPair(d_goal2Us, d_goal1Us));
+  d_forwardPairs.push_back(LandmarkPair(d_flag2Them, d_flag1Them));
+  d_forwardPairs.push_back(LandmarkPair(d_goal2Them, d_goal1Them));
 
-  d_rightPairs.push_back(LandmarkPair(flag1Us, flag1Them));
-  d_rightPairs.push_back(LandmarkPair(flag2Us, flag2Them));
-  d_rightPairs.push_back(LandmarkPair(goal1Us, goal1Them));
-  d_rightPairs.push_back(LandmarkPair(goal2Us, goal2Them));
+  d_rightPairs.push_back(LandmarkPair(d_flag1Us, d_flag1Them));
+  d_rightPairs.push_back(LandmarkPair(d_flag2Us, d_flag2Them));
+  d_rightPairs.push_back(LandmarkPair(d_goal1Us, d_goal1Them));
+  d_rightPairs.push_back(LandmarkPair(d_goal2Us, d_goal2Them));
 
-  d_rightCrossProductPairs.push_back(LandmarkPairPair(LandmarkPair(flag1Us, goal1Us), LandmarkPair(flag1Us, goal2Us)));
-  d_rightCrossProductPairs.push_back(LandmarkPairPair(LandmarkPair(flag1Us, goal1Us), LandmarkPair(flag1Us, flag2Us)));
-  d_rightCrossProductPairs.push_back(LandmarkPairPair(LandmarkPair(flag1Us, goal2Us), LandmarkPair(flag1Us, flag2Us)));
-  d_rightCrossProductPairs.push_back(LandmarkPairPair(LandmarkPair(goal1Us, goal2Us), LandmarkPair(goal1Us, flag2Us)));
+  d_rightCrossProductPairs.push_back(LandmarkPairPair(LandmarkPair(d_flag1Us, d_goal1Us), LandmarkPair(d_flag1Us, d_goal2Us)));
+  d_rightCrossProductPairs.push_back(LandmarkPairPair(LandmarkPair(d_flag1Us, d_goal1Us), LandmarkPair(d_flag1Us, d_flag2Us)));
+  d_rightCrossProductPairs.push_back(LandmarkPairPair(LandmarkPair(d_flag1Us, d_goal2Us), LandmarkPair(d_flag1Us, d_flag2Us)));
+  d_rightCrossProductPairs.push_back(LandmarkPairPair(LandmarkPair(d_goal1Us, d_goal2Us), LandmarkPair(d_goal1Us, d_flag2Us)));
 
-  d_rightCrossProductPairs.push_back(LandmarkPairPair(LandmarkPair(flag1Them, goal1Them), LandmarkPair(flag1Them, goal2Them)));
-  d_rightCrossProductPairs.push_back(LandmarkPairPair(LandmarkPair(flag1Them, goal1Them), LandmarkPair(flag1Them, flag2Them)));
-  d_rightCrossProductPairs.push_back(LandmarkPairPair(LandmarkPair(flag1Them, goal2Them), LandmarkPair(flag1Them, flag2Them)));
-  d_rightCrossProductPairs.push_back(LandmarkPairPair(LandmarkPair(goal1Them, goal2Them), LandmarkPair(goal1Them, flag2Them)));
+  d_rightCrossProductPairs.push_back(LandmarkPairPair(LandmarkPair(d_flag1Them, d_goal1Them), LandmarkPair(d_flag1Them, d_goal2Them)));
+  d_rightCrossProductPairs.push_back(LandmarkPairPair(LandmarkPair(d_flag1Them, d_goal1Them), LandmarkPair(d_flag1Them, d_flag2Them)));
+  d_rightCrossProductPairs.push_back(LandmarkPairPair(LandmarkPair(d_flag1Them, d_goal2Them), LandmarkPair(d_flag1Them, d_flag2Them)));
+  d_rightCrossProductPairs.push_back(LandmarkPairPair(LandmarkPair(d_goal1Them, d_goal2Them), LandmarkPair(d_goal1Them, d_flag2Them)));
 }

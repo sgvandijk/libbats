@@ -7,7 +7,7 @@ VectorXd DribbleAgent::determineWhereToWalk()
   Localizer& localizer = SLocalizer::getInstance();
   
   // Determine where the ball is
-  Vector3d ballPosition = localizer.ball->getPositionLocal(true);
+  Vector3d ballPosition = localizer.getBall()->getPositionLocal(true);
 
   // Determine where the opponent's goal is
   Vector3d goalPosition = localizer.getTheirGoalMidpointLocal();
@@ -22,7 +22,7 @@ VectorXd DribbleAgent::determineWhereToWalk()
   // player through ball onto the back line, and see if point is not
   // too far from the middel of the goal. Check whether the ball isn't
   // too far to the side.
-  Vector3d backLineDirection = localizer.goal2Them->getPositionLocal() - localizer.goal1Them->getPositionLocal();
+  Vector3d backLineDirection = localizer.getGoal2Them()->getPositionLocal() - localizer.getGoal1Them()->getPositionLocal();
   Vector3d projection =
     Math::intersectLines2D(selfPosition, ballPosition,
 			   goalPosition, backLineDirection);

@@ -4,7 +4,7 @@ void KalmanLocalizer::updateSelfGlobal()
 {
   AgentModel& am = bats::SAgentModel::getInstance();
   
-  VectorXd oldLocVel = me->posVelGlobal->getMu();
+  VectorXd oldLocVel = d_me->posVelGlobal->getMu();
   Vector3d accLocal = am.getAcc();
   Vector3d accGlobal = d_globalRotation.linear() * accLocal;
   
@@ -41,7 +41,7 @@ void KalmanLocalizer::updateSelfGlobal()
   
   shared_ptr<NormalDistribution> controlModel = make_shared<NormalDistribution>(6);
   controlModel->init(VectorXd::Zero(6), Q);
-  me->posVelGlobal->predict(F, controlModel);
+  d_me->posVelGlobal->predict(F, controlModel);
   
   /*
    * Update
@@ -51,7 +51,7 @@ void KalmanLocalizer::updateSelfGlobal()
     shared_ptr<NormalDistribution> obsModel = make_shared<NormalDistribution>(6);
     Affine3d globalRotationTrans(d_globalRotation.matrix().transpose());
     
-    for (shared_ptr<ObjectInfo> landmark : landmarks)
+    for (shared_ptr<ObjectInfo> landmark : d_landmarks)
     {
       if (!landmark->isVisible)
         continue;
@@ -74,10 +74,10 @@ void KalmanLocalizer::updateSelfGlobal()
         d_globalRotation.linear() * cutVelocityMatrix(sigma) * globalRotationTrans.linear());
       
       obsModel->init(globalMeas, globalSigma);
-      me->posVelGlobal->update(obsModel);
+      d_me->posVelGlobal->update(obsModel);
     }
   }
   
-  d_globalTranslation = Translation3d(cutPositionVector(me->posVelGlobal->getMu()));
+  d_globalTranslation = Translation3d(cutPositionVector(d_me->posVelGlobal->getMu()));
   d_globalTransform = d_globalTranslation * d_globalRotation;
 }

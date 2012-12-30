@@ -20,23 +20,26 @@ namespace bats
 
   private:
     MotionSequence d_sequence;
+    double d_sequenceStartTime;
+    Eigen::VectorXd d_startJoingAngles;
     double d_lastRanTime;
-    MotionSequence::iterator d_previousFrame;
-    MotionSequence::iterator d_currentFrame;
-    double d_frameStartTime;
+    bool d_sequenceDone;
 
+    // Load motion sequence from configuration file
     void createMotionSequence();
 
     void checkFirstRun();
-    void runCurrentFrame();
-    void checkEndOfFrame();
+    void runCurrentStep();
+    void checkEndOfSequence();
+    
+    bool isSequenceDone() const;
   };
 
   // Member implementations
   inline MotionSequencePlayer::MotionSequencePlayer()
     : JointController("MotionSequencePlayer"),
       d_lastRanTime(0),
-      d_frameStartTime(0)
+      d_sequenceStartTime(0)
   {
     setTag("motionsequenceplayer");
     createMotionSequence();
@@ -45,6 +48,11 @@ namespace bats
   inline void MotionSequencePlayer::setSequence(MotionSequence const& sequence)
   {
     d_sequence = sequence;
+  }
+
+  inline bool MotionSequencePlayer::isSequenceDone() const
+  {
+    return d_sequenceDone;
   }
 }
 

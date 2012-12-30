@@ -152,8 +152,7 @@ set(LIBBATS_SOURCES
 ./JointController/GaitGenerator/IKGaitGenerator/fillJointAngles.cc
 ./JointController/GaitGenerator/IKGaitGenerator/run.cc
 ./JointController/MotionSequencePlayer/createMotionSequence.cc
-./JointController/MotionSequencePlayer/runCurrentFrame.cc
-./JointController/MotionSequencePlayer/checkEndOfFrame.cc
+./JointController/MotionSequencePlayer/runCurrentStep.cc
 ./JointController/MotionSequencePlayer/checkFirstRun.cc
 ./JointController/MotionSequencePlayer/.#createMotionSequence.cc
 ./JointController/MotionSequencePlayer/run.cc

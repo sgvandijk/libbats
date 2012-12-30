@@ -28,7 +28,7 @@ void KalmanLocalizer::globalToLocal()
   // Determine local coordinates for all objects given the earlier computed
   // global coordinates.
   //
-  for (shared_ptr<ObjectInfo> object : objects)
+  for (shared_ptr<ObjectInfo> object : d_objects)
   {
     object->posVelLocal->init(joinPositionAndVelocityVectors( globalToLocal             * object->getPositionGlobal(),
                                                               globalToLocalRot          * object->getVelocityGlobal()),

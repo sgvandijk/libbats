@@ -7,7 +7,7 @@ unsigned WorldModel::otherTeamMateCloserTo(Vector3d const& posLocal, bool standi
   double dist = posLocal.norm();
   unsigned count = 0;
 
-  for (shared_ptr<PlayerInfo> teamMate : loc.teamMates)
+  for (shared_ptr<PlayerInfo> teamMate : loc.getTeamMates())
   {
     if (!teamMate->isAlive || teamMate->isMe)
       continue;
@@ -35,5 +35,5 @@ unsigned WorldModel::otherTeamMateCloserToBall(bool standingOnly, bool returnCou
 {
   Localizer& loc = bats::SLocalizer::getInstance();
 
-  return otherTeamMateCloserTo(loc.ball->getPositionLocal(/*zeroZ*/true), standingOnly, returnCount);
+  return otherTeamMateCloserTo(loc.getBall()->getPositionLocal(/*zeroZ*/true), standingOnly, returnCount);
 }

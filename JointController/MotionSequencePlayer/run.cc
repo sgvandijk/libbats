@@ -4,12 +4,12 @@ void MotionSequencePlayer::run(JointControlParams* params)
 {
   Clock& clock = SClock::getInstance();
 
-  // Did we run last time step?
+  // Did we run last time step? If not, start from beginning
   checkFirstRun();
   
-  // Run the current frame; this sets d_jointVelocities
-  runCurrentFrame();
+  // Run this timestep
+  runCurrentStep();
+
+  // Check whether we are finished
   
-  // Check whether we reached the end of this frame, select next if we did
-  checkEndOfFrame();
 }

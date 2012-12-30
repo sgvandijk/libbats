@@ -2,10 +2,10 @@
 
 void KalmanLocalizer::updatePlayersGlobal()
 {
-  VectorXd myPosVelGlobal = me->posVelGlobal->getMu();
-  MatrixXd mySigma = me->posVelGlobal->getSigma();
+  VectorXd myPosVelGlobal = d_me->posVelGlobal->getMu();
+  MatrixXd mySigma = d_me->posVelGlobal->getSigma();
 
-  for (shared_ptr<PlayerInfo> player : players)
+  for (shared_ptr<PlayerInfo> player : d_players)
   {
     VectorXd oldPosVelGlobal = player->posVelGlobal->getMu();
     

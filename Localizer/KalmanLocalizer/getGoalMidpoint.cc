@@ -2,14 +2,14 @@
 
 Eigen::Vector3d KalmanLocalizer::getTheirGoalMidpointLocal() const
 {
-  return (goal1Them->getPositionLocal(/*zeroZ*/true)
-        + goal2Them->getPositionLocal(/*zeroZ*/true)) / 2;
+  return (d_goal1Them->getPositionLocal(/*zeroZ*/true)
+        + d_goal2Them->getPositionLocal(/*zeroZ*/true)) / 2;
 };
 
 Eigen::Vector3d KalmanLocalizer::getOurGoalMidpointLocal() const
 {
-  return (goal1Us->getPositionLocal(/*zeroZ*/true)
-        + goal2Us->getPositionLocal(/*zeroZ*/true)) / 2;
+  return (d_goal1Us->getPositionLocal(/*zeroZ*/true)
+        + d_goal2Us->getPositionLocal(/*zeroZ*/true)) / 2;
 };
 
 Eigen::Vector3d KalmanLocalizer::getTheirGoalMidpointGlobal() const

@@ -2,16 +2,14 @@
 
 void MotionSequencePlayer::checkFirstRun() {
   Clock& clock = SClock::getInstance();
+  AgentModel& am = SAgentModel::getInstance();
 
   if (!clock.isPreviousTimeStep(d_lastRanTime))
   {
-    // Push current angles to beginning of list
-    MotionKeyFrame startFrame;
-    startFrame.targetAngles = SAgentModel::getInstance().getJointAngles();
-    d_sequence.push_front(startFrame);
-    d_previousFrame = d_sequence.begin();
-    d_currentFrame = d_previousFrame;
-    d_currentFrame++;
-    d_frameStartTime = 0;
+    // Record starting angles
+    d_startJoingAngles = am.getJointAngles();
+
+    // reset start time
+    d_sequenceStartTime = clock.getTime();
   }
 }
