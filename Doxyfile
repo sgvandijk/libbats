@@ -365,7 +365,7 @@ EXTRACT_ALL            = NO
 # If the EXTRACT_PRIVATE tag is set to YES all private members of a class
 # will be included in the documentation.
 
-EXTRACT_PRIVATE        = YES
+EXTRACT_PRIVATE        = NO
 
 # If the EXTRACT_PACKAGE tag is set to YES all members with package or internal
 # scope will be included in the documentation.
@@ -661,8 +661,9 @@ WARN_LOGFILE           =
 # directories like "/usr/src/myproject". Separate the files or directories
 # with spaces.
 
-INPUT                  = . \
-                         docs/mainpage.txt
+INPUT                  = docs/doc.hh \
+                         docs/mainpage.txt \
+		         .
 
 # This tag can be used to specify the character encoding of the source files
 # that doxygen parses. Internally doxygen uses the UTF-8 encoding, which is
@@ -918,7 +919,7 @@ HTML_FILE_EXTENSION    = .html
 # robust against future updates. Doxygen will copy the style sheet file to
 # the output directory.
 
-HTML_EXTRA_STYLESHEET  =
+HTML_EXTRA_STYLESHEET  = docs/libbats.css
 
 # The HTML_EXTRA_FILES tag can be used to specify one or more extra images or
 # other source files which should be copied to the HTML output directory. Note
@@ -1261,7 +1262,7 @@ MAKEINDEX_CMD_NAME     = makeindex
 # LaTeX documents. This may be useful for small projects and may help to
 # save some trees in general.
 
-COMPACT_LATEX          = NO
+COMPACT_LATEX          = YES
 
 # The PAPER_TYPE tag can be used to set the paper type that is used
 # by the printer. Possible values are: a4, letter, legal and
@@ -1293,7 +1294,7 @@ LATEX_FOOTER           =
 # contain links (just like the HTML output) instead of page references
 # This makes the output suitable for online browsing using a pdf viewer.
 
-PDF_HYPERLINKS         = NO
+PDF_HYPERLINKS         = YES
 
 # If the USE_PDFLATEX tag is set to YES, pdflatex will be used instead of
 # plain latex in the generated Makefile. Set this option to YES to get a

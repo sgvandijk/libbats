@@ -1,12 +1,5 @@
 #include "robovizdebugger.ih"
 
-bool removeShapeUntilIfExpired(RoboVizDebugger::ShapeUntil& shapeUntil)
-{
-  double time = SWorldModel::getInstance().getTime();
-  bool expired = shapeUntil.time < time;
-  return expired;
-}
-
 void RoboVizDebugger::drawShapes()
 {
   // draw all one-shot shapes
@@ -15,9 +8,16 @@ void RoboVizDebugger::drawShapes()
   d_shapes.clear();
   
   // draw any sticky shapes
-  d_shapesUntil.remove_if(removeShapeUntilIfExpired);
-  for (list<ShapeUntil>::iterator iter = d_shapesUntil.begin(); iter != d_shapesUntil.end(); ++iter)
-    drawShape((*iter).shape);
+  // Clear expired shapes
+  d_shapesUntil.remove_if([](ShapeUntil const& shapeUntil) {
+      return shapeUntil.time < SClock::getInstance().getTime();
+    });
+
+  // Draw all shapes
+  for_each(d_shapesUntil.begin(), d_shapesUntil.end(),
+	   [this] (ShapeUntil const& shapeUntil) {
+	     drawShape(shapeUntil.shape);
+	   });
 }
 
 void RoboVizDebugger::drawShape(shared_ptr<Shape> shape)

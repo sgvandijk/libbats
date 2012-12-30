@@ -37,20 +37,26 @@
  *
  */
 
-#ifndef __BATS_ACTION_HH_
-#define __BATS_ACTION_HH_
+#ifndef BATS_ACTION_HH
+#define BATS_ACTION_HH
 
 
 namespace bats
 {
+  /** Base class for actions */
   struct Action
   {
+    /** Constructor
+     *
+     * @param t The actions's type
+     */
     Action(unsigned t = 0)
-    : type(t)
+      : type(t)
     {}
     
-   unsigned type;
+    /// The action's type
+    unsigned type;
   };
 }
   
-#endif // __BATS_ACTION_HH_
+#endif // BATS_ACTION_HH_

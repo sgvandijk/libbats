@@ -1,7 +1,5 @@
 #include "types.ih"
-#include "../WorldModel/worldmodel.hh"
 
-/*
 Types::Object Types::getTeamMateWithUnum(unsigned unum)
 {
   if (unum < 1 || unum > bats::SWorldModel::getInstance().getNumberOfPlayers())
@@ -22,4 +20,4 @@ Types::Object Types::getOpponentWithUnum(unsigned unum)
   }
   return (Types::Object)(Types::OPPONENT1 + unum - 1);
 };
-*/
+

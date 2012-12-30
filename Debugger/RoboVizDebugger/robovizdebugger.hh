@@ -12,10 +12,14 @@
 #include "../../Socket/socket.hh"
 #include "../../SocketAddress/socketaddress.hh"
 #include "../../Types/types.hh"
-#include "../../WorldModel/worldmodel.hh"
+#include "../../Clock/clock.hh"
 
 namespace bats
 {
+  /** RoboViz debugger implementation
+   *
+   * @ingroup debugging
+   */
   class RoboVizDebugger : public Debugger
   {
     friend class Singleton<Debugger>;
@@ -33,7 +37,7 @@ namespace bats
       virtual void draw(std::shared_ptr<Shape> shape) { d_shapes.push_back(shape); }
       
       virtual void drawForPeriod(std::shared_ptr<Shape> shape, double durationSeconds) {
-        double time = SWorldModel::getInstance().getTime();
+        double time = SClock::getInstance().getTime();
         drawUntil(shape, time + durationSeconds);
       }
       
@@ -48,13 +52,9 @@ namespace bats
       virtual bool isVerbose() { return d_isVerbose; }
       virtual void setVerbose(bool isVerbose) { d_isVerbose = isVerbose; }
 
+    private:
       struct ShapeUntil { public: std::shared_ptr<Shape> shape; double time; };
 
-      void drawSelf();
-      void drawBall();
-      void drawPlayers();
-
-    private:
       std::string d_robovizHost;
       std::string d_robovizPort;
       bool d_isStarted;
@@ -67,6 +67,10 @@ namespace bats
       std::list<ShapeUntil> d_shapesUntil;
 
       RoboVizDebugger ();
+
+      void drawSelf();
+      void drawBall();
+      void drawPlayers();
 
       const std::string getSetName(std::shared_ptr<Shape> shape);
       const std::string getSetName(const std::string suffix);
@@ -104,8 +108,10 @@ namespace bats
       void onThinkEnd();
       void drawShapes();
       void drawShape(std::shared_ptr<Shape> shape);
-      //bool removeShapeUntilIfExpired(ShapeUntil& shapeUntil);
   };
+
+
+  // Member implementations
 
   inline int RoboVizDebugger::writeCharToBuf(unsigned char* buf, unsigned char value) const {
     *buf = value;
