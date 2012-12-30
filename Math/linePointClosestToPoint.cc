@@ -1,13 +1,5 @@
 #include "math.ih"
 
-/**
-  *  Calculates the nearest point on a line to
-  *  another point.
-  *
-  *  @param l0 the start point of the line.
-  *  @param lVect the not normalized line vector.
-  *  @param point the other point.
-  */
 Vector3d Math::linePointClosestToPoint(Vector3d const &l0,
 				 Vector3d const &lVect,
 				 Vector3d const &point,

@@ -95,7 +95,7 @@ namespace bats {
     /**
      *  @returns the value of the value attribute of the node
      *           specified with the xpath of
-     *           /conf/player-class[@idx=playerClassIdx]/parameters/name. If
+     *           /conf/player-class[\@idx=playerClassIdx]/parameters/name. If
      *           the parameter does not exist the value def is
      *           returned.
      */

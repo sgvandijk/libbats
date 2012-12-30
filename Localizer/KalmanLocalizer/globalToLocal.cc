@@ -83,11 +83,11 @@ void KalmanLocalizer::globalToLocal()
       }
     }
 
-    // TODO is there a better way of type checking/casting here?
+    // todo is there a better way of type checking/casting here?
     if (object->isDynamic)
     {
       shared_ptr<DynamicObjectInfo> dynamicObject = static_pointer_cast<DynamicObjectInfo>(object);
-      // 95% certainty radius is 3m, the object is dead (TODO: un-magic-numberfy)
+      // 95% certainty radius is 3m, the object is dead (todo: un-magic-numberfy)
       if (sqrt(dynamicObject->posVelGlobal->getSigma()(0, 0)) * 2 > 3.0)
         dynamicObject->isAlive = false;
     }

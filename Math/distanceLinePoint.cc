@@ -1,16 +1,8 @@
 #include "math.ih"
 
-/**
-  *  Calculates the distance to the closest point
-  *  on a line.
-  *
-  *  @param l0 the starting point of the line.
-  *  @param lVect the normalized vector of the line.
-  *  @param The point.
-  */
 double Math::distanceLinePoint(Vector3d const &l0,
-			 Vector3d const &lVect,
-			 Vector3d const &point)
+			       Vector3d const &lVect,
+			       Vector3d const &point)
 {
   Vector3d v = lVect.normalized();
   Vector3d s = calcPerpend(v);

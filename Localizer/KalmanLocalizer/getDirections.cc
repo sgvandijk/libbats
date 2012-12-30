@@ -2,7 +2,7 @@
 
 Eigen::Vector3d KalmanLocalizer::getForwardDirLocal() const
 {
-  // TODO can't we do this from the global rotation matrix?
+  // todo can't we do this from the global rotation matrix?
   Eigen::Vector3d theirGoalMidpointLocal = getTheirGoalMidpointLocal();
   Eigen::Vector3d ourGoalMidpointLocal = getOurGoalMidpointLocal();
   Eigen::Vector3d line = theirGoalMidpointLocal - ourGoalMidpointLocal;
@@ -13,7 +13,7 @@ Eigen::Vector3d KalmanLocalizer::getForwardDirLocal() const
 
 Eigen::Vector3d KalmanLocalizer::getRightDirLocal() const
 {
-  // TODO can't we do this from the global rotation matrix?
+  // todo can't we do this from the global rotation matrix?
   
   Eigen::Vector3d line = d_goal1Us->getPositionLocal(/*zeroZ*/true) 
                        - d_goal2Us->getPositionLocal(/*zeroZ*/true);

@@ -19,7 +19,7 @@ void IKGaitGenerator::fillJointAngles(VectorXd& jointAngles, VectorXd const& lef
   jointAngles(Types::RLEG6) = -(jointAngles(Types::RLEG3));
 
   // Compensate turning
-  // TODO: optimize, and put into Joint class
+  // todo: optimize, and put into Joint class
   /*
   Vector3d lhipAxis = am.getJoint(Types::LLEG1)->axis;
   Vector3d rhipAxis = am.getJoint(Types::LLEG1)->axis;

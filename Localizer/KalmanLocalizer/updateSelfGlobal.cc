@@ -23,18 +23,18 @@ void KalmanLocalizer::updateSelfGlobal()
   // | 0  0  0  0  1  0 |
   // | 0  0  0  0  0  1 |
   //
-  // TODO: use indeed v_t to predict
+  // todo: use indeed v_t to predict
   MatrixXd F = MatrixXd::Identity(6, 6);
   //F.corner(TopRight, 3, 3).diagonal().setConstant(dt);
 
   // Assume no control
-  // TODO: make this smarter by using actions of previous step
+  // todo: make this smarter by using actions of previous step
   //MatrixXd B = MatrixXd::Zero(6,6);
   //B.corner(BottomRight,3 ,3).diagonal().setConstant(dt);
   //VectorXd u = VectorXd::Zero(6);
 
   // Slight process noise to overcome lack of control data
-  // TODO: tweak
+  // todo: tweak
   // this. Low value assumes no movement, large value means very
   // uncertain about movement, trust mostly vision
   MatrixXd Q = VectorXd::Constant(6, 0.0001).asDiagonal();

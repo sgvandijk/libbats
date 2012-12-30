@@ -1,6 +1,9 @@
 #include "robovizdebugger.ih"
 
-void RoboVizDebugger::drawLine(float x1, float y1, float z1, float x2, float y2, float z2, float thickness, float r, float g, float b, const string* setName) {
+void RoboVizDebugger::drawLine(float x1, float y1, float z1,
+			       float x2, float y2, float z2,
+			       float thickness,
+			       float r, float g, float b, const std::string* setName) {
   float pa[3] = {x1,y1,z1};
   float pb[3] = {x2,y2,z2};
   float color[3] = {r,g,b};

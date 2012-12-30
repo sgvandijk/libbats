@@ -32,6 +32,7 @@ namespace bats
      * parameters can be read using xpaths "/param1" and "/param2"
      * respectively:
      * 
+     * \code{.xml}
      * <conf>
      *   ...
      *   <mytagname id="myconfigurable">
@@ -40,6 +41,8 @@ namespace bats
      *   </mytagname>
      *   ...
      * </conf>
+     * </pre>
+     * \endcode
      *
      * where 'mytagname' and 'myconfigurable' are the tag and id given
      * on construction.
@@ -56,7 +59,7 @@ namespace bats
      * 
      * This function will look for an element (directly under the
      * "conf" root node) with the tag and id of the instance it is
-     * called on, the same as @getConfParamContent, and return the
+     * called on, the same as @a getConfParamContent, and return the
      * content parsed into the desired type.
      *
      * @param xpath The xpath of the parameter relative to this

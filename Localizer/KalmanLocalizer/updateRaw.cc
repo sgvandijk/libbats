@@ -34,7 +34,7 @@ void KalmanLocalizer::updateRaw()
   //
   for (shared_ptr<ObjectInfo> object : d_objects)
   {
-    // TODO: also filter noise
+    // todo: also filter noise
     
     //
     // Special handling for observed player limbs

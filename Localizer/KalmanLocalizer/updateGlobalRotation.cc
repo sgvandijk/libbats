@@ -2,7 +2,7 @@
 
 void KalmanLocalizer::updateGlobalRotation()
 {
-  // TODO consider using an estimate of the gyro data for the *current* cycle -- find out whether the data tends to support this well or not
+  // todo consider using an estimate of the gyro data for the *current* cycle -- find out whether the data tends to support this well or not
   
   Cochlea& cochlea = bats::SCochlea::getInstance();
   AgentModel& am = bats::SAgentModel::getInstance();

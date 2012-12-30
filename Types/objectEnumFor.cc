@@ -1,6 +1,5 @@
 #include "types.ih"
 
-
 Types::PlayMode Types::objectEnumFor(std::string const &a, Types::PlayMode def)
 {
       for(size_t i = 0; i < Types::NOBJECTS; ++i)
@@ -28,3 +27,4 @@ Types::Object Types::objectEnumFor(std::string const &a, Types::Object def)
     }
   return def;
 }
+

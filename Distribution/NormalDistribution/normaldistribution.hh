@@ -58,7 +58,7 @@ namespace bats {
   public:
     /** Construct normal distribution with d dimensions
       * sets /mu and /sigma to 0
-      * @param d number of dimensions
+      * @param size Number of dimensions
     */
     NormalDistribution(int size) 
     : d_size(size),
@@ -79,8 +79,8 @@ namespace bats {
     /** Initialize distribution
      *
      * Initialize the distribution given a normal distribution \f$ N(\mu, \Sigma) \f$
-     * @param mean vector of the distribution
-     * @param covariance matrix of the distribution
+     * @param mu Mean vector of the distribution
+     * @param sigma Covariance matrix of the distribution
      */
     virtual void init(Eigen::VectorXd const &mu, Eigen::MatrixXd const &sigma);
 

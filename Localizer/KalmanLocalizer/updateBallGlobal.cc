@@ -38,7 +38,7 @@ void KalmanLocalizer::updateBallGlobal()
   }
 
   // Process noise
-  // TODO: tweak this
+  // todo: tweak this
   MatrixXd Q = MatrixXd::Identity(6, 6) * 0.0005;
   
   shared_ptr<NormalDistribution> controlModel = make_shared<NormalDistribution>(6);
@@ -50,7 +50,7 @@ void KalmanLocalizer::updateBallGlobal()
    */
   if (d_haveNewVisionData)
   {
-    // TODO: capture when we don't see ball
+    // todo: capture when we don't see ball
     if (d_ball->isVisible)
     {
       shared_ptr<NormalDistribution> obsModel = make_shared<NormalDistribution>(6);

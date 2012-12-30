@@ -63,7 +63,7 @@ namespace bats
       {}
 
     /** Rounds value and variance to n decimals
-        @param n number of decimals, in the range 1-4 (default: 2)
+        @param dec number of decimals, in the range 1-4 (default: 2)
     */
     void round(size_t dec = 2)
     {

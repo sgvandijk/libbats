@@ -5,7 +5,7 @@ VectorXd AgentModel::jointAnglesForAnklePosition(Vector3d const& p, Types::Side 
   VectorXd res = VectorXd::Zero(6);
  
   // lines between hip-knee and knee-ankle
-  // TODO: this can be static
+  // todo: this can be static
   VectorXd link1 = getJoint(Types::LLEG2)->anchors.second - getJoint(Types::LLEG4)->anchors.first;
   VectorXd link2 = getJoint(Types::LLEG4)->anchors.second - getJoint(Types::LLEG5)->anchors.first;
 
