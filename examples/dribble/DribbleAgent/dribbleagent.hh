@@ -42,6 +42,8 @@
 
 #include <HumanoidAgent/humanoidagent.hh>
 #include <JointController/GaitGenerator/IKGaitGenerator/ikgaitgenerator.hh>
+#include <JointController/MotionSequencePlayer/motionsequenceplayer.hh>
+#include <map>
 
 /** A dribbling robot
   */
@@ -53,14 +55,14 @@ public:
    *
    *  Sets this agent's teamname to "Hello". Consider putting initialization stuff in init() instead of here.
    */
-  DribbleAgent()
-    : bats::HumanoidAgent(std::string("Dribble"), "conf.xml")
-  {
-  }
+  DribbleAgent();
   
 private:
   // The agent's gait generator
   std::shared_ptr<bats::GaitGenerator> d_gaitGenerator;
+
+  // Motion sequence players
+  std::map<std::string, std::shared_ptr<bats::MotionSequencePlayer>> d_motionSequencePlayers;
 
   // Used to smoothen walking parameters
   Eigen::VectorXd d_paramFilter;

@@ -13,9 +13,17 @@ void DribbleAgent::init()
   // Initialize gait generator; use Inverse Kinematics implementation
   d_gaitGenerator = make_shared<IKGaitGenerator>("dribblegaitgenerator");
 
-  // Initialize walk paramaeter filter; stationary, facing forward
+  // Initialize walk parameter filter; stationary, facing forward
   d_paramFilter = VectorXd(6);
   d_paramFilter << 0, 0, 0, 0, 1, 0;
+
+  // Create motion sequence players
+  d_motionSequencePlayers["getupfromback"]  = make_shared<MotionSequencePlayer>("getupfromback");
+  d_motionSequencePlayers["getupfromfront"] = make_shared<MotionSequencePlayer>("getupfromfront");
+
+  // Load the motion sequences from configuration file
+  for (auto kv : d_motionSequencePlayers)
+    kv.second->loadSequenceFromConf();
 
 }
 

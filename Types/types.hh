@@ -259,6 +259,17 @@ namespace bats
     }
     
     /**
+     *
+     * Get the dual joint of a joint, i.e. the corresponsing joint on the other side of the body
+     * @param dual Output joint
+     * @param joint Input joint
+     * @returns a scaling factor to multiple angles/velocities for the
+     * input joint with to achieve the same motion in the dual joint.
+     */
+
+    static double dualOf(Types::Joint& dual, Types::Joint const joint);
+
+    /**
      * 
      * This function is an inverse of Types::objectEnumFor
      * @returns the enum name for the given object enum

@@ -12,10 +12,36 @@ namespace bats
   class MotionSequencePlayer : public JointController
   {
   public:
-    MotionSequencePlayer();
+    /** Constructor
+     *
+     * @param id Sequence player id
+     */
+    MotionSequencePlayer(std::string const& id);
     
+    /** Load motion sequence from configuration
+     *
+     * Your configuration file should have a section of the following format:
+     *
+     * \code{.xml}
+     * <motionsequenceplayer id="playerid">
+     *   <sequence>
+     *     ...
+     *   </sequence>
+     *   <issymmetric>1</issymmetric>
+     *   </param>
+     * </motionsequenceplayer>
+     * \endcode
+     *
+     * The @a issymmetric parameter is optional.
+     */
+    void loadSequenceFromConf();
+
+    /** Set pre-constructed sequence
+     */
     void setSequence(MotionSequence const& sequence);
 
+    /** Run sequence player
+     */
     virtual void run(JointControlParams* params);
 
   private:
@@ -25,9 +51,6 @@ namespace bats
     double d_lastRanTime;
     bool d_sequenceDone;
 
-    // Load motion sequence from configuration file
-    void createMotionSequence();
-
     void checkFirstRun();
     void runCurrentStep();
     void checkEndOfSequence();
@@ -36,13 +59,12 @@ namespace bats
   };
 
   // Member implementations
-  inline MotionSequencePlayer::MotionSequencePlayer()
-    : JointController("MotionSequencePlayer"),
+  inline MotionSequencePlayer::MotionSequencePlayer(std::string const& id)
+    : JointController(id),
       d_lastRanTime(0),
       d_sequenceStartTime(0)
   {
     setTag("motionsequenceplayer");
-    createMotionSequence();
   }
 
   inline void MotionSequencePlayer::setSequence(MotionSequence const& sequence)

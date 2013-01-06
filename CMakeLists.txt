@@ -23,6 +23,7 @@ set(CMAKE_CXX_FLAGS "-std=c++0x")
 #
 
 set(LIBBATS_SOURCES
+./Types/dualOf.cc
 ./Types/getPlayerWithUnum.cc
 ./Types/objectEnumFor.cc
 ./Types/isTeamMate.cc
@@ -151,10 +152,9 @@ set(LIBBATS_SOURCES
 ./JointController/GaitGenerator/IKGaitGenerator/updateSpeed.cc
 ./JointController/GaitGenerator/IKGaitGenerator/fillJointAngles.cc
 ./JointController/GaitGenerator/IKGaitGenerator/run.cc
-./JointController/MotionSequencePlayer/createMotionSequence.cc
+./JointController/MotionSequencePlayer/loadSequenceFromConf.cc
 ./JointController/MotionSequencePlayer/runCurrentStep.cc
 ./JointController/MotionSequencePlayer/checkFirstRun.cc
-./JointController/MotionSequencePlayer/.#createMotionSequence.cc
 ./JointController/MotionSequencePlayer/run.cc
 ./HumanoidAgent/startUp.cc
 ./HumanoidAgent/static.cc
