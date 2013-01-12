@@ -86,7 +86,7 @@ namespace bats
     }
 
     /** Initialize the singleton with a new instance of the given type
-      * with parameters @params parameters to be passed to the classes
+      * with parameters @a params parameters to be passed to the classes
       * construction
     */
     static void initialize(Params* params)
@@ -114,7 +114,7 @@ namespace bats
       * different derived class type from same abstract singleton
       * type.
       *
-      * @params parameters to be passed to the classes construction
+      * @a params parameters to be passed to the classes construction
 
     */
     template <typename I>

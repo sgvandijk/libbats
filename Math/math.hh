@@ -89,7 +89,7 @@ namespace bats
      * @param l0 The starting point of the line.
      * @param lVect The line direction vector.
      * @param point The other point.
-     * @param segment If true, only consider points on the segment [@l0, @l0 + @lVect], otherwise use full line @l0 + \lambda @lVect
+     * @param segment If true, only consider points on the segment [@a l0, @a l0 + @a lVect], otherwise use full line \f$ l0 + \lambda lVect \f$
      * @return The point on the line closest to the given point
      */
     static Eigen::Vector3d linePointClosestToPoint(Eigen::Vector3d const &l0,
@@ -97,10 +97,10 @@ namespace bats
                         Eigen::Vector3d const &point,
                         bool segment = true);
 
-    /**
-     * Calculates the perpendicular vector to \a v.
+    /** Calculate the perpendicular of a vector.
      *
-     * The perpendicular vector to \f$v = (x, y)\f$ is given by \f$(1.0, -1.0 / \frac{x}{y})\f$
+     * The perpendicular vector to \f$v = (x, y)\f$ is given by
+     * \f$(1.0, -1.0 / \frac{x}{y})\f$
      *
      * @param v A vector
      * @return The perpendicular vector to v
@@ -109,8 +109,10 @@ namespace bats
 
     /** Calculate the point where a given line intersects a given plane
      *
-     * To calculate the point where a line with starting position \f$(l_{x1}, l_{y1}, l_{z1})\f$ and <br>
-     * direction \f$(l_{x2}, l_{y2}, l_{z2})\f$ intersects a plane \f$(a, b, c, d)\f$:
+     * To calculate the point where a line with starting position
+     * \f$(l_{x1}, l_{y1}, l_{z1})\f$ and <br>
+     * direction \f$(l_{x2},
+     * l_{y2}, l_{z2})\f$ intersects a plane \f$(a, b, c, d)\f$:
      *
      * \f$x = l_{x1} + f * l_{x2}\f$
      *
@@ -127,7 +129,9 @@ namespace bats
      * @param plane The plane to intersect
      * @return The position where the line intersects the plane
      */
-    static Eigen::Vector3d intersectVectorPlane(Eigen::Vector3d const& position, Eigen::Vector3d const& direction, Eigen::Vector4d const& plane);
+    static Eigen::Vector3d intersectVectorPlane(Eigen::Vector3d const& position,
+						Eigen::Vector3d const& direction,
+						Eigen::Vector4d const& plane);
 
     /** Determine the point where two lines intersect in the X,Y plane
      *
@@ -136,16 +140,24 @@ namespace bats
      * @param pos2 A point on the second line
      * @param dir2 The direction of the second line
      */
-    static Eigen::Vector3d intersectLines2D(Eigen::Vector3d const& pos1, Eigen::Vector3d const& dir1, Eigen::Vector3d const& pos2, Eigen::Vector3d const& dir2);
+    static Eigen::Vector3d intersectLines2D(Eigen::Vector3d const& pos1,
+					    Eigen::Vector3d const& dir1,
+					    Eigen::Vector3d const& pos2,
+					    Eigen::Vector3d const& dir2);
 
     /** Determine the point where a line intersects a circle
      * 
+     * @param intersection Will hold the intersection coordinates
      * @param position A point on the line
      * @param direction The direction of the line
      * @param center Center of circle
      * @param radius Radius of the circle
      */
-    static bool intersectLineCircle(Eigen::Vector3d& intersection, Eigen::Vector3d const& position, Eigen::Vector3d const& direction, Eigen::Vector3d const& center, double radius);
+    static bool intersectLineCircle(Eigen::Vector3d& intersection,
+				    Eigen::Vector3d const& position,
+				    Eigen::Vector3d const& direction,
+				    Eigen::Vector3d const& center,
+				    double radius);
     
     /** Convert polar coordinates to cartesian coordinates
      *
@@ -193,7 +205,9 @@ namespace bats
       * @param b Second point
       * @returns whether @a a and @a b are on the same side of @a pivot
       */
-    static bool atSameSideOf(Eigen::Vector3d const& pivot, Eigen::Vector3d const& a, Eigen::Vector3d const& b);
+    static bool atSameSideOf(Eigen::Vector3d const& pivot,
+			     Eigen::Vector3d const& a,
+			     Eigen::Vector3d const& b);
 
     /** Gaussian kernel function
      *
@@ -241,7 +255,10 @@ namespace bats
      * @param up Direction of the z-axis
      * @param trans Translation
      */
-    static Eigen::Affine3d makeTransform(Eigen::Vector3d const& right, Eigen::Vector3d const& forward, Eigen::Vector3d const& up, Eigen::Vector3d const& trans = Eigen::Vector3d(0,0,0))
+    static Eigen::Affine3d makeTransform(Eigen::Vector3d const& right,
+					 Eigen::Vector3d const& forward,
+					 Eigen::Vector3d const& up,
+					 Eigen::Vector3d const& trans = Eigen::Vector3d(0,0,0))
     {
       Eigen::Matrix4d mat;
       mat << right.transpose(), 0,
@@ -302,7 +319,9 @@ namespace bats
       return diff;
     }
 
-    static double saturate(double v, double min, double max) {
+    /** Saturate a value to a limited range */
+    template <typename T>
+    static T saturate(T v, T min, T max) {
       if (v < min)
 	v = min;
       if (v > max)

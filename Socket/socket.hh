@@ -60,10 +60,7 @@ extern "C"
 #define __SYSINC_IOSTREAM
 #endif
 
-/** \brief Originally Mart's code.
- *  
- */
-namespace mvds {
+namespace bats {
 
   /**
    *  A C++ wrapper for a socket.

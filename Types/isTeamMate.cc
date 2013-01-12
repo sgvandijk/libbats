@@ -52,3 +52,4 @@ Types::Object Types::getMaxOpponent()
 //   WorldModel& wm = SWorldModel::getInstance();
 //   return (Types::Object)(Types::OPPONENT1 + wm.getNumberOfPlayers() - 1);
 };
+

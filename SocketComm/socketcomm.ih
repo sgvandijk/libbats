@@ -5,5 +5,4 @@
 #include "../Preprocessor/debug.hh"
 
 using namespace std;
-using namespace mvds;
 using namespace bats;

@@ -62,8 +62,8 @@ namespace bats
     /** Initialize distribution
      *
      * Initialize the distribution given a normal distribution \f$ N(\mu, \Sigma) \f$
-     * @param mean vector
-     * @param covariance matrix
+     * @param mu Mean vector
+     * @param sigma Covariance matrix
      */
     virtual void init(Eigen::VectorXd const &mu, Eigen::MatrixXd const &sigma);
 

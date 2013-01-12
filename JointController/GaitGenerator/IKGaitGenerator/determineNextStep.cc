@@ -27,6 +27,6 @@ void IKGaitGenerator::determineNextStep(VectorXd const& targetDir, VectorXd cons
     0.5 * fabs(atan2(d_curStep.targetFaceDir.x(), d_curStep.targetFaceDir.y()))
     );
 
-  // TODO: put this calculation somewhere central (Util/AgentModel)
+  // todo: put this calculation somewhere central (Util/AgentModel)
   d_curStep.hipAngle = fabs(d_curStep.turn);
 }

@@ -3,7 +3,6 @@
 #include "../AgentModel/agentmodel.hh"
 #include "../Localizer//localizer.hh"
 #include "../Conf/conf.hh"
-#include "../BehaviorFactory/behaviorfactory.hh"
 #include "../Cerebellum/cerebellum.hh"
 #include "../Clock/RC3DClock/rc3dclock.hh"
 #include "../SituationDetector/situationdetector.hh"

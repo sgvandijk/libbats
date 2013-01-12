@@ -1,4 +1,3 @@
-#include "robovizdebugger.hh"
 #include "robovizdebugger.ih"
 
 const std::string RoboVizDebugger::getSetName(const std::string suffix)
@@ -9,7 +8,7 @@ const std::string RoboVizDebugger::getSetName(const std::string suffix)
   unsigned unum = am.getUnum();
   string sideLabel = wm.getSide()==Types::LEFT ? "L" : "R";
 
-  // TODO prevent against illegal characters?
+  // todo prevent against illegal characters?
   ostringstream setName;
   setName << sideLabel << ".A" << unum;
   if (!suffix.empty())
@@ -17,7 +16,7 @@ const std::string RoboVizDebugger::getSetName(const std::string suffix)
   return setName.str();
 }
 
-const std::string RoboVizDebugger::getSetName(shared_ptr<Shape> shape)
+const std::string RoboVizDebugger::getSetName(std::shared_ptr<Shape> shape)
 {
   // If the shape specifies a category, use it as a suffix
   string suffix = shape->category;

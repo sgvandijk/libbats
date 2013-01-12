@@ -133,7 +133,7 @@ namespace bats {
     double getTimeStep() const;
 
     /**
-     * /TODO Move to a better place
+     * /todo Move to a better place
      * @returns the direction of the center of the opponent's goal in polar coordinates
      */
     Eigen::Vector3d getDirectionOfOpponentGoal() const;

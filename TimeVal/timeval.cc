@@ -46,7 +46,7 @@
 
 #include "timeval.hh"
 
-namespace mvds {
+namespace bats {
 
   TimeVal TimeVal::getTimeOfDay()
   {

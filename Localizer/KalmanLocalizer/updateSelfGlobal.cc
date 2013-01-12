@@ -4,7 +4,7 @@ void KalmanLocalizer::updateSelfGlobal()
 {
   AgentModel& am = bats::SAgentModel::getInstance();
   
-  VectorXd oldLocVel = me->posVelGlobal->getMu();
+  VectorXd oldLocVel = d_me->posVelGlobal->getMu();
   Vector3d accLocal = am.getAcc();
   Vector3d accGlobal = d_globalRotation.linear() * accLocal;
   
@@ -23,25 +23,25 @@ void KalmanLocalizer::updateSelfGlobal()
   // | 0  0  0  0  1  0 |
   // | 0  0  0  0  0  1 |
   //
-  // TODO: use indeed v_t to predict
+  // todo: use indeed v_t to predict
   MatrixXd F = MatrixXd::Identity(6, 6);
   //F.corner(TopRight, 3, 3).diagonal().setConstant(dt);
 
   // Assume no control
-  // TODO: make this smarter by using actions of previous step
+  // todo: make this smarter by using actions of previous step
   //MatrixXd B = MatrixXd::Zero(6,6);
   //B.corner(BottomRight,3 ,3).diagonal().setConstant(dt);
   //VectorXd u = VectorXd::Zero(6);
 
   // Slight process noise to overcome lack of control data
-  // TODO: tweak
+  // todo: tweak
   // this. Low value assumes no movement, large value means very
   // uncertain about movement, trust mostly vision
   MatrixXd Q = VectorXd::Constant(6, 0.0001).asDiagonal();
   
   shared_ptr<NormalDistribution> controlModel = make_shared<NormalDistribution>(6);
   controlModel->init(VectorXd::Zero(6), Q);
-  me->posVelGlobal->predict(F, controlModel);
+  d_me->posVelGlobal->predict(F, controlModel);
   
   /*
    * Update
@@ -51,7 +51,7 @@ void KalmanLocalizer::updateSelfGlobal()
     shared_ptr<NormalDistribution> obsModel = make_shared<NormalDistribution>(6);
     Affine3d globalRotationTrans(d_globalRotation.matrix().transpose());
     
-    for (shared_ptr<ObjectInfo> landmark : landmarks)
+    for (shared_ptr<ObjectInfo> landmark : d_landmarks)
     {
       if (!landmark->isVisible)
         continue;
@@ -74,10 +74,10 @@ void KalmanLocalizer::updateSelfGlobal()
         d_globalRotation.linear() * cutVelocityMatrix(sigma) * globalRotationTrans.linear());
       
       obsModel->init(globalMeas, globalSigma);
-      me->posVelGlobal->update(obsModel);
+      d_me->posVelGlobal->update(obsModel);
     }
   }
   
-  d_globalTranslation = Translation3d(cutPositionVector(me->posVelGlobal->getMu()));
+  d_globalTranslation = Translation3d(cutPositionVector(d_me->posVelGlobal->getMu()));
   d_globalTransform = d_globalTranslation * d_globalRotation;
 }

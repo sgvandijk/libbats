@@ -16,7 +16,7 @@ void KalmanLocalizer::updateRaw()
   // Set everything as non-visible initially.  We will set these to true
   // as we process the raw data below.
   //
-  for (shared_ptr<ObjectInfo> object : objects)
+  for (shared_ptr<ObjectInfo> object : d_objects)
   {
     if (object->isPlayer)
     {
@@ -32,9 +32,9 @@ void KalmanLocalizer::updateRaw()
   //
   // Loop through all objects and see whether there's new vision data for them.
   //
-  for (shared_ptr<ObjectInfo> object : objects)
+  for (shared_ptr<ObjectInfo> object : d_objects)
   {
-    // TODO: also filter noise
+    // todo: also filter noise
     
     //
     // Special handling for observed player limbs

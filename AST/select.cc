@@ -1,7 +1,7 @@
 #include "ast.ih"
 
 /**
- * \TODO: This can be optimized a very lot!!
+ * \todo: This can be optimized a very lot!!
  */
 shared_ptr<AST::Node> AST::Node::select(Path const &select) const
 {

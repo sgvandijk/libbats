@@ -10,6 +10,10 @@ namespace bats
 {
   extern "C" void onDrawingAreaExpose(GtkObject *object, gpointer user_data);
 
+  /** GTK debugger implementation
+   *
+   * @ingroup debugging
+   */
   class GtkDebugger : public Debugger
   {
     friend class Singleton<Debugger>;

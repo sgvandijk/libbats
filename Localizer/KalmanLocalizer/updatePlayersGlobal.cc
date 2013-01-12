@@ -2,10 +2,10 @@
 
 void KalmanLocalizer::updatePlayersGlobal()
 {
-  VectorXd myPosVelGlobal = me->posVelGlobal->getMu();
-  MatrixXd mySigma = me->posVelGlobal->getSigma();
+  VectorXd myPosVelGlobal = d_me->posVelGlobal->getMu();
+  MatrixXd mySigma = d_me->posVelGlobal->getSigma();
 
-  for (shared_ptr<PlayerInfo> player : players)
+  for (shared_ptr<PlayerInfo> player : d_players)
   {
     VectorXd oldPosVelGlobal = player->posVelGlobal->getMu();
     
@@ -24,7 +24,7 @@ void KalmanLocalizer::updatePlayersGlobal()
     
     // Assume player is decelerating
     // now: a = -v: assume decelerate to stop in a second
-    // TODO: make this smarter
+    // todo: make this smarter
     Vector3d oldVel = cutVelocityVector(oldPosVelGlobal);
     Vector3d u = -.1 * oldVel;
     
@@ -35,12 +35,12 @@ void KalmanLocalizer::updatePlayersGlobal()
     }
 
     // Process noise to overcome lack of control data
-    // TODO: tweak this
+    // todo: tweak this
     // maximum estimated speed in meter per second
     double maxSpeed = 0.3;
     double maxDist = maxSpeed * dt;
     // If we set sigma to 1/2 * maxDist, 95% of distribution is within maximal distance
-    // TODO: velocity change
+    // todo: velocity change
     MatrixXd Q = MatrixXd::Identity(6, 6) * maxDist / 2;
     
     shared_ptr<NormalDistribution> controlModel = make_shared<NormalDistribution>(6);
@@ -52,9 +52,9 @@ void KalmanLocalizer::updatePlayersGlobal()
     //
     if (d_haveNewVisionData)
     {
-      /// TODO: cache obsModel
+      /// todo: cache obsModel
       shared_ptr<NormalDistribution> obsModel = make_shared<NormalDistribution>(6);
-      /// TODO: cache trans of global rotation matrix
+      /// todo: cache trans of global rotation matrix
       Affine3d globalRotationTrans = Affine3d(d_globalRotation.matrix().transpose());
       if (player->isVisible)
       {

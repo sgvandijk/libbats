@@ -1,0 +1,7 @@
+body, p, td, div, span, li, dt, dd {
+    font-family: sans-serif;
+}
+
+a[href*='#details'] {
+    font-size: smaller;
+}

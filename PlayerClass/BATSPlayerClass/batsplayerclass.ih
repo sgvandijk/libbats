@@ -1,6 +1,0 @@
-#include "batsplayerclass.hh"
-
-#include <sstream>
-
-using namespace bats;
-using namespace std;

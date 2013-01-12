@@ -54,8 +54,8 @@ namespace bats
     /** Initialize distribution
      *
      * Initialize the distribution given a normal distribution \f$ N(\mu, \Sigma) \f$
-     * @param mean vector
-     * @param covariance matrix
+     * @param mu Mean vector
+     * @param sigma Covariance matrix
      */
     virtual void init(Eigen::VectorXd const &mu, Eigen::MatrixXd const &sigma) = 0;
 
@@ -84,7 +84,7 @@ namespace bats
     virtual Eigen::VectorXd draw() const = 0;
     
     /**
-     * @returns probability density at @x
+     * @returns probability density at @a x
      */
     virtual double getP(Eigen::VectorXd const& x) const = 0;
     

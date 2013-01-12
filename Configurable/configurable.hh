@@ -24,12 +24,15 @@ namespace bats
      */
     void setTag(std::string const& tag);
 
-    /** Get a parameter of a specific type from the XML configuration
+    /** Get the content of a parameter from the XML configuration
+     *
+     * This function will look for an element (directly under the
+     * "conf" root node) with the tag and id of the instance it is
+     * called on. For example, in the following example the two
+     * parameters can be read using xpaths "/param1" and "/param2"
+     * respectively:
      * 
-     * This function will look for an element (directly
-     * under the "conf" root node) with the tag and id of the instance it is
-     * called on. Example XML:
-     * 
+     * \code{.xml}
      * <conf>
      *   ...
      *   <mytagname id="myconfigurable">
@@ -38,14 +41,32 @@ namespace bats
      *   </mytagname>
      *   ...
      * </conf>
+     * </pre>
+     * \endcode
      *
      * where 'mytagname' and 'myconfigurable' are the tag and id given
      * on construction.
      *
      * @param xpath The xpath of the parameter relative to this
      * configurable's node
-     * @param def Default value when the parameter is not defined in
-     * the configuration
+     *
+     * @returns the content of the requested parameter as a string, or
+     * an empty string when the parameter isn't found
+     */
+    std::string getConfParamContent(std::string const& xpath) const;
+
+    /** Get a parameter of a specific type from the XML configuration
+     * 
+     * This function will look for an element (directly under the
+     * "conf" root node) with the tag and id of the instance it is
+     * called on, the same as @a getConfParamContent, and return the
+     * content parsed into the desired type.
+     *
+     * @param xpath The xpath of the parameter relative to this
+     * configurable's node @param def Default value when the parameter
+     * is not defined in the configuration; the type of this value
+     * also determins the type of the return value.
+     *
      * @returns the node of the requested parameter or @a def when the
      * parameter isn't found
      */
@@ -70,10 +91,21 @@ namespace bats
 
   inline void Configurable::setTag(std::string const& tag) { d_tag = tag; }
 
+  inline std::string Configurable::getConfParamContent(std::string const& xpath) const
+  {
+    std::string fullPath = std::string("/conf/") + d_tag + std::string("[@id='") + d_id + std::string("']") + xpath;
+    bats::XMLNodeSet ns(bats::SConf::getInstance().selectXPath(fullPath));
+    if(ns && !ns.empty())
+    {
+      return ns.front().getContent();
+    }
+    return "";
+  }
+
   template <typename T>
   T Configurable::getConfParam(std::string const &xpath, T def) const
   {
-    std::string fullPath = std::string("/conf/") + d_tag + std::string("['@id=") + d_id + std::string("']") + xpath;
+    std::string fullPath = std::string("/conf/") + d_tag + std::string("[@id='") + d_id + std::string("']") + xpath;
     bats::XMLNodeSet ns(bats::SConf::getInstance().selectXPath(fullPath));
     if(ns && !ns.empty())
     {

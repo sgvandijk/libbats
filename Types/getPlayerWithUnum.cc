@@ -1,5 +1,4 @@
 #include "types.ih"
-#include "../WorldModel/worldmodel.hh"
 
 Types::Object Types::getTeamMateWithUnum(unsigned unum)
 {
@@ -21,3 +20,4 @@ Types::Object Types::getOpponentWithUnum(unsigned unum)
   }
   return (Types::Object)(Types::OPPONENT1 + unum - 1);
 };
+

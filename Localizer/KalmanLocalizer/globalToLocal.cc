@@ -28,7 +28,7 @@ void KalmanLocalizer::globalToLocal()
   // Determine local coordinates for all objects given the earlier computed
   // global coordinates.
   //
-  for (shared_ptr<ObjectInfo> object : objects)
+  for (shared_ptr<ObjectInfo> object : d_objects)
   {
     object->posVelLocal->init(joinPositionAndVelocityVectors( globalToLocal             * object->getPositionGlobal(),
                                                               globalToLocalRot          * object->getVelocityGlobal()),
@@ -83,11 +83,11 @@ void KalmanLocalizer::globalToLocal()
       }
     }
 
-    // TODO is there a better way of type checking/casting here?
+    // todo is there a better way of type checking/casting here?
     if (object->isDynamic)
     {
       shared_ptr<DynamicObjectInfo> dynamicObject = static_pointer_cast<DynamicObjectInfo>(object);
-      // 95% certainty radius is 3m, the object is dead (TODO: un-magic-numberfy)
+      // 95% certainty radius is 3m, the object is dead (todo: un-magic-numberfy)
       if (sqrt(dynamicObject->posVelGlobal->getSigma()(0, 0)) * 2 > 3.0)
         dynamicObject->isAlive = false;
     }

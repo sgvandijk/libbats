@@ -259,72 +259,82 @@ namespace bats
     }
     
     /**
-     * Return the enum name for a given object enum
+     *
+     * Get the dual joint of a joint, i.e. the corresponsing joint on the other side of the body
+     * @param dual Output joint
+     * @param joint Input joint
+     * @returns a scaling factor to multiple angles/velocities for the
+     * input joint with to achieve the same motion in the dual joint.
+     */
+
+    static double dualOf(Types::Joint& dual, Types::Joint const joint);
+
+    /**
+     * 
      * This function is an inverse of Types::objectEnumFor
+     * @returns the enum name for the given object enum
      */
     static std::string nameOf(Types::PlayMode const obj);
     
     /**
-     * Return the enum name for a given object enum
      * This function is an inverse of Types::objectEnumFor
+     * @returns the enum name for the given object enum
      */
     static std::string nameOf(Types::Side const obj);
     
     /**
-     * Return the enum name for a given object enum
      * This function is an inverse of Types::objectEnumFor
+     * @returns the enum name for the given object enum
      */
     static std::string nameOf(Types::Joint const obj);
     
     /**
-     * Return the enum name for a given object enum
      * This function is an inverse of Types::objectEnumFor
+     * @returns the enum name for the given object enum
      */
     static std::string nameOf(Types::JointType const obj);
     
     /**
-     * Return the enum name for a given object enum
      * This function is an inverse of Types::objectEnumFor
+     * @returns the enum name for the given object enum
      */
     static std::string nameOf(Types::Object const obj);
     
     /**
-     * Return the enum name for a given object enum
      * This function is an inverse of Types::objectEnumFor
+     * @returns the enum name for the given object enum
      */
     static std::string nameOf(Types::BodyPart const obj);
 
-    // TODO remove all of the below methods, using properties of PlayerInfo instead
-    
-    /** Return the Object enum for a given name, case sensitive
-     *
+    /** 
      * @param a Object name
      * @param def Default return value, in case of unknown object
+     * @returns the Object enum for a given name, case sensitive
      */
     static Types::PlayMode objectEnumFor(std::string const &a, Types::PlayMode def = NPLAYMODE);
     
-    /** Return the Object enum for a given name, case sensitive
-     *
+    /**
      * @param a Object name
      * @param def Default return value, in case of unknown object
-     */
+     * @returns the Object enum for a given name, case sensitive
+    */
     static Types::Object objectEnumFor(std::string const &a, Types::Object def = NOBJECTS);
     
-    /** Return the uniform number for a given player, either team mate or opponent
-     * 
-     * @param player Player or Opponent enum value
+    /**  
+     * @param playerId Player enum value
+     * @returns the uniform number for a given player, either team mate or opponent
      */
-    static unsigned unumFor(Types::Object objectId);
+    static unsigned unumFor(Types::Object playerId);
 
-    /** Return the Object enum for a given player (team mate)
-     * 
-     * @param unum The uniform number of the required player
+    /**
+     * @param unum The uniform number of the required team mate
+     * @returns the Object enum for a given team mate
      */
     static Types::Object getTeamMateWithUnum(unsigned unum);
     
-    /** Return the Object enum for a given opponent
-     * 
+    /** 
      * @param unum The uniform number of the required opponent
+     * @returns the Object enum for a given opponent
      */
     static Types::Object getOpponentWithUnum(unsigned unum);
     
@@ -346,7 +356,7 @@ namespace bats
     /** Gets whether the specified Object represents a keeper from either team */
     static bool isKeeper(Types::Object objectId);
     
-    /** Gets the max PLAYER object, given the configured number of players in this game */
+    /** Gets the max PLAYER object, given the configured number of players (per team) in this game */
     static Types::Object getMaxPlayer();
     
     /** Gets the max OPPONENT object, given the configured number of players in this game */

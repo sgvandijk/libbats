@@ -55,7 +55,7 @@
 #include <iostream>
 #endif
 
-namespace mvds {
+namespace bats {
 
   /**
    *  Timeval encapsulation

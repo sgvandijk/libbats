@@ -46,7 +46,7 @@
 
 namespace bats
 {
-  /** The basic class for events thrown by libbats */
+  /** The basic class for events fired by libbats */
   class BatsEvent
   {
     public:
@@ -59,7 +59,7 @@ namespace bats
       virtual std::string toString() const { return "BatsEvent"; }
   };
   
-  /** An event fired when the agent beams by the Beam behavior */
+  /** An event fired when the agent beams using the Beam behavior */
   class BeamEvent : public BatsEvent
   {
       Eigen::Vector3d d_where;
@@ -88,133 +88,6 @@ namespace bats
     EIGEN_MAKE_ALIGNED_OPERATOR_NEW
   };
   
-  /*
-   * --------------------- Behavior Events -------------------
-   */
-   
-  /** The basic class for behavior related events */
-  class BehaviorEvent : public BatsEvent
-  {
-    protected:
-      std::string d_behType;
-      std::string d_behId;
-      std::string d_message;
-      
-    public:
-      /** Constructor
-       * @param behType Type of the behavior that fires the event.
-       * @param behId ID of the behavior that fires the event.
-       * @param message Message to attach to the event
-       */
-      BehaviorEvent(std::string const& behType, std::string const& behId, std::string const& message = "")
-      : d_behType(behType),
-        d_behId(behId),
-        d_message(message)
-      {}
-      
-      /**
-       * @returns type of the behavior that fired the event.
-       */
-      std::string getBehType() const { return d_behType; }
-      
-      /**
-       * @returns ID of the behavior that fires the event.
-       */
-      std::string getBehId() const { return d_behId; }
-      
-      virtual std::string toString() const { return d_behType + std::string("::") + d_behId + d_message; }
-  };
-  
-  /** An event fired when a behavior starts its achieveGoal method */
-  class AchieveGoalStartEvent : public BehaviorEvent
-  {
-    public:
-      /** Constructor
-       * @param behType Type of the behavior that fires the event.
-       * @param behId ID of the behavior that fires the event.
-       */
-      AchieveGoalStartEvent(std::string const behType, std::string const& behId)
-      : BehaviorEvent(behType, behId, " - achieveGoal started")
-      {}
-
-  };
-
-  class AchieveGoalSuccessEvent : public BehaviorEvent
-  {
-    public:
-      /** Constructor
-       * @param behType Type of the behavior that fires the event.
-       * @param behId ID of the behavior that fires the event.
-       */
-      AchieveGoalSuccessEvent(std::string const behType, std::string const& behId)
-      : BehaviorEvent(behType, behId, " - achieveGoal successfull")
-      {}
-  };
-  
-  /** Event fired when a behavior starts attempt to run the last chosen (committed) subbehaviors) */
-  class LastChosenStartEvent : public BehaviorEvent
-  {
-    public:
-      /** Constructor
-       * @param behType Type of the behavior that fires the event.
-       * @param behId ID of the behavior that fires the event.
-       */
-      LastChosenStartEvent(std::string const behType, std::string const& behId)
-      : BehaviorEvent(behType, behId, " - run last chosen children started")
-      {}
-  };
-  
-  /** Event fired when a behavior starts attempt to run the current sequence step */
-  class CurrentStepStartEvent : public BehaviorEvent
-  {
-      unsigned d_step;
-      
-    public:
-      /** Constructor
-       * @param behType Type of the behavior that fires the event.
-       * @param behId ID of the behavior that fires the event.
-       * @param step Number of current sequence step
-       */
-      CurrentStepStartEvent(std::string const behType, std::string const& behId, unsigned step)
-      : BehaviorEvent(behType, behId),
-        d_step(step)
-      {
-        std::ostringstream out;
-        out << BehaviorEvent::toString() << " - run current step (" << d_step << ") started";
-        d_message = out.str();
-      }
-      
-      /**
-       * @returns number of current sequence step
-       */
-      unsigned getStep() const { return d_step; }
-  };
-  
-  /** Event fired when a behavior starts attempt to run the next sequence step */
-  class NextStepStartEvent : public BehaviorEvent
-  {
-      unsigned d_step;
-      
-    public:
-      /** Constructor
-       * @param behType Type of the behavior that fires the event.
-       * @param behId ID of the behavior that fires the event.
-       * @param step Number of next sequence step
-       */
-      NextStepStartEvent(std::string const behType, std::string const& behId, unsigned step)
-      : BehaviorEvent(behType, behId),
-        d_step(step)
-      {
-        std::ostringstream out;
-        out << BehaviorEvent::toString() << " - run next step (" << d_step << ") started";
-        d_message = out.str();
-      }
-
-      /**
-       * @returns number of current sequence step
-       */
-      unsigned getStep() const { return d_step; }
-  };
 };
 
 #endif

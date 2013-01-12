@@ -93,63 +93,95 @@ namespace bats
     
     virtual ~Localizer() {}
 
+    ///@name Life cycle
+    ///@{
+
     /** Called to initialize the Localizer */
     virtual void init() = 0;
 
     /** Called when an update needs to be done */
     virtual void update() = 0;
-    
+
+    ///@}
+
+    ///@name Object containers
+    ///@{
+
     /** Gets a vector of all players from both teams. */
-    PlayerVector players;
+    PlayerVector getPlayers() const;
+
     /** Gets a vector of all opposition players. */
-    PlayerVector opponents;
+    PlayerVector getOpponents() const;
+
     /** Gets a vector of all team mates, including the running agent. */
-    PlayerVector teamMates;
+    PlayerVector getTeamMates() const;
+
     /** Gets a vector of all landmarks, comprising four flags and four goal posts.
      * Note that this only contains goals and flags with objectIds of the form
      * Blah1Us, not Blah1Left. */
-    ObjectVector landmarks;
+    ObjectVector getLandMarks() const;
     
     /** Gets localisation information about the running agent. */
-    std::shared_ptr<bats::PlayerInfo> me;
+    std::shared_ptr<bats::PlayerInfo> getMe() const;
     
     /** Gets localisation information about the ball. */
-    std::shared_ptr<bats::DynamicObjectInfo> ball;
+    std::shared_ptr<bats::DynamicObjectInfo> getBall() const;
     
     /** Gets a vector of all objects. */
-    ObjectVector objects;
+    ObjectVector getObjects() const;
     
-    std::shared_ptr<bats::ObjectInfo> goal1Us;
-    std::shared_ptr<bats::ObjectInfo> goal2Us;
-    std::shared_ptr<bats::ObjectInfo> goal1Them;
-    std::shared_ptr<bats::ObjectInfo> goal2Them;
+    std::shared_ptr<bats::ObjectInfo> getGoal1Us() const;
+    std::shared_ptr<bats::ObjectInfo> getGoal2Us() const;
+    std::shared_ptr<bats::ObjectInfo> getGoal1Them() const;
+    std::shared_ptr<bats::ObjectInfo> getGoal2Them() const;
     
-    std::shared_ptr<bats::ObjectInfo> flag1Us;
-    std::shared_ptr<bats::ObjectInfo> flag2Us;
-    std::shared_ptr<bats::ObjectInfo> flag1Them;
-    std::shared_ptr<bats::ObjectInfo> flag2Them;
+    std::shared_ptr<bats::ObjectInfo> getFlag1Us() const;
+    std::shared_ptr<bats::ObjectInfo> getFlag2Us() const;
+    std::shared_ptr<bats::ObjectInfo> getFlag1Them() const;
+    std::shared_ptr<bats::ObjectInfo> getFlag2Them() const;
     
-    std::shared_ptr<bats::ObjectInfo> center;
-    
+    std::shared_ptr<bats::ObjectInfo> getFieldCenter() const;
+
+    ///@}
+
+    ///@name Object filters
+    ///@{
+
+    /** Get a vector of players, filtered using some predicate
+     *
+     * @param pred Predicate to filter with. A player is included in
+     * the returned list if pred(PlayerInfo) evaluates to true.
+     * @param aliveOnly Whether or not to only include players that we have recently seen.
+     */
     PlayerVector getFilteredPlayers(std::function<bool(std::shared_ptr<PlayerInfo>)> pred, bool aliveOnly = true);
-    ObjectVector getFilteredObjects(std::vector<std::shared_ptr<ObjectInfo>> objects, std::function<bool(std::shared_ptr<ObjectInfo>)> pred);
-    ObjectVector getAliveObjects(std::vector<std::shared_ptr<DynamicObjectInfo>> objects, std::function<bool(std::shared_ptr<DynamicObjectInfo>)> pred = 0);
-    
-    // TODO use std::function instead of template
-    
-    template <typename _Predicate, typename ObjectType>
-    unsigned count(std::vector<std::shared_ptr<ObjectType>> objects, _Predicate pred)
+
+    /** Filter a vector of objects, using some predicate
+     *
+     * @param objects Vector of objects to filer.
+     * @param pred Predicate to filter with. An object is included in
+     * the returned list if pred(ObjectInfo) evaluates to true.
+     */    
+    ObjectVector getFilteredObjects(std::vector<std::shared_ptr<ObjectInfo> > objects, std::function<bool(std::shared_ptr<ObjectInfo>)> pred);
+
+    /** Filter only those objects we know about
+     *
+     * @param objects Vector of objects to filter.
+     * @param pred Optional additional predicate to filter with.
+     */
+    ObjectVector getAliveObjects(std::vector<std::shared_ptr<DynamicObjectInfo> > objects, std::function<bool(std::shared_ptr<DynamicObjectInfo>)> pred = 0);
+
+    /** Count the number of objects for which a predicate is true. Deprecated, use std::count instead */
+#pragma deprecated
+    template <typename ObjectType>
+    unsigned count(std::vector<std::shared_ptr<ObjectType>> objects, std::function<bool(std::shared_ptr<ObjectType>)> pred)
     {
-      unsigned count = 0;
-      for (std::shared_ptr<ObjectType> object : objects)
-      {
-        if (bool(pred(object)))
-          count++;
-      }
-      return count;
+      return std::count(objects.begin(), objects.end(), pred);
     };
 
+    /** Get an object based on its ID */
     std::shared_ptr<ObjectInfo> getObjectById(Types::Object object) const { return d_objectInfos[object]; }
+
+    ///@}
 
     /** Get the local transformation matrix
      *
@@ -230,13 +262,132 @@ namespace bats
     Eigen::Vector3d rotateLocalToGlobal(Eigen::Vector3d const& loc) { return Eigen::Affine3d(getGlobalTransformation().linear() * Eigen::Affine3d(getLocalTransformation().inverse()).linear()) * loc; }
 
     Eigen::Vector3d rotateGlobalToLocal(Eigen::Vector3d const& glob) { return Eigen::Affine3d(getLocalTransformation().linear() * Eigen::Affine3d(getGlobalTransformation().inverse()).linear()) * glob; }
+
+
+
   protected:
-    std::shared_ptr<ObjectInfo> d_objectInfos[Types::NOBJECTS];
     
-    /** The camera offset due to calibration error. */
+    // The camera offset due to calibration error
     Eigen::Vector3d d_cameraOffset;
+
+    // Array containing all object infos
+    std::shared_ptr<ObjectInfo> d_objectInfos[Types::NOBJECTS];
+
+    // Vector holding all the objects
+    ObjectVector d_objects;
+
+    // A vector of all players from both teams
+    PlayerVector d_players;
+    // A vector of all opposition players
+    PlayerVector d_opponents;
+    // A vector of all team mates, including the running agent
+    PlayerVector d_teamMates;
+
+    // A vector of all landmarks, comprising four flags and four goal posts
+    ObjectVector d_landmarks;
+    
+    // Localisation information about the running agent
+    std::shared_ptr<bats::PlayerInfo> d_me;
+    
+    // Localisation information about the ball
+    std::shared_ptr<bats::DynamicObjectInfo> d_ball;
+        
+    std::shared_ptr<bats::ObjectInfo> d_goal1Us;
+    std::shared_ptr<bats::ObjectInfo> d_goal2Us;
+    std::shared_ptr<bats::ObjectInfo> d_goal1Them;
+    std::shared_ptr<bats::ObjectInfo> d_goal2Them;
+    
+    std::shared_ptr<bats::ObjectInfo> d_flag1Us;
+    std::shared_ptr<bats::ObjectInfo> d_flag2Us;
+    std::shared_ptr<bats::ObjectInfo> d_flag1Them;
+    std::shared_ptr<bats::ObjectInfo> d_flag2Them;
+    
+    std::shared_ptr<bats::ObjectInfo> d_center;
   };
 
+
+  // Member implementations
+
+  inline Localizer::ObjectVector Localizer::getObjects() const
+  {
+    return d_objects;
+  }
+
+  inline Localizer::PlayerVector Localizer::getPlayers() const
+  {
+    return d_players;
+  }
+
+  inline Localizer::PlayerVector Localizer::getOpponents() const
+  {
+    return d_opponents;
+  }
+
+  inline Localizer::PlayerVector Localizer::getTeamMates() const
+  {
+    return d_teamMates;
+  }
+
+  inline Localizer::ObjectVector Localizer::getLandMarks() const
+  {
+    return d_landmarks;
+  }
+    
+  inline std::shared_ptr<bats::PlayerInfo> Localizer::getMe() const
+  {
+    return d_me;
+  }
+    
+  inline std::shared_ptr<bats::DynamicObjectInfo> Localizer::getBall() const
+  {
+    return d_ball;
+  }
+        
+  inline std::shared_ptr<bats::ObjectInfo> Localizer::getGoal1Us() const
+  {
+    return d_goal1Us;
+  }
+
+  inline std::shared_ptr<bats::ObjectInfo> Localizer::getGoal2Us() const
+  {
+    return d_goal2Us;
+  }
+
+  inline std::shared_ptr<bats::ObjectInfo> Localizer::getGoal1Them() const
+  {
+    return d_goal1Them;
+  }
+
+  inline std::shared_ptr<bats::ObjectInfo> Localizer::getGoal2Them() const
+  {
+    return d_goal2Them;
+  }
+
+  inline std::shared_ptr<bats::ObjectInfo> Localizer::getFlag1Us() const
+  {
+    return d_flag1Us;
+  }
+
+  inline std::shared_ptr<bats::ObjectInfo> Localizer::getFlag2Us() const
+  {
+    return d_flag2Us;
+  }
+
+  inline std::shared_ptr<bats::ObjectInfo> Localizer::getFlag1Them() const
+  {
+    return d_flag1Them;
+  }
+
+  inline std::shared_ptr<bats::ObjectInfo> Localizer::getFlag2Them() const
+  {
+    return d_flag2Them;
+  }
+    
+  inline std::shared_ptr<bats::ObjectInfo> Localizer::getFieldCenter() const
+  {
+    return d_center;
+  }
+  
   typedef Singleton<Localizer> SLocalizer;
 }
 

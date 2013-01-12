@@ -1,6 +1,6 @@
 #include "random.ih"
 
-VectorXd Random::uniform(VectorXd const& begin, VectorXd const& end)
+VectorXd Random::uniform(Eigen::VectorXd const& begin, Eigen::VectorXd const& end)
 {
   VectorXd res(begin.size());
   for (int i = 0; i < res.size(); ++i)

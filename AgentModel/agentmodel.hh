@@ -91,13 +91,17 @@ namespace bats
     /**
      * Update the posture of a body
      * 
+     * @param integrateControl If set to true, the control applied at
+     * the previous timestep (ie actions sent to server) are
+     * integrated into a prediction of the posture.
      * @param torso The torso (root node) of the body to update. When
-     * 0 (default), the AgentModel's internal body will be used
-     *
+     * 0 (default), the AgentModel's internal body will be used.
      * @param updateJoints If set to true, the joint angles in the
-     * body will be updated with values from the Cochlea
+     * body will be updated with values from the Cochlea.
      */
-    void updatePosture(bool integrateControl = false, std::shared_ptr<BodyPart> torso = 0, bool updateJoints = true);
+    void updatePosture(bool integrateControl = false,
+		       std::shared_ptr<BodyPart> torso = 0,
+		       bool updateJoints = true);
 
 
     /** @returns the name of the Ruby Scene Graph (rsg) file that the simulator uses for this agent. */

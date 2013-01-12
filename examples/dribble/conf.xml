@@ -27,6 +27,12 @@
     <maxturnangle>20.0</maxturnangle>
     <leanangle>12</leanangle>
   </gaitgenerator>
+
+  <motionsequenceplayer id="getupfromback">
+    <sequence>
+      sdkjfjshdfb kjdf kjhsdf khsdf 
+    </sequence>
+  </motionsequenceplayer>
 </conf>    
 
 

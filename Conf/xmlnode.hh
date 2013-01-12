@@ -53,7 +53,7 @@ namespace bats {
 
   /**
    *  A XML node.
-   \\TODO fix the memory leaks with xmlFree
+   \\todo fix the memory leaks with xmlFree
    */
   class XMLNode {
     xmlNode *d_node;

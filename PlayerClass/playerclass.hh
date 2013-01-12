@@ -37,7 +37,7 @@ namespace bats
   
 
   // Member implementations
-  PlayerClass::PlayerClass(unsigned idx)
+  inline PlayerClass::PlayerClass(unsigned idx)
     : d_idx(idx)
   {
   }

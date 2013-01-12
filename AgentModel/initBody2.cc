@@ -1,6 +1,6 @@
 #include "agentmodel.ih"
 
-double AgentModel::initBody(XMLNode& part1Node, shared_ptr<Joint> joint)
+double AgentModel::initBody(XMLNode& part1Node, std::shared_ptr<Joint> joint)
 {
 
   Conf& conf = SConf::getInstance();

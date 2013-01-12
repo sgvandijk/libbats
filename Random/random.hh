@@ -51,10 +51,10 @@ namespace bats
       /// Seed the random number generator
       static void seed(unsigned s);
       
-      /// Draw a value from a uniform distribution over [@begin, @end)
+      /// Draw a value from a uniform distribution over [@a begin, @a end)
       static double uniform(double begin = 0, double end = 1);
       
-      /// Create a random vector, where each element is drawn uniformally from the range defined by @begin and @end
+      /// Create a random vector, where each element is drawn uniformally from the range defined by @a begin and @a end
       static Eigen::VectorXd uniform(Eigen::VectorXd const& begin, Eigen::VectorXd const& end);
       
       /// Draw a value from a standard normal distribution

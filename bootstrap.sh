@@ -118,10 +118,12 @@ include_directories(\${CMAKE_SOURCE_DIR})
 
 set(DRIBBLE_SOURCES
 dribble.cc
+DribbleAgent/DribbleAgent.cc
 DribbleAgent/init.cc
 DribbleAgent/think.cc
 DribbleAgent/determineWhereToLook.cc
 DribbleAgent/determineWhereToWalk.cc
+DribbleAgent/stand.cc
 )
 
 add_executable(dribble

@@ -20,7 +20,6 @@ void HumanoidAgent::startUp()
   SCochlea::getInstance().setTeamName(d_teamName);
 
   SAgentModel::initialize();
-  SBehaviorFactory::initialize();
   SCerebellum::initialize();
   
   // Before messages can be parsed, the parser should be initialized.

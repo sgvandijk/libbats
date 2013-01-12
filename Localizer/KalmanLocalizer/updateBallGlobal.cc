@@ -5,7 +5,7 @@ void KalmanLocalizer::updateBallGlobal()
   Cochlea& cochlea = bats::SCochlea::getInstance();
   WorldModel& wm = SWorldModel::getInstance();
 
-  VectorXd oldLocVel = ball->posVelGlobal->getMu();
+  VectorXd oldLocVel = d_ball->posVelGlobal->getMu();
   
   /*
    * Predict
@@ -38,35 +38,35 @@ void KalmanLocalizer::updateBallGlobal()
   }
 
   // Process noise
-  // TODO: tweak this
+  // todo: tweak this
   MatrixXd Q = MatrixXd::Identity(6, 6) * 0.0005;
   
   shared_ptr<NormalDistribution> controlModel = make_shared<NormalDistribution>(6);
   controlModel->init(B * u, Q);
-  ball->posVelGlobal->predict(F, controlModel);
+  d_ball->posVelGlobal->predict(F, controlModel);
 
   /*
    * Update
    */
   if (d_haveNewVisionData)
   {
-    // TODO: capture when we don't see ball
-    if (ball->isVisible)
+    // todo: capture when we don't see ball
+    if (d_ball->isVisible)
     {
       shared_ptr<NormalDistribution> obsModel = make_shared<NormalDistribution>(6);
       Affine3d globalRotationTrans = Affine3d(d_globalRotation.matrix().transpose());
 
-      VectorXd meas = ball->posVelRaw->getMu();
-      MatrixXd sigma = ball->posVelRaw->getSigma();
+      VectorXd meas = d_ball->posVelRaw->getMu();
+      MatrixXd sigma = d_ball->posVelRaw->getSigma();
 
-      VectorXd myPosVel = me->posVelGlobal->getMu();
-      MatrixXd mySigma = me->posVelGlobal->getSigma();
+      VectorXd myPosVel = d_me->posVelGlobal->getMu();
+      MatrixXd mySigma = d_me->posVelGlobal->getSigma();
 
       // Raw measurement of position in global coordinates
       VectorXd globalMeas = joinPositionAndVelocityVectors(
         cutPositionVector(myPosVel) + d_globalRotation * cutPositionVector(meas),
         Vector3d(0,0,0));
-      VectorXd oldGlobalMeas = ball->posVelRawGlobal->getMu();
+      VectorXd oldGlobalMeas = d_ball->posVelRawGlobal->getMu();
       
       // Determine velocity based on last global measurement
       VectorXd vel = VectorXd::Zero(3);
@@ -98,10 +98,10 @@ void KalmanLocalizer::updateBallGlobal()
 
       // Remember for next time
       // Not pretty using posVelRawGlobal, as it is mixing raw and global.. 
-      ball->posVelRawGlobal->init(globalMeas, globalSigma);
+      d_ball->posVelRawGlobal->init(globalMeas, globalSigma);
 
       obsModel->init(globalMeas, globalSigma);
-      ball->posVelGlobal->update(obsModel);
+      d_ball->posVelGlobal->update(obsModel);
 
     }
   }
