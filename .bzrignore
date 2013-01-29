@@ -1,0 +1,13 @@
+CMakeCache.txt
+CMakeFiles
+Makefile
+cmake_install.cmake
+docs/html
+docs/latex
+*.aux
+*.out
+*.toc
+*.log
+libbatsmanual.pdf
+examples/dribble/dribble
+examples/helloworld/helloworld
