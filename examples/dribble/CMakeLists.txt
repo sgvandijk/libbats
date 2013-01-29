@@ -21,3 +21,7 @@ ${DRIBBLE_SOURCES}
 
 target_link_libraries(dribble bats ${LIBXML2_LIBRARIES} ${SigC++_LIBRARIES})
 
+if (GTKMM_FOUND)
+  target_link_libraries(dribble ${GTKMM_LIBRARIES})
+endif (GTKMM_FOUND)
+

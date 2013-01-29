@@ -13,8 +13,8 @@ INCLUDE(FindPkgConfig)
 find_package(Eigen3 REQUIRED)
 find_package(LibXml2 REQUIRED)
 find_package(SigC++ REQUIRED)
-PKG_CHECK_MODULES(GTKMM, gtkmm-2.4)
-#find_package(GTKmm REQUIRED)
+PKG_CHECK_MODULES(GTKMM gtkmm-2.4)
+PKG_CHECK_MODULES(LIBXMLXX REQUIRED libxml++-2.6)
 
 set(CMAKE_CXX_FLAGS "-std=c++0x")
 
@@ -111,6 +111,7 @@ set(LIBBATS_SOURCES
 ./Conf/selectxpath.cc
 ./Conf/parseConf.cc
 ./Conf/Conf.cc
+./Conf/defineEntities.cc
 ./Clock/RC3DClock/update.cc
 ./Math/makeRotation.cc
 ./Math/distanceLinePoint.cc
@@ -214,15 +215,15 @@ set(LIBBATS_SOURCES
 ./TimeVal/timeval.cc
 )
 
-set(LIBBATS_INCLUDE_DIRS ${EIGEN3_INCLUDE_DIR} ${LIBXML2_INCLUDE_DIR} ${SigC++_INCLUDE_DIRS})
+set(LIBBATS_INCLUDE_DIRS ${EIGEN3_INCLUDE_DIR} ${LIBXML2_INCLUDE_DIR} ${SigC++_INCLUDE_DIRS} ${LIBXMLXX_INCLUDE_DIRS})
 
-# Don't build Gtk
+# Only build GTK debugger if GTKmm was found
 if(GTKMM_FOUND)
   list(APPEND LIBBATS_SOURCES
-       ./Debugger/GtkDebugger/onDebugText.cc./Debugger/GtkDebugger/run.cc ./Debugger/GtkDebugger/onThinkEnd.cc ./Debugger/GtkDebugger/drawShapes.cc ./Debugger/GtkDebugger/GtkDebugger.cc ./Debugger/GtkDebugger/drawBall.cc ./Debugger/GtkDebugger/drawCurve.cc ./Debugger/GtkDebugger/plot.cc ./Debugger/GtkDebugger/drawPlayers.cc ./Debugger/GtkDebugger/start.cc ./Debugger/GtkDebugger/drawSelf.cc ./Debugger/GtkDebugger/init.cc ./Debugger/GtkDebugger/drawField.cc ./Debugger/GtkDebugger/reDraw.cc ./Debugger/GtkDebugger/onDrawingAreaExpose.cc
+       ./Debugger/GtkDebugger/onDebugText.cc ./Debugger/GtkDebugger/run.cc ./Debugger/GtkDebugger/onThinkEnd.cc ./Debugger/GtkDebugger/drawShapes.cc ./Debugger/GtkDebugger/GtkDebugger.cc ./Debugger/GtkDebugger/drawBall.cc ./Debugger/GtkDebugger/drawCurve.cc ./Debugger/GtkDebugger/plot.cc ./Debugger/GtkDebugger/drawPlayers.cc ./Debugger/GtkDebugger/start.cc ./Debugger/GtkDebugger/drawSelf.cc ./Debugger/GtkDebugger/init.cc ./Debugger/GtkDebugger/drawField.cc ./Debugger/GtkDebugger/reDraw.cc ./Debugger/GtkDebugger/onDrawingAreaExpose.cc
   )
 
-  list(APPEND LIBBATS_INCLUDE_DIRS )
+  list(APPEND LIBBATS_INCLUDE_DIRS ${GTKMM_INCLUDE_DIRS})
 else(GTKMM_FOUND)
   message(STATUS "  GtkDebugger will not be built")
 endif(GTKMM_FOUND)

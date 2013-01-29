@@ -26,7 +26,6 @@ void GtkDebugger::run()
 
   redraw_dispatch.connect(sigc::mem_fun(*this, &GtkDebugger::onRedraw));
   dbg_text_dispatch.connect(sigc::mem_fun(*this, &GtkDebugger::onDbgText));
-  Behavior::behavior_signal.connect(sigc::mem_fun(*this, &GtkDebugger::onBehaviorEvent));
   d_running = true;
   
   //cout << "hello 2!" << endl;

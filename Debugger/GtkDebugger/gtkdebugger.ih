@@ -3,7 +3,6 @@
 #include "../../Types/types.hh"
 #include "../../HumanoidAgent/humanoidagent.hh"
 #include "../../Localizer/localizer.hh"
-#include "../../Behavior/behavior.hh"
 #include <Eigen/Core>
 
 using namespace std;

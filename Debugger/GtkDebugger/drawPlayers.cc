@@ -4,7 +4,7 @@ void GtkDebugger::drawPlayers(Cairo::RefPtr<Cairo::Context> context)
 {
   Localizer& loc = SLocalizer::getInstance();
   
-  for (shared_ptr<PlayerInfo> player : loc.players)
+  for (shared_ptr<PlayerInfo> player : loc.getPlayers())
   {
     if (!player->isAlive)
       continue;

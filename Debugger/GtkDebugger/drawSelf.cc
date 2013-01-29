@@ -6,8 +6,8 @@ void GtkDebugger::drawSelf(Cairo::RefPtr<Cairo::Context> context)
   
   Localizer& loc = SLocalizer::getInstance();
   
-  Vector3d l = loc.me->getPositionGlobal();
-  Matrix3d cv = loc.me->getPositionDistributionGlobal()->getSigma();
+  Vector3d l = loc.getMe()->getPositionGlobal();
+  Matrix3d cv = loc.getMe()->getPositionDistributionGlobal()->getSigma();
   double s = sqrt(cv.diagonal().sum() / 3);
   
   context->set_source_rgba(0.0, 0.0, 1.0, 0.5);

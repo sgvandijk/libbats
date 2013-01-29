@@ -4,8 +4,8 @@ void GtkDebugger::drawBall(Cairo::RefPtr<Cairo::Context> context)
 {
   Localizer& loc = SLocalizer::getInstance();
   
-  Vector3d l = loc.ball->getPositionGlobal();
-  Matrix3d cv = loc.ball->getPositionDistributionGlobal()->getSigma();
+  Vector3d l = loc.getBall()->getPositionGlobal();
+  Matrix3d cv = loc.getBall()->getPositionDistributionGlobal()->getSigma();
   double s = sqrt(cv.diagonal().sum() / 3);
   
   context->set_source_rgba(1.0, 0.5, 0.0, 0.5);

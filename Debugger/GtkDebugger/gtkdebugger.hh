@@ -1,5 +1,5 @@
-#ifndef __BATS_GTKDEBUGGER_HH__
-#define __BATS_GtKDEBUGGER_HH__
+#ifndef BATS_GTKDEBUGGER_HH
+#define BATS_GtKDEBUGGER_HH
 
 #include "../debugger.hh"
 
@@ -76,8 +76,6 @@ namespace bats
       void onThinkEnd();
       void onDbgText();
 
-      void onBehaviorEvent(std::shared_ptr<BehaviorEvent> event) {}
-      
       void drawField(Cairo::RefPtr<Cairo::Context> context);
       void drawSelf(Cairo::RefPtr<Cairo::Context> context);
       void drawBall(Cairo::RefPtr<Cairo::Context> context);
@@ -90,5 +88,5 @@ namespace bats
 };
 
 
-#endif /* __BATS_GTKDEBUGGER_HH__ */
+#endif /* BATS_GTKDEBUGGER_HH */
 
