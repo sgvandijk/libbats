@@ -25,5 +25,8 @@ void DribbleAgent::init()
   for (auto kv : d_motionSequencePlayers)
     kv.second->loadSequenceFromConf();
 
+  // We have not beamed yet
+  d_beamed = false;
+
 }
 

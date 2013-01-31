@@ -37,11 +37,12 @@
  *
  */
 
-#ifndef __INC_BATS_CONF_HH_
-#define __INC_BATS_CONF_HH_
+#ifndef INC_BATS_CONF_HH
+#define INC_BATS_CONF_HH
 
 #include <libxml/tree.h>
 #include <libxml/parser.h>
+#include <libxml/parserInternals.h>
 #include <libxml/xpath.h>
 #include <libxml/xpathInternals.h>
 #include <stdexcept>
@@ -71,7 +72,7 @@ namespace bats {
     /**
      * Set the name of the file that Conf should load.
      */
-    void setFile(std::string const &confFile);
+    void parseFile(std::string const &confFile);
 
     /**
      *  @returns the absolute root node of the config tree.
@@ -108,6 +109,8 @@ namespace bats {
     xmlDocPtr d_doc;
     xmlXPathContextPtr xpathCtx;
 
+    void defineEntities(xmlDocPtr doc);
+
     void parseConf(std::string const &confFile);
 
     void destroy()
@@ -134,7 +137,7 @@ namespace bats {
 
   // Member implementations
 
-  inline void Conf::setFile(std::string const &confFile)
+  inline void Conf::parseFile(std::string const &confFile)
   {
     parseConf(confFile);
     

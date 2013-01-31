@@ -14,7 +14,6 @@ find_package(Eigen3 REQUIRED)
 find_package(LibXml2 REQUIRED)
 find_package(SigC++ REQUIRED)
 PKG_CHECK_MODULES(GTKMM gtkmm-2.4)
-PKG_CHECK_MODULES(LIBXMLXX REQUIRED libxml++-2.6)
 
 set(CMAKE_CXX_FLAGS "-std=c++0x")
 
@@ -155,6 +154,8 @@ set(LIBBATS_SOURCES
 ./JointController/GaitGenerator/IKGaitGenerator/run.cc
 ./JointController/MotionSequencePlayer/loadSequenceFromConf.cc
 ./JointController/MotionSequencePlayer/runCurrentStep.cc
+./JointController/MotionSequencePlayer/.#runCurrentStep.cc
+./JointController/MotionSequencePlayer/checkSequenceDone.cc
 ./JointController/MotionSequencePlayer/checkFirstRun.cc
 ./JointController/MotionSequencePlayer/run.cc
 ./HumanoidAgent/startUp.cc

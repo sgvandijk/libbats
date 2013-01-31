@@ -67,6 +67,14 @@ private:
   // Used to smoothen walking parameters
   Eigen::VectorXd d_paramFilter;
 
+  // Flag to remember that we have beamed
+  bool d_beamed;
+
+  // Flag to remember we are getting up
+  int d_gettingUpFrom;
+
+
+
   /** Initialize agent
    *
    * Called a single time when starting up the agent. Put all your initialization stuff here.

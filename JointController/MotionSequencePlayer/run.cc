@@ -11,5 +11,7 @@ void MotionSequencePlayer::run(JointControlParams* params)
   runCurrentStep();
 
   // Check whether we are finished
-  
+  checkSequenceDone();
+
+  d_lastRanTime = clock.getTime();
 }

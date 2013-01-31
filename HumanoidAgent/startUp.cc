@@ -1,12 +1,17 @@
 #include "humanoidagent.ih"
 
+#define QUOTE_IMPL(mp_token) #mp_token
+#define QUOTE(mp_token) QUOTE_IMPL(mp_token) 
+
 void HumanoidAgent::startUp()
 {
   SConf::initialize();
   Conf& conf = SConf::getInstance();
   
   if (d_confFile != "")
-    conf.setFile(d_confFile);
+    conf.parseFile(d_confFile);
+  else
+    conf.parseFile(QUOTE(LIBBATS_DATADIR)"/conf.xml");
   
   unsigned def = 0;
   d_minThinkTime = conf.getParam("/minthinktime", def);

@@ -1,5 +1,7 @@
 #include "motionsequenceplayer.ih"
 
+#include <iostream>
+
 void MotionSequencePlayer::loadSequenceFromConf()
 {
   // Check whether sequence is symmetric, i.e. left and right are the same
@@ -14,11 +16,15 @@ void MotionSequencePlayer::loadSequenceFromConf()
   for (unsigned j = 0; j < Types::NJOINTS; ++j)
     d_sequence.jointSequences.push_back(JointSequence());
 
+  bool success = false;
+
   unsigned joint;
   // Lines are formatted as:
   // jointnr: t alpha, t alpha, t alpha, ...;
   while (seqIn >> joint)
   {
+    success = true;
+
     // After joint ID should come a colon
     char punc;
     seqIn >> punc;
@@ -30,7 +36,7 @@ void MotionSequencePlayer::loadSequenceFromConf()
         throw runtime_error(out.str());
     }
     
-    // Magix ID for specifying sequence end time
+    // Magig ID for specifying sequence end time
     if (joint == Types::NJOINTS)
     {
       // Read in end time
@@ -83,6 +89,13 @@ void MotionSequencePlayer::loadSequenceFromConf()
         }
       }
     }
+  } // while (seqIn >> joint)
+
+  if (!success)
+  {
+    ostringstream out;
+    out << "MotionSequencePlayer: failed loading malformed sequence: " << sequenceStr;
+    throw runtime_error(out.str());
   }
 
 }

@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE conf SYSTEM "conf.dtd">
+
 <conf xmlns:xi="http://www.w3.org/2003/XInclude">  
   <xi:include href="nao_mdl.xml"/>
 
@@ -30,7 +32,60 @@
 
   <motionsequenceplayer id="getupfromback">
     <sequence>
-      sdkjfjshdfb kjdf kjhsdf khsdf 
+
+        &head1;: 0 0,                                                                               1.0 0, 1.5 -120, 2.0 120;
+        &head2;: 0 0;
+        
+        &larm1;: 0 -90,          0.4 -90, 0.8 90, 0.95 90, 1 -90;
+        &larm2;: 0 0;
+        &larm3;: 0 0;
+        &larm4;: 0 0;
+    
+        &rarm1;: 0 -90,          0.4 -90, 0.8 90, 0.95 90, 1 -90;
+        &rarm2;: 0 0;
+        &rarm3;: 0 0;
+        &rarm4;: 0 0;
+        
+        &lleg1;: 0 0,            0.4 0, 0.8 -90,                        2.0 -90,            2.3 0;
+        &lleg2;: 0 0,            0.4 0, 0.8 90,                                                     2.5 90,   2.6 0;
+        &lleg4;: 0 0,                             0.9 0,  1.0 -130,     2.0 -130, 2.1 -45,          2.5 -45,  2.6 0;
+        &lleg5;: 0 0;
+ 
+        &rleg1;: 0 0,            0.4 0, 0.8 -90,                        2.0 -90,            2.3 0;
+        &rleg2;: 0 0,            0.4 0, 0.8 90,                                                     2.5 90,   2.6 0;
+        &rleg4;: 0 0,                             0.9 0,  1.0 -130,     2.0 -130, 2.1 -45,          2.5 -45,  2.6 0;
+        &rleg5;: 0 0;
+
+        &end;: 3.2;
+    </sequence>
+  </motionsequenceplayer>
+
+  <motionsequenceplayer id="getupfromfront">
+    <sequence>
+        &head1;: 0 0,                                            1 0, 1.5 -60, 2 60;
+        &head2;: 0 0;
+
+        &larm1;: 0 -90,              0.9 -90,    1.2 0;
+        &larm2;: 0 0;
+        &larm3;: 0 0;
+        &larm4;: 0 0,                0.9 -90,    1.2 -90,   1.4 0;
+    
+        &rarm1;: 0 -90,              0.9 -90,    1.2 0;
+        &rarm2;: 0 0;
+        &rarm3;: 0 0;
+        &rarm4;: 0 0,                0.9 90,     1.2 90,   1.4 0;
+        
+        &lleg1;: 0 0,                0.9 -89,    1.2 -89,  1.4 0;
+        &lleg2;: 0 0,                0.9 99,                      1.5 99,    2.0 0;
+        &lleg4;: 0 0,                0.9 -129,                    1.5 -129,  2.0 0;
+        &lleg5;: 0 0, 0.1 45,        0.9 45,                      1.5 45,    2.0 0;
+ 
+        &rleg1;: 0 0,                0.9 -89,    1.2 -89,  1.4 0;
+        &rleg2;: 0 0,                0.9 99,                      1.5 99,    2.0 0;
+        &rleg4;: 0 0,                0.9 -129,                    1.5 -129,  2.0 0;
+        &rleg5;: 0 0, 0.1 45,        0.9 45,                      1.5 45,    2.0 0;
+        
+        &end;: 3;
     </sequence>
   </motionsequenceplayer>
 </conf>    

@@ -44,6 +44,12 @@ namespace bats
      */
     virtual void run(JointControlParams* params);
 
+    /** Check whether sequence has endeed
+     */
+    bool isSequenceDone() const;
+
+    void reset() { d_lastRanTime = 0; }
+
   private:
     MotionSequence d_sequence;
     double d_sequenceStartTime;
@@ -53,9 +59,7 @@ namespace bats
 
     void checkFirstRun();
     void runCurrentStep();
-    void checkEndOfSequence();
-    
-    bool isSequenceDone() const;
+    void checkSequenceDone();
   };
 
   // Member implementations

@@ -3,6 +3,8 @@
 #include "../../Clock/clock.hh"
 #include "../../AgentModel/agentmodel.hh"
 
+#include <iostream>
+
 using namespace bats;
 using namespace Eigen;
 using namespace std;

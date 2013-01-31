@@ -37,10 +37,11 @@
  *
  */
 
-#ifndef __BATS_CLOCK_HH_
-#define __BATS_CLOCK_HH_
+#ifndef BATS_CLOCK_HH
+#define BATS_CLOCK_HH
 
 #include "../Singleton/singleton.hh"
+#include <cmath>
 
 namespace bats
 {
@@ -64,7 +65,7 @@ namespace bats
     double getDt() const { return d_dt; }
 
     /** Check whether given time is the previous time step */
-    bool isPreviousTimeStep(double time) { return time + d_dt == d_time; }
+    bool isPreviousTimeStep(double time) { return fabs(time + d_dt - d_time) < 1e-3; }
 
   protected:
     double d_time;
@@ -74,4 +75,4 @@ namespace bats
   typedef Singleton<Clock> SClock;
 }
 
-#endif // __BATS_CLOCK_HH_
+#endif // BATS_CLOCK_HH
