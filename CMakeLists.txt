@@ -110,7 +110,6 @@ set(LIBBATS_SOURCES
 ./Conf/selectxpath.cc
 ./Conf/parseConf.cc
 ./Conf/Conf.cc
-./Conf/defineEntities.cc
 ./Clock/RC3DClock/update.cc
 ./Math/makeRotation.cc
 ./Math/distanceLinePoint.cc
@@ -154,7 +153,6 @@ set(LIBBATS_SOURCES
 ./JointController/GaitGenerator/IKGaitGenerator/run.cc
 ./JointController/MotionSequencePlayer/loadSequenceFromConf.cc
 ./JointController/MotionSequencePlayer/runCurrentStep.cc
-./JointController/MotionSequencePlayer/.#runCurrentStep.cc
 ./JointController/MotionSequencePlayer/checkSequenceDone.cc
 ./JointController/MotionSequencePlayer/checkFirstRun.cc
 ./JointController/MotionSequencePlayer/run.cc
