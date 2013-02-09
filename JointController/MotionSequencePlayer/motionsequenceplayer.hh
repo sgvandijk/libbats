@@ -8,31 +8,73 @@
 
 namespace bats
 {
-
+  /** Motion sequence player
+   *
+   * Joint Controller that can play a predefined motion sequence. A
+   * sequences is defined by a @a MotionSequence object. You can build
+   * one in code, but the sequence can also be loaded from
+   * configuration. The following is the BNF syntax for the
+   * configuration section:
+   *
+    \verbatim
+    <msp>                ::= '<motionsequenceplayer id="' <id> '">
+                               <sequence-node>
+                               [<symmetric-node>]
+                             '</motionsequenceplayer>'
+    <sequence-node>      ::= '<sequence>' <sequence-def> '</sequence>'
+    <sequence-def>       ::= <joint-sequence-def>+
+                             <end-def>
+    <joint-sequence-def> ::= <joint-id>: <frame>(, <frame>)*;
+    <frame>              ::= <time> <angle>
+    <symmetric-node>     ::= '<issymmetric>' (0|1) '</issymetric>'
+    <end-def>            ::= &end;: <end-time>
+    \endverbatim
+   *
+   * A @a joint-id is an integer, however XML entities such as
+   * @a &amp;larm1; and @a &amp;rleg4; are defined to make things more
+   * readible. The times given in the sequence are in seconds and
+   * relative to the start of the sequence.
+   *
+   * When played, joints will move from one angle to the next as
+   * defined in the frames. Linear interpolation is used between the
+   * time stamps of successive frames. After @a end-def seconds, the
+   * sequence player is marked as done, which can be checekd with @a
+   * isSequenceDone.
+   *
+   * If @a issymmetric is set to 1 (default is 0), you only need to
+   * define sequences for joints on the left side of the body and the
+   * right ones will move symmetrically.
+   *
+   * The following is example that moves the first joints of both arms
+   * (note @a issymmetric) all the way up in one second, then all the
+   * way down in another second, while the knee bends 90 degrees
+   * within 1.5 seconds and then flex again in 2 seconds. THe sequence
+   * is marked as done after 4 seconds.
+   *
+   * \code{.xml}
+   * <motionsequenceplayer id="playerid">
+   *   <sequence>
+   *     &larm1;: 0 0, 1 90, 2 -90;
+   *     &lleg4;: 0 0, 1.5 -90, 3.5 0;
+   *     &end;: 4;
+   *   </sequence>
+   *   <issymmetric>1</issymmetric>
+   *   </param>
+   * </motionsequenceplayer>
+   * \endcode
+   * 
+   */
   class MotionSequencePlayer : public JointController
   {
   public:
-    /** Constructor
-     *
-     * @param id Sequence player id
+    /**
+     * @param id Sequence player id. Should be referenced in configuration file when loading sequence from configuration.
      */
     MotionSequencePlayer(std::string const& id);
     
     /** Load motion sequence from configuration
      *
-     * Your configuration file should have a section of the following format:
-     *
-     * \code{.xml}
-     * <motionsequenceplayer id="playerid">
-     *   <sequence>
-     *     ...
-     *   </sequence>
-     *   <issymmetric>1</issymmetric>
-     *   </param>
-     * </motionsequenceplayer>
-     * \endcode
-     *
-     * The @a issymmetric parameter is optional.
+     * @see The detailed description of MotionSequencePlayer for configuration syntax.
      */
     void loadSequenceFromConf();
 
@@ -41,6 +83,12 @@ namespace bats
     void setSequence(MotionSequence const& sequence);
 
     /** Run sequence player
+     *
+     * Run this sequence player in this timestep. Calling this method
+     * updates the velocities returned by @a getJointVelocities. If
+     * this method was not called at the previous timestep, @a reset
+     * is called and the player starts at t=0. Otherwise, the sequence
+     * is progressed from the previous time.
      */
     virtual void run(JointControlParams* params);
 
@@ -48,6 +96,8 @@ namespace bats
      */
     bool isSequenceDone() const;
 
+    /** Reset player to start it from the beginning
+     */
     void reset() { d_lastRanTime = 0; }
 
   private:
