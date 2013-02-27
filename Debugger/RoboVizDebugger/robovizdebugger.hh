@@ -18,7 +18,9 @@ namespace bats
 {
   /** RoboViz debugger implementation
    *
-   * @ingroup debugging
+   * @ingroup debugging The RoboViz debugger is an implementation of
+   * the libbats Debugger interface that works with the RoboViz
+   * vizualizer (see https://sites.google.com/site/umroboviz/).
    */
   class RoboVizDebugger : public Debugger
   {
@@ -26,6 +28,7 @@ namespace bats
 
     public:
       virtual void init(int argc, char** argv);
+
       virtual void start();
 
       virtual void reDraw();
@@ -82,28 +85,70 @@ namespace bats
 
       unsigned char* newBufferSwap(const std::string* name, int* bufSize);
 
-      unsigned char* newCircle(const float* center, float radius, float thickness, const float* color, const std::string* setName, int* bufSize);
-      unsigned char* newLine(const float* a, const float* b, float thickness, const float* color, const std::string* setName, int* bufSize);
-      unsigned char* newPoint(const float* p, float size, const float* color, const std::string* setName, int* bufSize);
-      unsigned char* newSphere(const float* p, float radius, const float* color, const std::string* setName, int* bufSize);
-      unsigned char* newPolygon(const std::list<Eigen::Vector3d>& vertices, const Eigen::Vector4d& color, const std::string* setName, int* bufSize);
-      unsigned char* newAnnotation(const std::string* text, const float* p, const float* color, const std::string* setName, int* bufSize);
-      unsigned char* newAgentAnnotation(const std::string* text, unsigned int unum, Types::Side side, const float* color, int* bufSize);
+      unsigned char* newCircle(const float* center, float radius,
+                               float thickness, const float* color,
+                               const std::string* setName, int* bufSize);
+      unsigned char* newLine(const float* a, const float* b,
+                             float thickness, const float* color,
+                             const std::string* setName, int* bufSize);
+      unsigned char* newPoint(const float* p, float size,
+                              const float* color,
+                              const std::string* setName, int* bufSize);
+      unsigned char* newSphere(const float* p, float radius,
+                               const float* color,
+                               const std::string* setName, int* bufSize);
+      unsigned char* newPolygon(const std::list<Eigen::Vector3d>& vertices,
+                                const Eigen::Vector4d& color,
+                                const std::string* setName, int* bufSize);
+      unsigned char* newAnnotation(const std::string* text, const float* p,
+                                   const float* color,
+                                   const std::string* setName, int* bufSize);
+      unsigned char* newAgentAnnotation(const std::string* text,
+                                        unsigned int unum, Types::Side side,
+                                        const float* color,
+                                        int* bufSize);
 
       void swapBuffers(const std::string* setName);
 
-      void drawCircle(float x, float y, float radius, float thickness, float r, float g, float b, const std::string* setName);
-      void drawLine(float x1, float y1, float z1, float x2, float y2, float z2, float thickness, float r, float g, float b, const std::string* setName);
-      void drawLine(Eigen::Vector3d const& p1, Eigen::Vector3d const& p2, float thickness, Eigen::Vector4d const& color, std::string const* setName)
-      { drawLine(p1.x(), p1.y(), p1.z(), p2.x(), p2.y(), p2.z(), thickness, color(0), color(1), color(2), setName); }
-      void drawPoint(float x, float y, float z, float size, float r, float g, float b, const std::string* setName);
-      void drawSphere(float x, float y, float z, float radius, float r, float g, float b, const std::string* setName);
-      void drawPolygon(std::list<Eigen::Vector3d> const& vertices, Eigen::Vector4d const& color, const std::string* setName);
-      void drawAnnotation(const std::string* text, float x, float y, float z, float r, float g, float b, const std::string* setName);
-      void drawAgentAnnotation(const std::string* text, unsigned unum, Types::Side side, float r, float g, float b);
-      void drawPlayerSkeleton(std::shared_ptr<bats::PlayerInfo> const info, float thickness, Eigen::Vector4d const& color, const std::string* setName);
-      void drawTransformationAxes(Eigen::Matrix4d const& matrix, float thickness, float axisLength, const std::string* setName);
-      void drawProgressCircle(Eigen::Vector3d const& center, double radius, double progress, Eigen::Vector4d color, const std::string* setName);
+      void drawCircle(float x, float y, float radius,
+                      float thickness, float r, float g, float b,
+                      const std::string* setName);
+      void drawLine(float x1, float y1, float z1, float x2, float y2, float z2,
+                    float thickness, float r, float g, float b,
+                    const std::string* setName);
+      void drawLine(Eigen::Vector3d const& p1, Eigen::Vector3d const& p2,
+                    float thickness, Eigen::Vector4d const& color,
+                    std::string const* setName)
+      {
+        drawLine(p1.x(), p1.y(), p1.z(), p2.x(), p2.y(), p2.z(),
+                 thickness, color(0), color(1), color(2),
+                 setName);
+      }
+      void drawPoint(float x, float y, float z, float size,
+                     float r, float g, float b,
+                     const std::string* setName);
+      void drawSphere(float x, float y, float z, float radius,
+                      float r, float g, float b,
+                      const std::string* setName);
+      void drawPolygon(std::list<Eigen::Vector3d> const& vertices,
+                       Eigen::Vector4d const& color,
+                       const std::string* setName);
+      void drawAnnotation(const std::string* text, float x, float y, float z,
+                          float r, float g, float b,
+                          const std::string* setName);
+      void drawAgentAnnotation(const std::string* text,
+                               unsigned unum, Types::Side side,
+                               float r, float g, float b);
+      void drawPlayerSkeleton(std::shared_ptr<bats::PlayerInfo> const info,
+                              float thickness, Eigen::Vector4d const& color,
+                              const std::string* setName);
+      void drawTransformationAxes(Eigen::Matrix4d const& matrix,
+                                  float thickness, float axisLength,
+                                  const std::string* setName);
+      void drawProgressCircle(Eigen::Vector3d const& center,
+                              double radius, double progress,
+                              Eigen::Vector4d color,
+                              const std::string* setName);
 
       void onThinkEnd();
       void drawShapes();

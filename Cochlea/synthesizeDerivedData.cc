@@ -1,6 +1,4 @@
 #include "cochlea.ih"
-#include "../Debugger/debugger.hh"
-#include "../AgentModel/agentmodel.hh"
 
 void Cochlea::synthesizeDerivedData()
 {
@@ -8,7 +6,6 @@ void Cochlea::synthesizeDerivedData()
     return;
   
   auto linesOfExpectedLength = findLines([&](VisibleLine line) { return line.length <= 1.5; });
-//   cout << linesOfExpectedLength.size() << " lines of reasonable length" << endl;
   
   std::vector<VisibleLineJunction> junctions;
   for (VisibleLineJunction junction : getLineJunctions(linesOfExpectedLength))
@@ -20,22 +17,6 @@ void Cochlea::synthesizeDerivedData()
     if (Math::normalizeRadPositive(angle) - M_PI/5 < Math::degToRad(10))
       junctions.push_back(junction);
   }
-  
-//   Debugger& dbg = SDebugger::getInstance();
-//   
-//   if (dbg.isEnabled() && dbg.isVerbose() && bats::SLocalizer::initialized())
-//   {
-//     AgentModel& am = bats::SAgentModel::getInstance();
-//     Localizer& loc = bats::SLocalizer::getInstance();
-// 
-//     auto cameraToGlobalTransform = loc.getGlobalTransformation() * am.getBodyPart(Types::HEAD)->transform;
-// 
-//     for (auto junction : junctions)
-//     {
-//       Vector3d midpoint = cameraToGlobalTransform * ((junction.line1EndCartesian + junction.line2EndCartesian)/2);
-//       dbg.draw(new Point(midpoint, 4, Vector4d(1,0.5,0,1), "Lines.CircleJunctions"));
-//     }
-//   }
   
   if (junctions.size() == 10)
   {

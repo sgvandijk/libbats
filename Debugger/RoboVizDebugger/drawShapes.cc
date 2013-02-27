@@ -3,21 +3,19 @@
 void RoboVizDebugger::drawShapes()
 {
   // draw all one-shot shapes
-  for (vector<shared_ptr<Shape> >::iterator iter = d_shapes.begin(); iter != d_shapes.end(); ++iter)
-    drawShape(*iter);
+  for (auto shape : d_shapes)
+    drawShape(shape);
   d_shapes.clear();
-  
+
   // draw any sticky shapes
   // Clear expired shapes
   d_shapesUntil.remove_if([](ShapeUntil const& shapeUntil) {
       return shapeUntil.time < SClock::getInstance().getTime();
     });
-
+  
   // Draw all shapes
-  for_each(d_shapesUntil.begin(), d_shapesUntil.end(),
-	   [this] (ShapeUntil const& shapeUntil) {
-	     drawShape(shapeUntil.shape);
-	   });
+  for (auto shapeUntil : d_shapesUntil)
+    drawShape(shapeUntil.shape);
 }
 
 void RoboVizDebugger::drawShape(shared_ptr<Shape> shape)
@@ -25,11 +23,6 @@ void RoboVizDebugger::drawShape(shared_ptr<Shape> shape)
   string setName = getSetName(shape);
   
   WorldModel& wm = bats::SWorldModel::getInstance();  
-  
-  /*
-  context->set_source_rgba(shape->color(0), shape->color(1), shape->color(2), shape->color(3));
-  context->set_line_width(shape->strokeWidth);
-  */
   
   if (shared_ptr<Line> l = dynamic_pointer_cast<Line>(shape))
   {
@@ -49,7 +42,9 @@ void RoboVizDebugger::drawShape(shared_ptr<Shape> shape)
   {
     Vector3d centre = wm.checkFlipSide(c->center);
     
-    drawCircle(centre.x(), centre.y(), c->radius, c->thickness, c->color(0), c->color(1), c->color(2), &setName);
+    drawCircle(centre.x(), centre.y(), c->radius,
+               c->thickness, c->color(0), c->color(1), c->color(2),
+               &setName);
   }
   else if (shared_ptr<Rectangle> r = dynamic_pointer_cast<Rectangle>(shape))
   {
@@ -70,19 +65,22 @@ void RoboVizDebugger::drawShape(shared_ptr<Shape> shape)
   }
   else if (shared_ptr<Polygon> p = dynamic_pointer_cast<Polygon>(shape))
   {
-    for (list<Vector3d>::iterator iter = p->vertices.begin(); iter != p->vertices.end(); ++iter)
-      (*iter) = wm.checkFlipSide(*iter);
-      
+    for (auto& vertex : p->vertices)
+      vertex = wm.checkFlipSide(vertex);
+    
     drawPolygon(p->vertices, p->color, &setName);
   }
   else if (shared_ptr<Annotation> a = dynamic_pointer_cast<Annotation>(shape))
   {
     Vector3d pos = wm.checkFlipSide(a->pos);
-    drawAnnotation(&a->text, pos.x(), pos.y(), pos.z(), a->color(0), a->color(1), a->color(2), &setName);
+    drawAnnotation(&a->text, pos.x(), pos.y(), pos.z(),
+                   a->color(0), a->color(1), a->color(2),
+                   &setName);
   }
   else if (shared_ptr<AgentAnnotation> a = dynamic_pointer_cast<AgentAnnotation>(shape))
   {
-    drawAgentAnnotation(&a->text, a->unum, a->side, a->color(0), a->color(1), a->color(2));
+    drawAgentAnnotation(&a->text, a->unum, a->side,
+                        a->color(0), a->color(1), a->color(2));
   }
   else if (shared_ptr<PlayerSkeleton> s = dynamic_pointer_cast<PlayerSkeleton>(shape))
   {
@@ -100,12 +98,16 @@ void RoboVizDebugger::drawShape(shared_ptr<Shape> shape)
   else if (shared_ptr<Sphere> s = dynamic_pointer_cast<Sphere>(shape))
   {
     Vector3d center = wm.checkFlipSide(s->center);    
-    drawSphere(center.x(), center.y(), center.z(), s->radius, s->color(0), s->color(1), s->color(2), &setName);
+    drawSphere(center.x(), center.y(), center.z(), s->radius,
+               s->color(0), s->color(1), s->color(2),
+               &setName);
   }
   else if (shared_ptr<Point> p = dynamic_pointer_cast<Point>(shape))
   {
     Vector3d center = wm.checkFlipSide(p->center);    
-    drawPoint(center.x(), center.y(), p->center.z(), p->size, p->color(0), p->color(1), p->color(2), &setName);
+    drawPoint(center.x(), center.y(), p->center.z(), p->size,
+              p->color(0), p->color(1), p->color(2),
+              &setName);
   }
   else
   {

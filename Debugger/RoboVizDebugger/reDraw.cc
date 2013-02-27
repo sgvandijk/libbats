@@ -2,12 +2,6 @@
 
 void RoboVizDebugger::reDraw()
 {
-//   if (bats::SLocalizer::initialized())
-//   {
-//     drawSelf();
-//     drawBall();
-//     drawPlayers();
-//   }
   drawShapes();
 
   //drawCurve();

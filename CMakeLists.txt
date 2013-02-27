@@ -293,12 +293,7 @@ install(FILES ./Types/types.hh
 ./ObjectInfo/objectinfo.hh
 ./BatsEvent/batsevent.hh
 ./Parser/parser.hh
-./AST/BehaviorNode/behaviornode.hh
-./AST/StateVarNode/statevarnode.hh
 ./AST/ast.hh
-./AST/AndNode/andnode.hh
-./AST/StateNode/statenode.hh
-./AST/OrNode/ornode.hh
 ./Singleton/singleton.hh
 ./DistributionTracker/distributiontracker.hh
 ./PlayerClass/playerclass.hh
@@ -344,7 +339,7 @@ install(FILES ./Types/types.hh
 ./BatsException/batsexception.hh
 ./TimeVal/timeval.hh DESTINATION include/libbats/)
 
-install(FILES xml/conf.xml xml/movejointbehaviors.xml xml/nao_mdl.xml xml/soccerbot058_mdl.xml xml/soccerbot_mdl.xml  DESTINATION share/libbats/xml/)
+install(FILES xml/conf.xml xml/nao_mdl.xml  DESTINATION share/libbats/xml/)
 
 add_subdirectory(examples)
 
