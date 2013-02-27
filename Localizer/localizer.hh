@@ -37,8 +37,8 @@
  *
  */
 
-#ifndef _BATS_LOCALIZER_HH_
-#define _BATS_LOCALIZER_HH_
+#ifndef BATS_LOCALIZER_HH
+#define BATS_LOCALIZER_HH
 
 #include <Eigen/Core>
 #include <Eigen/LU>
@@ -183,6 +183,9 @@ namespace bats
 
     ///@}
 
+    ///@name Transformations, directions and locations
+    ///@{
+
     /** Get the local transformation matrix
      *
      * This matrix describes the transformation from the local frame to the
@@ -201,7 +204,72 @@ namespace bats
      * frame.
      */
     virtual Eigen::Affine3d getGlobalTransformation() const = 0;
+
+    /** Local to global transform
+     *
+     * Transform a vector in the local coordinate frame to the globl
+     * coordinate frame.
+     * @param loc Vector in local frame to transform
+     * @param zeroZ Whether to fix the z coordinate in to result to zero
+     * @returns a vector in the global frame
+     */
+    Eigen::Vector3d localToGlobal(Eigen::Vector3d const& loc, bool zeroZ = false)
+    {
+      Eigen::Vector3d global =
+        Eigen::Affine3d(getGlobalTransformation() *
+                        getLocalTransformation().inverse()) * loc;
+      if (zeroZ)
+        global.z() = 0;
+      return global;
+    }
+
+    /** Global to local transform
+     *
+     * Transform a point vector in the global coordinate frame to the local
+     * coordinate frame.
+     * @param glob Vector in global frame to transform
+     * @param zeroZ Whether to fix the z coordinate in to result to zero
+     * @returns a vector in the local frame
+     */
+    Eigen::Vector3d globalToLocal(Eigen::Vector3d const& glob, bool zeroZ = false)
+    {
+      Eigen::Vector3d local =
+        Eigen::Affine3d(getLocalTransformation() *
+                        getGlobalTransformation().inverse()) * glob;
+      if (zeroZ)
+        local.z() = 0;
+      return local;
+    }
     
+    /** Local to global rotation
+     *
+     * Transform a direction vector in the local coordinate frame to
+     * the global coordinate frame.
+     * @param loc Vector in global frame to transform
+     * @returns a vector in the local frame
+     */
+    Eigen::Vector3d rotateLocalToGlobal(Eigen::Vector3d const& loc)
+    {
+      return
+        Eigen::Affine3d(getGlobalTransformation().linear() *
+                        Eigen::Affine3d(getLocalTransformation().inverse()).linear()) *
+        loc;
+    }
+
+    /** Global to local rotation
+     *
+     * Transform a direction vector in the global coordinate frame to
+     * the local coordinate frame.
+     * @param loc Vector in global frame to transform
+     * @returns a vector in the local frame
+     */
+    Eigen::Vector3d rotateGlobalToLocal(Eigen::Vector3d const& glob) {
+      return
+        Eigen::Affine3d(getLocalTransformation().linear() *
+                        Eigen::Affine3d(getGlobalTransformation().inverse()).linear()) *
+        glob;
+    }
+
     /** 
      * @return a unit vector in the local frame's x/y plane that points in
      * the forward direction (towards the opponent's goal, parallel to the
@@ -226,6 +294,11 @@ namespace bats
     /** @return the midpoint position of our team's goal in the global frame. The z-component is zero. */
     virtual Eigen::Vector3d getOurGoalMidpointGlobal() const = 0;
 
+    ///@}
+
+    ///@name Additional input
+    ///@{
+
     /**
      * Function to tell the localizer that we know our position for sure,
      * for example after we have beamed to somewhere.
@@ -233,7 +306,8 @@ namespace bats
     virtual void setGlobalPosition(Eigen::Vector3d &position) { };
 
     /** Add a new global measurement of an object to integrate */
-    virtual void addGlobalMeasurement(std::shared_ptr<DynamicObjectInfo> dynamicObject, std::shared_ptr<Distribution> measurement) {};
+    virtual void addGlobalMeasurement(std::shared_ptr<DynamicObjectInfo> dynamicObject, 
+                                      std::shared_ptr<Distribution> measurement) {};
 
     virtual void onBeam(std::shared_ptr<BeamEvent> event) {}
 
@@ -243,27 +317,7 @@ namespace bats
       d_cameraOffset = offset;
     }
 
-    Eigen::Vector3d localToGlobal(Eigen::Vector3d const& loc, bool zeroZ = false)
-    {
-      Eigen::Vector3d global = Eigen::Affine3d(getGlobalTransformation() * getLocalTransformation().inverse()) * loc;
-      if (zeroZ)
-        global.z() = 0;
-      return global;
-    }
-
-    Eigen::Vector3d globalToLocal(Eigen::Vector3d const& glob, bool zeroZ = false)
-    {
-      Eigen::Vector3d local = Eigen::Affine3d(getLocalTransformation() * getGlobalTransformation().inverse()) * glob;
-      if (zeroZ)
-        local.z() = 0;
-      return local;
-    }
-      
-    Eigen::Vector3d rotateLocalToGlobal(Eigen::Vector3d const& loc) { return Eigen::Affine3d(getGlobalTransformation().linear() * Eigen::Affine3d(getLocalTransformation().inverse()).linear()) * loc; }
-
-    Eigen::Vector3d rotateGlobalToLocal(Eigen::Vector3d const& glob) { return Eigen::Affine3d(getLocalTransformation().linear() * Eigen::Affine3d(getGlobalTransformation().inverse()).linear()) * glob; }
-
-
+    ///@}
 
   protected:
     

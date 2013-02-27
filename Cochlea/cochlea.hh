@@ -37,14 +37,13 @@
  *
  */
 
-#ifndef _BATS_COCHLEA_HH_
-#define _BATS_COCHLEA_HH_
+#ifndef BATS_COCHLEA_HH
+#define BATS_COCHLEA_HH
 
 #include "../Singleton/singleton.hh"
-#include "../Predicate/predicate.hh"
 #include "../Types/types.hh"
 #include "../Math/math.hh"
-#include <vector>
+#include <memory>
 #include <unordered_map>
 #include <map>
 #include <Eigen/Core>
@@ -52,6 +51,10 @@
 
 namespace bats
 {
+  class Predicate;
+
+  /** Visible line
+   */
   class VisibleLine
   {
   public:
@@ -72,6 +75,8 @@ namespace bats
     Eigen::Vector3d toVector3d() { return end1Cartesian - end2Cartesian; };
   };
 
+  /** Visible line junction
+   */
   class VisibleLineJunction
   {
   public:
@@ -92,6 +97,12 @@ namespace bats
     Eigen::Vector3d line2EndCartesian;
   };
   
+  /** Sensory data pre-processor
+   *
+   * The Cochlea forms the initial entry point for sensory data. It
+   * takes information from the predicate data received from the
+   * simulation server, and offers it in an indexed binary form.
+   */
   class Cochlea
   {
     friend class Singleton<Cochlea>;
@@ -317,14 +328,18 @@ namespace bats
       iInfoID,
     };
 
-    /**
-     * Structure of an auditory message
+    /** Auditory message
      */
     struct HearMessage
     {
-      double time;            /// Time at which message is received
-      double angle;           /// Angle relative to torso of the direction the message came from
-      std::string message;    /// Message content
+      /// Time at which message is received
+      double time;
+
+      /// Angle relative to torso of the direction the message came from
+      double angle; 
+
+      /// Message content
+      std::string message;
       
       HearMessage(double t, double a, std::string const& m)
       : time(t), angle(a), message(m)
@@ -332,10 +347,11 @@ namespace bats
     };
     
   public:
+    /** Get a printable name of an info ID
+     */
     static std::string nameOf(Cochlea::InfoID const infoId);
     
-    /**
-     * @returns the translation of @a mode to a Types::PlayMode value
+    /** Get the translation of @a mode to a Types::PlayMode value
      */
     Types::PlayMode getPlayMode(std::string const& mode)
     {
@@ -345,86 +361,117 @@ namespace bats
         return Types::UNKNOWN;
     }
     
-    /**
-     * Set the name of your own team, used to recognize team mates and opponents
+    /** Set the name of your own team
+     *
+     * Used to recognize team mates and opponents
      */
     void setTeamName(std::string const& teamName) { d_teamName = teamName; }
     
+    /** Get the name of the opponent team
+     */
     std::string getOpponentTeamName() const { return d_opponentTeamName; }
     
-    /**
-     * Set translation. This is primarily used to map joint pereptor names to Cochlea's internal names.
+    /** Define name translation
+     * 
+     * This is primarily used to map joint pereptor names to Cochlea's
+     * internal names.
      */
-    void setTranslation(std::string const& from, std::string const& to) { d_infoMap[from] = d_infoMap[to]; }
+    void setTranslation(std::string const& from, std::string const& to)
+    {
+      d_infoMap[from] = d_infoMap[to];
+    }
     
-    /**
+    /** Translate an information name
+     * 
      * @returns the translation of @a name to an InfoID value
      */
     InfoID translateInfo(std::string const &name);
 
-
-    /**
-     * Update values by integrating the latest predicate received by AgentSocketComm
+    /** Update cochlea
+     *
+     * Updates all values by integrating the latest predicate received
+     * by AgentSocketComm. This should be called every think cycle.
      */
     void update();
 
-    /**
-     * @returns the value of the information with id @a id in the form of a 4-dimensional vector
+    /** Get info value
+     *
+     * @returns the value of the information with id @a id in the form
+     * of a 4-dimensional vector
      */	
     Eigen::Vector4d getInfo(InfoID id) const { return d_info[id]; }
 
-    /**
-     * @returns the latest heard message
+    /** Get latest heard message
      */
     HearMessage getHearMessage() const { return d_hearMessage; }
 
-    /**
-     * @returns all visible line segments seen in the current cycle in polar form (from the camera's perspective)
+    /** Get visible lines
+     *
+     * @returns all visible line segments seen in the current cycle in
+     * polar form (from the camera's perspective)
      */
     std::vector<VisibleLine> getLines() const { return d_lines; }
     
+    /** Get filtered visible lines
+     *
+     * @returns all visible line segments seen in the current cycle in
+     * polar form (from the camera's perspective), for which @a
+     * predicate returns true.
+     */
     std::vector<VisibleLine> findLines(std::function<bool(VisibleLine)> predicate)
     {
       std::vector<VisibleLine> results;
-      for (VisibleLine line : d_lines)
-      {
-        if (predicate(line))
-          results.push_back(line);
-      }
+      std::copy_if(d_lines.begin(), d_lines.end(),
+                   results.begin(),
+                   predicate);
       return results;
     }
     
-    /**
-     * @returns all line ends seen in the current cycle in polar form (from the camera's perspective)
+    /** Get visible line ends
+     *
+     * @returns all line ends seen in the current cycle in polar form
+     * (from the camera's perspective)
      */
     std::vector<Eigen::Vector3d> getLineEnds() const { return d_lineEnds; }
     
-    /**
+    /** Get visible line junctions
+     *
+     * @param lines set of lines to check for junctions
+     * @param thresholdDistance maximum distance at which lines are considered joined
      * @returns junctions within the provided set of lines
      */
-    std::vector<VisibleLineJunction> getLineJunctions(std::vector<VisibleLine> lines, const double thresholdDistance = 0.4) const;
+    std::vector<VisibleLineJunction> getLineJunctions(std::vector<VisibleLine> lines,
+                                                      const double thresholdDistance = 0.4) const;
     
-    /**
+    /** Get latest measurement time
+     *
      * @returns the absolute time of the last measurement of this value
      */
     double getTimestamp(InfoID id) const { return d_timestamps[id]; }
 
-    /**
-     * @returns the relative time of the last measurement of this value
+    /** Get time since latest measurement
+     *
+     * @returns the difference between the current time and the time
+     * of the last measurement of this value
      */
     double getDelay(InfoID id) const { return d_timestamps[id] - d_info[iNow](0); }
 
-    /**
-     * @returns the time between the previous and the current measurement of this value
+    /** Get time between last measurements
+     *
+     * @returns the difference between time between the last and the
+     * penultimate measurements of this value
      */
     double getDt(InfoID id) const { return d_dt[id]; }
     
-    /**
+    /** Get ground truth transformation
+     *
      * Gets a Affine3d with ground truth data about the agent's global position.
      * This value is not available during competitions, and will only be available
      * during development if the server is configured to sent it:
      * 
-     * Edit file /usr/local/share/rcssserver3d/rsg/agent/nao/naoneckhead.rsg and make sure (setSenseMyPos true) is present
+     * Edit file
+     * /usr/local/share/rcssserver3d/rsg/agent/nao/naoneckhead.rsg and
+     * make sure (setSenseMyPos true) is present
      * 
      * The server may provide only x/y/z translation, in which case the three axis
      * vectors in this transformation matrix will be zero.

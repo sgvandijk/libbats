@@ -62,14 +62,14 @@ namespace bats
      */
     virtual bool isEnabled() = 0;
     
-    /** Whether verbose debugging is enabled.
+    /** Whether verbose debugging is enabled
      * 
      * Get whether we're showing all debug output, or only a selection
      * (based on the player in possession, for example.)
      */
     virtual bool isVerbose() = 0;
     
-    /** Set whether verbose debugging is enables
+    /** Set whether verbose debugging is enabled
      * 
      * @param isVerbose Determines whether we're showing all debug
      * output, or only a selection (based on the player in possession,

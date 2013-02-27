@@ -45,11 +45,17 @@
 
 namespace bats
 {
+  /** Clock base class
+   */
   class Clock
   {
   public:
     virtual ~Clock() {}
 
+    /** Update this clock
+     *
+     * Should update internal values to give current time.
+     */
     virtual void update() = 0;
 
     /** The global time
@@ -61,7 +67,7 @@ namespace bats
      */
     double getTime() const { return d_time; }
 
-    /** The time difference between the current and previous timesteps */
+    /** The time difference between the current and the previous timestep */
     double getDt() const { return d_dt; }
 
     /** Check whether given time is the previous time step */
