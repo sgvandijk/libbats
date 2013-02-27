@@ -1,0 +1,29 @@
+<!ENTITY head1 "0"> <!-- , /// Torso to head, X-Axis (not used) -->
+<!ENTITY head2 "1">
+
+<!ENTITY lleg1 "2"> <!-- , /// -90 - 60. Torso to left hip, Z-Axis (twist left/right) -->
+<!ENTITY lleg2 "3"> <!-- , /// -45 - 120. Left hip to Left thigh, X-Axis (backward/forward) -->
+<!ENTITY lleg3 "4"> <!-- , /// -75 - 45. Left hip to Left thigh, Y-Axis (spread/close) -->
+<!ENTITY lleg4 "5"> <!-- , /// -160 - 0. Left thigh to Left shank, X-Axis (bend/stretch) -->
+<!ENTITY lleg5 "6"> <!-- , /// -90 - 90. Left shank to Left foot, X-Axis (forward/backward) -->
+<!ENTITY lleg6 "7"> <!-- , /// -45 - 45. Left shank to Left foot, Y-Axis (left/right) -->
+
+<!ENTITY rleg1 "8"> <!-- , /// -90 - 60. Torso to right hip, Z-Axis (twist left/right) -->
+<!ENTITY rleg2 "9"> <!-- , /// -45 - 120. Right hip to Right thigh, X-Axis (backward/forward) -->
+<!ENTITY rleg3 "10"> <!-- , /// -75 - 45. Right hip to Right thigh, Y-Axis (spread/close) -->
+<!ENTITY rleg4 "11"> <!-- , /// -160 - 0. Right thigh to Right shank, X-Axis (bend/stretch) -->
+<!ENTITY rleg5 "12"> <!-- , /// -90 - 90. Right shank to Right foot, X-Axis (forward/backward) -->
+<!ENTITY rleg6 "13"> <!-- , /// -45 - 45. Right shank to Right foot, Y-Axis (left/right) -->
+
+<!ENTITY larm1 "14"> <!-- , /// -90 - 180. Torso to Left shoulder, X-Axis (forward/backward) -->
+<!ENTITY larm2 "15"> <!-- , /// -180 - 0. Torso to Left shoulder, Y-Axis (out/in) -->
+<!ENTITY larm3 "16"> <!-- , /// -135 - 135. Left shoulder to Left upper arm, Z-Axis (twist left/right) -->
+<!ENTITY larm4 "17"> <!-- , /// -10 - 130. Left upper arm to Left lower arm, X-Axis -->
+
+<!ENTITY rarm1 "18"> <!-- , /// -90 - 180. Torso to Right shoulder, X-Axis (forward/backward) -->
+<!ENTITY rarm2 "19"> <!-- , /// -180 - 0. Torso to Right shoulder, Y-Axis (out/in) -->
+<!ENTITY rarm3 "20"> <!-- , /// -135 - 135. Right shoulder to Right upper arm, Z-Axis (twist left/right) -->
+<!ENTITY rarm4 "21"> <!--  /// -10 - 130. Right upper arm to Right lower arm, X-Axis -->
+<!ENTITY end   "22">
+
+<!ELEMENT conf ANY>

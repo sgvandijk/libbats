@@ -11,3 +11,8 @@ docs/latex
 libbatsmanual.pdf
 examples/dribble/dribble
 examples/helloworld/helloworld
+Doxyfile
+TAGS
+build
+install_manifest
+install_manifest.txt
