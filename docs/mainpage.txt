@@ -1,20 +1,21 @@
 /**
 
-\mainpage Little Green BATS (2006) sourcecode documentation
+\mainpage @a libbats documentation
 
 \section Authors
 
+- Sander van Dijk (sgvandijk [at] gmail.com)
+- Drew Noakes (draw [at] drewnoakes.com)
 - Martin Klomp (martin [at] ai.rug.nl)
 - Mart van de Sanden (vdsanden [at] ai.rug.nl)
-- Sander van Dijk (sgdijk [at] ai.rug.nl)
 - A. Bram Neijt (bneijt [at] gmail.com)
 - Matthijs Platje (mplatje [at] gmail.com)
 
 <em>Please feel free to contact us if you have any problems or questions about the code.</em>
 
-  Date: 	September 14, 2006
+  Date: 	February, 2013
 
-  Website:	http://www.littlegreenbats.nl
+  Website:	http://launchpad.net/libbats
 
 \section License
 <pre>

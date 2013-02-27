@@ -14,6 +14,8 @@ find_package(Eigen3 REQUIRED)
 find_package(LibXml2 REQUIRED)
 find_package(SigC++ REQUIRED)
 PKG_CHECK_MODULES(GTKMM gtkmm-2.4)
+find_package(Doxygen)
+find_package(LATEX)
 
 set(CMAKE_CXX_FLAGS "-std=c++0x")
 
@@ -219,7 +221,21 @@ set(LIBBATS_INCLUDE_DIRS ${EIGEN3_INCLUDE_DIR} ${LIBXML2_INCLUDE_DIR} ${SigC++_I
 # Only build GTK debugger if GTKmm was found
 if(GTKMM_FOUND)
   list(APPEND LIBBATS_SOURCES
-       ./Debugger/GtkDebugger/onDebugText.cc ./Debugger/GtkDebugger/run.cc ./Debugger/GtkDebugger/onThinkEnd.cc ./Debugger/GtkDebugger/drawShapes.cc ./Debugger/GtkDebugger/GtkDebugger.cc ./Debugger/GtkDebugger/drawBall.cc ./Debugger/GtkDebugger/drawCurve.cc ./Debugger/GtkDebugger/plot.cc ./Debugger/GtkDebugger/drawPlayers.cc ./Debugger/GtkDebugger/start.cc ./Debugger/GtkDebugger/drawSelf.cc ./Debugger/GtkDebugger/init.cc ./Debugger/GtkDebugger/drawField.cc ./Debugger/GtkDebugger/reDraw.cc ./Debugger/GtkDebugger/onDrawingAreaExpose.cc
+       ./Debugger/GtkDebugger/onDebugText.cc
+       ./Debugger/GtkDebugger/run.cc
+       ./Debugger/GtkDebugger/onThinkEnd.cc
+       ./Debugger/GtkDebugger/drawShapes.cc
+       ./Debugger/GtkDebugger/GtkDebugger.cc
+       ./Debugger/GtkDebugger/drawBall.cc
+       ./Debugger/GtkDebugger/drawCurve.cc
+       ./Debugger/GtkDebugger/plot.cc
+       ./Debugger/GtkDebugger/drawPlayers.cc
+       ./Debugger/GtkDebugger/start.cc
+       ./Debugger/GtkDebugger/drawSelf.cc
+       ./Debugger/GtkDebugger/init.cc
+       ./Debugger/GtkDebugger/drawField.cc
+       ./Debugger/GtkDebugger/reDraw.cc
+       ./Debugger/GtkDebugger/onDrawingAreaExpose.cc
   )
 
   list(APPEND LIBBATS_INCLUDE_DIRS ${GTKMM_INCLUDE_DIRS})
@@ -233,7 +249,102 @@ add_library(bats
 ${LIBBATS_SOURCES}
 )
 
+#
+## HTML documentation with doxygen
+#
+if(DOXYGEN_FOUND)
+  configure_file(${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile.in ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile @ONLY)
+  add_custom_target(doc ALL
+                    ${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile
+                    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+                    COMMENT "Generating API documentation with Doxygen" VERBATIM
+  )
+endif(DOXYGEN_FOUND)
+
+#
+## PDF manual
+#
+if (PDFLATEX_COMPILER)
+  SET(PDFLATEX_COMMAND  ${PDFLATEX_COMPILER} -interaction=batchmode -halt-on-error -output-directory ${CMAKE_CURRENT_BINARY_DIR}/docs/manual libbatsmanual.tex)
+  add_custom_target(manual ALL
+                    mkdir -p ${CMAKE_CURRENT_BINARY_DIR}/docs/manual && ${PDFLATEX_COMMAND} && ${PDFLATEX_COMMAND}
+                    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/docs/manual
+                    COMMENT "Generating manual with pdfLaTeX"
+  )
+endif(PDFLATEX_COMPILER)
+
 install(TARGETS bats DESTINATION lib)
+
+install(FILES ./Types/types.hh
+./SituationDetector/SimpleSituationDetector/simplesituationdetector.hh
+./SituationDetector/situationdetector.hh
+./Path/path.hh
+./Distribution/distribution.hh
+./Distribution/MonteCarloDistribution/montecarlodistribution.hh
+./Distribution/NormalDistribution/normaldistribution.hh
+./SocketComm/AgentSocketComm/agentsocketcomm.hh
+./SocketComm/socketcomm.hh
+./SocketComm/TrainerSocketComm/trainersocketcomm.hh
+./WorldModel/worldmodel.hh
+./Cochlea/cochlea.hh
+./Socket/socket.hh
+./ObjectInfo/DynamicObjectInfo/PlayerInfo/playerinfo.hh
+./ObjectInfo/DynamicObjectInfo/dynamicobjectinfo.hh
+./ObjectInfo/objectinfo.hh
+./BatsEvent/batsevent.hh
+./Parser/parser.hh
+./AST/BehaviorNode/behaviornode.hh
+./AST/StateVarNode/statevarnode.hh
+./AST/ast.hh
+./AST/AndNode/andnode.hh
+./AST/StateNode/statenode.hh
+./AST/OrNode/ornode.hh
+./Singleton/singleton.hh
+./DistributionTracker/distributiontracker.hh
+./PlayerClass/playerclass.hh
+./Shape/shape.hh
+./Conf/conf.hh
+./Conf/xmlattr.hh
+./Conf/xmlnodeset.hh
+./Conf/xmlnode.hh
+./Clock/RC3DClock/rc3dclock.hh
+./Clock/clock.hh
+./Action/action.hh
+./Action/RC3DAction/rc3daction.hh
+./Math/config.hh
+./Math/basicmath.hh
+./Math/math.hh
+./Localizer/KalmanLocalizer/kalmanlocalizer.hh
+./Localizer/SimpleLocalizer/simplelocalizer.hh
+./Localizer/localizer.hh
+./JointController/GaitGenerator/gaitgenerator.hh
+./JointController/GaitGenerator/IKGaitGenerator/ikgaitgenerator.hh
+./JointController/MotionSequencePlayer/motionsequenceplayer.hh
+./JointController/jointcontroller.hh
+./HumanoidAgent/humanoidagent.hh
+./Configurable/configurable.hh
+./PCSelector/pcselector.hh
+./PCSelector/UnumPCSelector/unumpcselector.hh
+./Preprocessor/debug.hh
+./Preprocessor/foreach.hh
+./MotionSequence/motionsequence.hh
+./Random/random.hh
+./Predicate/predicate.hh
+./PortableParser/portableparser.hh
+./BodyPart/bodypart.hh
+./Range/range.hh
+./AgentModel/agentmodel.hh
+./Cerebellum/cerebellum.hh
+./Debugger/RoboVizDebugger/robovizdebugger.hh
+./Debugger/debugger.hh
+./Debugger/GtkDebugger/gtkdebugger.hh
+./Debugger/EmptyDebugger/emptydebugger.hh
+./docs/doc.hh
+./SocketAddress/socketaddress.hh
+./BatsException/batsexception.hh
+./TimeVal/timeval.hh DESTINATION include/libbats/)
+
+install(FILES xml/conf.xml xml/movejointbehaviors.xml xml/nao_mdl.xml xml/soccerbot058_mdl.xml xml/soccerbot_mdl.xml  DESTINATION share/libbats/xml/)
 
 add_subdirectory(examples)
 

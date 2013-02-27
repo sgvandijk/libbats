@@ -1,14 +1,5 @@
 #!/bin/sh
 
-if [ "x$1" = "xclean" ]; then
-	echo Cleaning
-	make distclean
-  rm -f confi
-  rm -rf autom4te.cache config.aux m4
-	exit
-fi
-
-
 LNAME=libbats
 
 echo "Generating CMakeFiles.txt"
@@ -36,6 +27,8 @@ find_package(Eigen3 REQUIRED)
 find_package(LibXml2 REQUIRED)
 find_package(SigC++ REQUIRED)
 PKG_CHECK_MODULES(GTKMM gtkmm-2.4)
+find_package(Doxygen)
+find_package(LATEX)
 
 set(CMAKE_CXX_FLAGS "-std=c++0x")
 
@@ -52,7 +45,21 @@ set(LIBBATS_INCLUDE_DIRS \${EIGEN3_INCLUDE_DIR} \${LIBXML2_INCLUDE_DIR} \${SigC+
 # Only build GTK debugger if GTKmm was found
 if(GTKMM_FOUND)
   list(APPEND LIBBATS_SOURCES
-       ./Debugger/GtkDebugger/onDebugText.cc ./Debugger/GtkDebugger/run.cc ./Debugger/GtkDebugger/onThinkEnd.cc ./Debugger/GtkDebugger/drawShapes.cc ./Debugger/GtkDebugger/GtkDebugger.cc ./Debugger/GtkDebugger/drawBall.cc ./Debugger/GtkDebugger/drawCurve.cc ./Debugger/GtkDebugger/plot.cc ./Debugger/GtkDebugger/drawPlayers.cc ./Debugger/GtkDebugger/start.cc ./Debugger/GtkDebugger/drawSelf.cc ./Debugger/GtkDebugger/init.cc ./Debugger/GtkDebugger/drawField.cc ./Debugger/GtkDebugger/reDraw.cc ./Debugger/GtkDebugger/onDrawingAreaExpose.cc
+       ./Debugger/GtkDebugger/onDebugText.cc
+       ./Debugger/GtkDebugger/run.cc
+       ./Debugger/GtkDebugger/onThinkEnd.cc
+       ./Debugger/GtkDebugger/drawShapes.cc
+       ./Debugger/GtkDebugger/GtkDebugger.cc
+       ./Debugger/GtkDebugger/drawBall.cc
+       ./Debugger/GtkDebugger/drawCurve.cc
+       ./Debugger/GtkDebugger/plot.cc
+       ./Debugger/GtkDebugger/drawPlayers.cc
+       ./Debugger/GtkDebugger/start.cc
+       ./Debugger/GtkDebugger/drawSelf.cc
+       ./Debugger/GtkDebugger/init.cc
+       ./Debugger/GtkDebugger/drawField.cc
+       ./Debugger/GtkDebugger/reDraw.cc
+       ./Debugger/GtkDebugger/onDrawingAreaExpose.cc
   )
 
   list(APPEND LIBBATS_INCLUDE_DIRS \${GTKMM_INCLUDE_DIRS})
@@ -66,7 +73,35 @@ add_library(bats
 \${LIBBATS_SOURCES}
 )
 
+#
+## HTML documentation with doxygen
+#
+if(DOXYGEN_FOUND)
+  configure_file(\${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile.in \${CMAKE_CURRENT_BINARY_DIR}/Doxyfile @ONLY)
+  add_custom_target(doc ALL
+                    \${DOXYGEN_EXECUTABLE} \${CMAKE_CURRENT_BINARY_DIR}/Doxyfile
+                    WORKING_DIRECTORY \${CMAKE_CURRENT_BINARY_DIR}
+                    COMMENT "Generating API documentation with Doxygen" VERBATIM
+  )
+endif(DOXYGEN_FOUND)
+
+#
+## PDF manual
+#
+if (PDFLATEX_COMPILER)
+  SET(PDFLATEX_COMMAND  \${PDFLATEX_COMPILER} -interaction=batchmode -halt-on-error -output-directory \${CMAKE_CURRENT_BINARY_DIR}/docs/manual libbatsmanual.tex)
+  add_custom_target(manual ALL
+                    mkdir -p \${CMAKE_CURRENT_BINARY_DIR}/docs/manual && \${PDFLATEX_COMMAND} && \${PDFLATEX_COMMAND}
+                    WORKING_DIRECTORY \${CMAKE_CURRENT_SOURCE_DIR}/docs/manual
+                    COMMENT "Generating manual with pdfLaTeX"
+  )
+endif(PDFLATEX_COMPILER)
+
 install(TARGETS bats DESTINATION lib)
+
+install(FILES ${HEADERS} DESTINATION include/libbats/)
+
+install(FILES ${XML} DESTINATION share/libbats/xml/)
 
 add_subdirectory(examples)
 
