@@ -37,8 +37,8 @@
  *
  */
 
-#ifndef __INC_BATS_AST_HH_
-#define __INC_BATS_AST_HH_
+#ifndef INC_BATS_AST_HH
+#define INC_BATS_AST_HH
 
 #include <memory>
 #include <vector>
@@ -48,26 +48,15 @@
 namespace bats {
 
   
-  /// Enumeration of node types for behavior tree and state tree
-  enum NodeType
-  {
-    NONE,
-    sequenceType,
-    andType,
-    orType,
-    behaviorType,
-    varType
-  };
-
-  /**
-   *  An Abstract Syntax Tree.
+  /** Abstract Syntax Tree.
    */
   class AST {
 
   public:
 
-    /**
-     *  Inherit from this node to create specific tree nodes.
+    /** Tree Node base class
+     *
+     * Inherit from this node to create specific tree nodes.
      */
     class Node {
 
@@ -89,6 +78,9 @@ namespace bats {
       
     public:
 
+      ///@name Construction
+      ///@{
+
       /**
        *  @param type is the node type, zero means NONO or ERROR.
        */
@@ -98,9 +90,53 @@ namespace bats {
       virtual ~Node() {}
 
       /**
-       *  @returns the type.
+       *  Adds a child node to this node.
+       */
+      std::shared_ptr<Node> addChild(std::shared_ptr<Node> child) { d_nodes.push_back(child); return child; }
+
+
+      ///@}
+
+      ///@name Properties
+      ///@{
+
+      /**
+       *  @returns this node's type.
        */
       unsigned getType() const { return d_type; }
+
+      /**
+       *  @returns false if this node has no type.
+       */
+      virtual bool isOk() const { return d_type; }
+
+      /**
+       *  @returns false if and only if this node's type is zero.
+       */
+      operator bool() const { return isOk(); }
+
+      /**
+       *  @returns true if this is not a leaf node.
+       */
+      bool hasChildren()
+      {
+        return d_nodes.size() > 0;
+      }
+
+      /**
+       *  @returns true if this is a leaf node (has no children).
+       */
+      bool isLeaf() const { return d_nodes.empty(); }
+
+      /**
+       *  @returns the number of children.
+       */
+      unsigned size() const { return d_nodes.size(); }
+
+      ///@}
+
+      ///@name Traversal
+      ///@{
 
       /**
        *  @returns a const vector of children.
@@ -108,28 +144,24 @@ namespace bats {
       NodeVector const &getChildren() const { return d_nodes; }
 
       /**
-       *  @returns the number of children.
-       */
-      unsigned size() const { return d_nodes.size(); }
-
-      /**
-       *  @returns the iterators.
+       *  @returns an iterator pointing at the first child.
        */
       iterator begin() { return d_nodes.begin(); }
+
+      /**
+       *  @returns an iterator pointing past the last child.
+       */
       iterator end() { return d_nodes.end(); }
 
+      /**
+       *  @returns a const iterator pointing at the first child.
+       */
       const_iterator begin() const { return d_nodes.begin(); }
+
+      /**
+       *  @returns a const iterator pointing past the last child.
+       */
       const_iterator end() const { return d_nodes.end(); }
-
-      /**
-       *  @returns false if it has no type.
-       */
-      virtual bool isOk() const { return d_type; }
-
-      /**
-       *  @returns false if and only if type is zero.
-       */
-      operator bool() const { return isOk(); }
 
       /**
        *  @returns the child at index.
@@ -150,26 +182,14 @@ namespace bats {
       }
 
       /**
-       *  @returns true if this is not a leaf node.
+       *  @returns the child at index.
        */
-      bool hasChildren()
-      {
-        return d_nodes.size() > 0;
-      }
-
       std::shared_ptr<Node> operator[](unsigned index) { return getChild(index); }
 
-      /**
-       *  Adds a child node to this node.
-       */
-      std::shared_ptr<Node> addChild(std::shared_ptr<Node> child) { d_nodes.push_back(child); return child; }
+      ///@}
 
-      /**
-       *  @returns true if this is a leaf node (has no children).
-       */
-      bool isLeaf() const { return d_nodes.empty(); }
-
-      /* --- Tree Search Interface --- */
+      ///@name Tree Search
+      ///@{
 
       /**
        *  Used to match strings with nodes. Needs to be implemented
@@ -212,8 +232,6 @@ namespace bats {
        */
       unsigned findAllDeep(std::vector<std::shared_ptr<Node> > &res, std::string const &query) const;
 
-      /* --- Path System Interface --- */
-
       /**
        *  Finds all the predicates that comply with the specified select string
        *  and pushes them into res.
@@ -226,10 +244,7 @@ namespace bats {
        */
       std::shared_ptr<Node> select(Path const &select) const;
 
-
-      /* --- Tree Matching System --- */
-      
-
+      ///@}
 
     };
 
@@ -238,4 +253,4 @@ namespace bats {
 };
 
 
-#endif // __INC_BATS_AST_HH_
+#endif // INC_BATS_AST_HH

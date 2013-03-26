@@ -37,8 +37,8 @@
  *
  */
 
-#ifndef __BATS_RC3DACTION_HH_
-#define __BATS_RC3DACTION_HH_
+#ifndef BATS_RC3DACTION_HH
+#define BATS_RC3DACTION_HH
 
 #include "../action.hh"
 #include "../../Types/types.hh"
@@ -46,8 +46,15 @@
 
 namespace bats
 {
+  /** RC 3D Sim action base class
+   *
+   * All actions that can be sent to the RC 3D simulator derive from
+   * this class.
+   */
   struct RC3DAction : public Action
   {
+    /** List of possible RC3D actions
+     */
     enum RC3DActionType
     {
       NONE,               ///< No action (only used internally)
@@ -63,13 +70,16 @@ namespace bats
     {}
   };
 
-  /// Move a joint (hinge joint or part of a universal joint)
+  /** Move a joint action
+   * 
+   * Can be used for both hinge joint or part of a universal joint
+   */
   struct MoveJointAction : public RC3DAction
   {
     /// The joint (hinge joint or part of a universal joint) to move
     Types::Joint joint;
           
-    /// The angular velocity to move the joint with (radians per second)
+    /// The angular velocity to move the joint with (radians per time step)
     double speed;
           
     MoveJointAction(Types::Joint j, double s)
@@ -78,13 +88,14 @@ namespace bats
     
   };
 
-  /// Move a hinge joint
+  /** Move a hinge joint action
+   */
   struct MoveHingeJointAction : public RC3DAction
   {
     /// The hinge joint to move
     Types::Joint joint;
           
-    /// The angular velocity to move the joint with (radians per second)
+    /// The angular velocity to move the joint with (radians per time step)
     double speed;
           
     MoveHingeJointAction(Types::Joint j, double s)
@@ -92,16 +103,17 @@ namespace bats
     {}
   };
       
-  /// Move a universal joint
+  /** Move a universal joint action
+   */
   struct MoveUniversalJointAction : public RC3DAction
   {
     /// The universal joint to move
     Types::Joint joint;
           
-    /// The angular velocity to move the joint with along its first axis (radians per second) 
+    /// The angular velocity to move the joint with along its first axis (radians per time step) 
     double speed1;
           
-    /// The angular velocity to move the joint with along its second axis (radians per second)
+    /// The angular velocity to move the joint with along its second axis (radians per time step)
     double speed2;
           
     MoveUniversalJointAction(Types::Joint j, double s1, double s2)
@@ -109,7 +121,8 @@ namespace bats
     {}
   };
       
-  /// Beam
+  /** Beam action
+   */
   struct BeamAction : public RC3DAction
   {
     /// The position to beam to
@@ -120,9 +133,11 @@ namespace bats
     {}
   };
 
-  /// Say
+  /** Say action
+   */
   struct SayAction : public RC3DAction
   {
+    /// The action to say
     std::string message;
     
     SayAction(std::string const& m)
@@ -130,4 +145,4 @@ namespace bats
     {}
   };
 }
-#endif // __BATS_RC3DACTION_HH_
+#endif // BATS_RC3DACTION_HH

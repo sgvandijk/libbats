@@ -46,8 +46,9 @@ namespace bats
 {
   /** Track the statistics of a time series
    *
-   * Use this class to track the average and standard deviation of a
-   * time series, by adding samples as you receive them.
+   * This class allows you to gather statistics of samples, by adding
+   * them iteratively. The average and standard deviation are updated
+   * accordingly.
    */
   class DistributionTracker
   {
@@ -73,9 +74,9 @@ namespace bats
     double average() const;
     
     /**
-     * @returns the current variation of all added samples
+     * @returns the current variance of all added samples
      */
-    double variation() const;
+    double variance() const;
       
   private:
     double d_total;
@@ -85,8 +86,9 @@ namespace bats
 
   /** Track the statistics of a 3-dimensional time series
    *
-   * Use this class to track the average and standard deviation of a
-   * 3D time series, by adding vector samples as you receive them.
+   * This class allows you to gather statistics of vector samples, by adding
+   * them iteratively. The average and standard deviation are updated
+   * accordingly.
    */
   class Vector3dDistributionTracker
   {
@@ -95,31 +97,26 @@ namespace bats
      *
      * Sets mean and variation to (0,0,0)
      */
-    void reset()
-    { 
-      d_x.reset();
-      d_y.reset();
-      d_z.reset();
-    };
+    void reset();
     
-    const unsigned count() { return d_x.count(); }
+    /**
+     * @returns number of samples added so far
+     */
+    unsigned count() const;
     
-    void add(Eigen::Vector3d vector)
-    {
-      d_x.add(vector.x());
-      d_y.add(vector.y());
-      d_z.add(vector.z());
-    }
+    /** Add a new sample
+     */
+    void add(Eigen::Vector3d vector);
     
-    const Eigen::Vector3d average() const
-    {
-      return Eigen::Vector3d(d_x.average(), d_y.average(), d_z.average());
-    }
+    /**
+     * @returns the current average of all added samples
+     */
+    Eigen::Vector3d average() const;
     
-    const Eigen::Vector3d stdDev() const
-    {
-      return Eigen::Vector3d(d_x.stdDev(), d_y.stdDev(), d_z.stdDev());
-    }
+    /**
+     * @returns the current element-wise variance of all added samples
+     */
+    Eigen::Vector3d variance() const;
       
   private:
     DistributionTracker d_x;
@@ -127,17 +124,21 @@ namespace bats
     DistributionTracker d_z;
   };  
 
+  // Inline member implementations
+  
+  // DistributionTracker
+
   inline void DistributionTracker::reset()
   {
     d_total = d_totalSquared = d_count = 0;
   }
 
-  unsigned DistributionTracker::count() const
+  inline unsigned DistributionTracker::count() const
   {
     return d_count;
   }
     
-  void DistributionTracker::add(double d)
+  inline void DistributionTracker::add(double d)
   {
     if (std::isnan(d))
       throw std::runtime_error("Cannot add nan to a DistributionTracker");
@@ -146,15 +147,46 @@ namespace bats
     d_count++;
   }
     
-  double DistributionTracker::average() const
+  inline double DistributionTracker::average() const
    {
      return d_count == 0 ? NAN : d_total/d_count;
    }
     
-  double DistributionTracker::variation() const
+  inline double DistributionTracker::variance() const
   {
     double avg = average();
     return d_count == 0 ? NAN : d_totalSquared/d_count - avg*avg;
+  }
+
+  // Vector3dDistributionTracker
+
+  inline void Vector3dDistributionTracker::reset()
+  { 
+    d_x.reset();
+    d_y.reset();
+    d_z.reset();
+  }
+    
+  inline unsigned Vector3dDistributionTracker::count() const
+  {
+    return d_x.count();
+  }
+    
+  inline void Vector3dDistributionTracker::add(Eigen::Vector3d vector)
+  {
+    d_x.add(vector.x());
+    d_y.add(vector.y());
+    d_z.add(vector.z());
+  }
+    
+  inline Eigen::Vector3d Vector3dDistributionTracker::average() const
+  {
+    return Eigen::Vector3d(d_x.average(), d_y.average(), d_z.average());
+  }
+    
+  inline Eigen::Vector3d Vector3dDistributionTracker::variance() const
+  {
+    return Eigen::Vector3d(d_x.variance(), d_y.variance(), d_z.variance());
   }
 
 }

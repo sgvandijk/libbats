@@ -37,8 +37,8 @@
  *
  */
 
-#ifndef _BATS_OBJECTINFO_HH_
-#define _BATS_OBJECTINFO_HH_
+#ifndef BATS_OBJECTINFO_HH
+#define BATS_OBJECTINFO_HH
 
 #include "../Types/types.hh"
 #include "../Distribution/distribution.hh"
@@ -46,9 +46,15 @@
 
 namespace bats
 {
+  /** Object Information
+   *
+   * Holds information about physical ojects, such as position and
+   * velocity, whether it is seen, and some pysical properties.
+   */
   struct ObjectInfo
   {
-    /**
+    /** Local position and velocity distribution
+     *
      * Holds information about the object's position and velocity in the
      * local frame:
      * 
@@ -58,7 +64,8 @@ namespace bats
      */
     std::shared_ptr<Distribution> posVelLocal;
 
-    /**
+    /** Global position and velocity distribution
+     *
      * Holds information about the object's position and velocity in the
      * global frame:
      * 
@@ -68,15 +75,26 @@ namespace bats
      */
     std::shared_ptr<Distribution> posVelGlobal;
     
+    /** Raw position and velocity distribution
+     *
+     * Holds raw position and velocity data received from the simulator
+     */
     std::shared_ptr<NormalDistribution> posVelRaw;
-    std::shared_ptr<NormalDistribution> posVelRawGlobal;
+
+    /** Last global measurement
+     *
+     * Only used internally in KalmanLocalizer to determine velocity
+     * \TODO: make less specifically for KL
+     */
+    std::shared_ptr<NormalDistribution> lastPosVelRawGlobal;
     
-    /** Gets whether this object was sighted in the last vision data. */
+    /** Whether this object was sighted in the last vision data. */
     bool isVisible;
     
-    /** Gets the Types::Object enum value that corresponds to this ObjectInfo. */
+    /** The Types::Object enum value that corresponds to this ObjectInfo. */
     const Types::Object objectId;
     
+    /** Object radius */
     const double radius;
     
     /** Whether this object represents a player. */
@@ -86,10 +104,10 @@ namespace bats
     /** Whether this object represents the ball. */
     const bool isFlag;
     
-    /** Gets the name of this object. **/
+    /** The name of this object. **/
     const std::string name;
     
-    /** Gets whether this object is dynamic, in the sense that it can move around
+    /** Whether this object is dynamic, in the sense that it can move around
      * the environment, in contrast to fixed objects such as flags and goals.
      */
     const bool isDynamic;
@@ -98,7 +116,7 @@ namespace bats
     : posVelLocal(std::make_shared<NormalDistribution>(6)),
       posVelGlobal(std::make_shared<NormalDistribution>(6)),
       posVelRaw(std::make_shared<NormalDistribution>(6)),
-      posVelRawGlobal(std::make_shared<NormalDistribution>(6)),
+      lastPosVelRawGlobal(std::make_shared<NormalDistribution>(6)),
       isVisible(false),
       objectId(objectId), 
       radius(radius), 
@@ -109,7 +127,7 @@ namespace bats
       isDynamic(isDynamic)
     {}
     
-    /** @return the position of this object in the local frame of the agent. */
+    /** @return the most likely position of this object in the local frame of the agent. */
     Eigen::Vector3d getPositionLocal(const bool zeroZ = false) const
     {
       return setZeroZ(zeroZ, posVelLocal->getMu().head<3>());
@@ -126,7 +144,7 @@ namespace bats
       return d;
     }
     
-    /** @return the position of this object in the global frame. */
+    /** @return the most likely position of this object in the global frame. */
     Eigen::Vector3d getPositionGlobal(const bool zeroZ = false) const
     {
       return setZeroZ(zeroZ, posVelGlobal->getMu().head<3>());
@@ -143,25 +161,25 @@ namespace bats
       return d;
     }
     
-    /** @return the unfiltered position of this object in the torso (agent) frame. */
+    /** @return the unfiltered position of this object in the raw (camera) frame. */
     Eigen::Vector3d getPositionRaw() const
     {
       return posVelRaw->getMu().head<3>();
     }
     
-    /** @return the velocity of this object in the global frame. */
+    /** @return the most likely velocity of this object in the global frame. */
     Eigen::Vector3d getVelocityGlobal(const bool zeroZ = false) const
     {
       return setZeroZ(zeroZ, posVelGlobal->getMu().tail<3>());
     }
     
-    /** @return the velocity of this object in the local frame. */
+    /** @return the most likely velocity of this object in the local frame. */
     Eigen::Vector3d getVelocityLocal(const bool zeroZ = false) const
     {
       return setZeroZ(zeroZ, posVelLocal->getMu().tail<3>());
     }
     
-    /** @return the velocity of this object in the raw (camera) frame. */
+    /** @return the most likely velocity of this object in the raw (camera) frame. */
     Eigen::Vector3d getVelocityRaw() const
     {
       return posVelRaw->getMu().tail<3>();

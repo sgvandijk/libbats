@@ -43,7 +43,9 @@
 
 namespace bats
 {
-  /** Base class for actions */
+  /** Action base class
+   *
+   * All action types that this class.*/
   struct Action
   {
     /** Constructor
