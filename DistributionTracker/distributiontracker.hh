@@ -37,38 +37,45 @@
  *
  */
 
-#ifndef _BATS_DISTRIBUTIONTRACKER_HH_
-#define _BATS_DISTRIBUTIONTRACKER_HH_
+#ifndef BATS_DISTRIBUTIONTRACKER_HH
+#define BATS_DISTRIBUTIONTRACKER_HH
 
 #include <Eigen/Core>
 
 namespace bats
 {
+  /** Track the statistics of a time series
+   *
+   * Use this class to track the average and standard deviation of a
+   * time series, by adding samples as you receive them.
+   */
   class DistributionTracker
   {
   public:
-    void reset() { d_total = d_totalSquared = d_count = 0; };
-    const unsigned count() { return d_count; }
+    /** Reset statistics
+     *
+     * Sets mean and variation to 0
+     */
+    void reset();
+
+    /**
+     * @returns number of values added
+     */
+    unsigned count() const;
     
-    void add(double d)
-    {
-      if (std::isnan(d))
-        throw std::runtime_error("Cannot add nan to a DistributionTracker");
-      d_total += d;
-      d_totalSquared += d*d;
-      d_count++;
-    }
+    /** Add new sample
+     */
+    void add(double d);
     
-    const double average() const
-    {
-      return d_count == 0 ? NAN : d_total/d_count;
-    }
+    /**
+     * @returns the current average of all added samples
+     */
+    double average() const;
     
-    const double stdDev() const
-    {
-      double avg = average();
-      return d_count == 0 ? NAN : d_totalSquared/d_count - avg*avg;
-    }
+    /**
+     * @returns the current variation of all added samples
+     */
+    double variation() const;
       
   private:
     double d_total;
@@ -76,9 +83,18 @@ namespace bats
     unsigned d_count;
   };
 
+  /** Track the statistics of a 3-dimensional time series
+   *
+   * Use this class to track the average and standard deviation of a
+   * 3D time series, by adding vector samples as you receive them.
+   */
   class Vector3dDistributionTracker
   {
   public:
+    /** Reset statistics
+     *
+     * Sets mean and variation to (0,0,0)
+     */
     void reset()
     { 
       d_x.reset();
@@ -110,6 +126,37 @@ namespace bats
     DistributionTracker d_y;
     DistributionTracker d_z;
   };  
+
+  inline void DistributionTracker::reset()
+  {
+    d_total = d_totalSquared = d_count = 0;
+  }
+
+  unsigned DistributionTracker::count() const
+  {
+    return d_count;
+  }
+    
+  void DistributionTracker::add(double d)
+  {
+    if (std::isnan(d))
+      throw std::runtime_error("Cannot add nan to a DistributionTracker");
+    d_total += d;
+    d_totalSquared += d*d;
+    d_count++;
+  }
+    
+  double DistributionTracker::average() const
+   {
+     return d_count == 0 ? NAN : d_total/d_count;
+   }
+    
+  double DistributionTracker::variation() const
+  {
+    double avg = average();
+    return d_count == 0 ? NAN : d_totalSquared/d_count - avg*avg;
+  }
+
 }
 
-#endif /* _BATS_DISTRIBUTIONTRACKER_HH_ */
+#endif /* BATS_DISTRIBUTIONTRACKER_HH */

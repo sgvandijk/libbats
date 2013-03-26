@@ -37,14 +37,16 @@
  *
  */
 
-#ifndef __BATS_DISTRIBUTION_HH__
-#define __BATS_DISTRIBUTION_HH__
+#ifndef BATS_DISTRIBUTION_HH
+#define BATS_DISTRIBUTION_HH
 
 #include <Eigen/Core>
 #include <memory>
 
 namespace bats
 {
+  /** Base class for multi-dimensional distributions
+   */
   class Distribution
   {
   public:
@@ -53,28 +55,38 @@ namespace bats
   
     /** Initialize distribution
      *
-     * Initialize the distribution given a normal distribution \f$ N(\mu, \Sigma) \f$
+     * Initialize the distribution given a normal distribution \f$
+     * N(\mu, \Sigma) \f$
+     *
      * @param mu Mean vector
      * @param sigma Covariance matrix
      */
     virtual void init(Eigen::VectorXd const &mu, Eigen::MatrixXd const &sigma) = 0;
 
-    /** Get Mu
+    /** Get mean
      *
-     * Retrieve \f$ \mu \f$: the mean/average/expected value of the distribution. \f$ \mu \f$ is the point with the highest probability
+     * Retrieve \f$ \mu \f$: the mean/average/expected value of the
+     * distribution. \f$ \mu \f$ is the point with the highest
+     * probability
+     *
      * @returns a 3D Vector that \f$ \mu \f$ will be placed into
      */
     virtual Eigen::VectorXd getMu() const = 0;
     
     virtual void setMu(Eigen::VectorXd const& mu) = 0;
     
-    /** Get Sigma
+    /** Get covariance matrix
      *
-     * Retrieve \f$ \Sigma \f$: the covariance matrix/expected deviationof the distribution. This will be an estimation when the distribution is non-normal
+     * Retrieve \f$ \Sigma \f$: the covariance matrix/expected
+     * deviationof the distribution. This will be an estimation when
+     * the distribution is non-normal
+     *
      * @returns a 3x3 Matrix that \f$ \Sigma \f$ will be placed into
      */
     virtual Eigen::MatrixXd getSigma() const = 0;
-        
+    
+    /** Set covariance matrix
+     */
     virtual void setSigma(Eigen::MatrixXd const& sigma) = 0;
     
     /** Draw a random value
@@ -109,5 +121,5 @@ namespace bats
 }
 
 
-#endif /* __BATS_DISTRIBUTION_HH__ */
+#endif /* BATS_DISTRIBUTION_HH */
 
