@@ -70,6 +70,8 @@ namespace bats
   class Singleton
   {
   public:
+    /** Abstract singleton parameters class
+     */
     class Params
     {
       public:

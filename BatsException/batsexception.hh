@@ -37,17 +37,19 @@
  *
  */
 
-#ifndef __INC_BATS_BATSEXCEPTION_HH_
-#define __INC_BATS_BATSEXCEPTION_HH_
+#ifndef BATS_BATSEXCEPTION_HH
+#define BATS_BATSEXCEPTION_HH
 
 #include <stdexcept>
 #include <sstream>
 
 namespace bats {
 
-  /** Our Very Own Exception
+  /** Exception base class
    *
-   *  This exception class can be used, in companion with the BATS_CATCH_FRAME, to keep a trace of places where it is thrown and caught.
+   *  This exception class can be used, in companion with the
+   *  BATS_CATCH_FRAME, to keep a trace of places where it is thrown
+   *  and caught.
    */
   class BatsException : public std::exception {
 
@@ -76,7 +78,8 @@ namespace bats {
     }
 
     /**
-     * Initialize message with name of file and line number where the exception originated and some text
+     * Initialize message with name of file and line number where the
+     * exception originated and some text
      */
     BatsException(std::string const &filename, unsigned line, std::string const msg)
     {
@@ -84,7 +87,8 @@ namespace bats {
     }
 
     /**
-     * Retrieve message stream. New messages can be added to this stream.
+     * Retrieve message stream. New messages can be added to this
+     * stream.
      */
     std::stringstream &messages() { return d_messages; }
 
@@ -101,9 +105,10 @@ namespace bats {
 };
 
 /**
- * Add new line with source file and line number to the exception message. Rethrows the exception
+ * Add new line with source file and line number to the exception
+ * message. Rethrows the exception
  */
 #define BATS_CATCH_FRAME(e) e->messages() << __FILE__ << ":" << __LINE__ << std::endl; throw e
 
 
-#endif // __INC_BATS_BATSEXCEPTION_HH_
+#endif // INC_BATS_BATSEXCEPTION_HH

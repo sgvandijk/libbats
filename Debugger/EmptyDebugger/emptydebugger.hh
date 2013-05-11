@@ -1,10 +1,15 @@
-#ifndef __BATS_EMPTYDEBUGGER_HH__
-#define __BATS_EMPTYDEBUGGER_HH__
+#ifndef BATS_EMPTYDEBUGGER_HH
+#define BATS_EMPTYDEBUGGER_HH
 
 #include "../debugger.hh"
 
 namespace bats
 {
+  /** Dummy debugger
+   *
+   * You can initialize the Debugger singleton with this class to
+   * disable all debugging.
+   */
   class EmptyDebugger : public Debugger
   {
       friend class bats::Singleton<Debugger>;
@@ -34,5 +39,5 @@ namespace bats
 };
 
 
-#endif /* __BATS_EMPTYDEBUGGER_HH__ */
+#endif /* BATS_EMPTYDEBUGGER_HH */
 

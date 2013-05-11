@@ -37,8 +37,8 @@
  *
  */
 
-#ifndef _BATS_PLAYERINFO_HH_
-#define _BATS_PLAYERINFO_HH_
+#ifndef BATS_PLAYERINFO_HH
+#define BATS_PLAYERINFO_HH
 
 #include "../../../Types/types.hh"
 #include "../../objectinfo.hh"
@@ -48,46 +48,70 @@
 
 namespace bats
 {
+  /** Player information
+   *
+   * Keep track of a player's information, most notably the position
+   * of its limbs, and its orientation derived from that.
+   */
   struct PlayerInfo : DynamicObjectInfo
   {
-    /** The position of the left arm, relative to the player's torso, in the local frame of the observer. */
+    /** The position of the left arm, relative to the player's torso,
+     * in the local frame of the observer. */
     Eigen::Vector3d posLArmLocal;
-    /** The position of the right arm, relative to the player's torso, in the local frame of the observer. */
+    /** The position of the right arm, relative to the player's torso,
+     * in the local frame of the observer. */
     Eigen::Vector3d posRArmLocal;
-    /** The position of the left foot, relative to the player's torso, in the local frame of the observer. */
+    /** The position of the left foot, relative to the player's torso,
+     * in the local frame of the observer. */
     Eigen::Vector3d posLFootLocal;
-    /** The position of the right foot, relative to the player's torso, in the local frame of the observer. */
+    /** The position of the right foot, relative to the player's
+     * torso, in the local frame of the observer. */
     Eigen::Vector3d posRFootLocal;
 
-    /** The position of the left arm, relative to the player's torso, in the global frame. */
+    /** The position of the left arm, relative to the player's torso,
+     * in the global frame. */
     Eigen::Vector3d posLArmGlobal;
-    /** The position of the right arm, relative to the player's torso, in the global frame. */
+    /** The position of the right arm, relative to the player's torso,
+     * in the global frame. */
     Eigen::Vector3d posRArmGlobal;
-    /** The position of the left foot, relative to the player's torso, in the global frame. */
+    /** The position of the left foot, relative to the player's torso,
+     * in the global frame. */
     Eigen::Vector3d posLFootGlobal;
-    /** The position of the right foot, relative to the player's torso, in the global frame. */
+    /** The position of the right foot, relative to the player's
+     * torso, in the global frame. */
     Eigen::Vector3d posRFootGlobal;
     
+    /** Whether the left arm is visible */
     bool lArmVisible;
+    /** Whether the right arm is visible */
     bool rArmVisible;
+    /** Whether the left foot is visible */
     bool lFootVisible;
+    /** Whether the right foor is visible */
     bool rFootVisible;
     
-    /** Gets the direction this player is believed to be facing, in the agent's local frame. */
+    /** Gets the direction this player is believed to be facing, in
+     * the agent's local frame. */
     Eigen::Vector3d faceDirLocal;
-    /** Gets the direction this player is believed to be facing, in the global local frame. */
+    /** Gets the direction this player is believed to be facing, in
+     * the global local frame. */
     Eigen::Vector3d faceDirGlobal;
     
-    /** Gets whether this player is believed to be lying due to a fall. */
+    /** Gets whether this player is believed to be lying due to a
+     * fall. */
     bool fallen;
     
-    /** Gets whether this player is on the same team as the running agent.  Note that this value is true for the PlayerInfo object which represents self. */
+    /** Gets whether this player is on the same team as the running
+     * agent.  Note that this value is true for the PlayerInfo object
+     * which represents self. */
     const bool isTeamMate;
     /** Gets whether this player is on the opposing team. */
     const bool isOpponent;
-    /** Gets whether this PlayerInfo object represents myself (the running agent). */
+    /** Gets whether this PlayerInfo object represents myself (the
+     * running agent). */
     const bool isMe;
-    /** Gets whether this player is a goal keeper of either team (using convention that the keeper has uniform number 1. */
+    /** Gets whether this player is a goal keeper of either team
+     * (using convention that the keeper has uniform number 1. */
     const bool isKeeper;
     /** Gets the uniform number of this player. */
     const unsigned unum;

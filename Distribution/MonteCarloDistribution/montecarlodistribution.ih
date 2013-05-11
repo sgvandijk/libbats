@@ -1,9 +1,0 @@
-#include "montecarlodistribution.hh"
-
-#include "../NormalDistribution/normaldistribution.hh"
-#include "../../Random/random.hh"
-
-using namespace bats;
-using namespace Eigen;
-using namespace std;
-

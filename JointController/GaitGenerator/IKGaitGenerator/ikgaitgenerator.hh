@@ -5,6 +5,23 @@
 
 namespace bats
 {
+  /** Inverse Kinematics based gait generator
+   *
+   * This gait generator uses inverse kinematics to move feet in an
+   * elliptical fashion. The following parameters can be set in the
+   * configuration file to determine the gait behavior:
+   *
+   * * ellipseheight - the maximum height of the swing foot w.r.t the ground
+   * * ellipselength - the maximum forward/backward step size
+   * * sidewidth - the maximum sideway step size
+   * * offsetx - the offset of the feet in rest position/halfway a step, along x-axis
+   * * offsety - the offset of the feet in rest position/halfway a step, along y-axis
+   * * offsetz - the offset of the stance foot w.r.t the hip joint, along y-axis
+   * * period - the time it takes to perform a full gait cycle, i.e. a step with each foot
+   * * maxturnangle - maximum turn angle per step
+   * * leanangle - angle added to hip joint to lean the torso forward
+   * * startuptime - time it takes to reach maximum speed when starting from standing
+   */
   class IKGaitGenerator : public GaitGenerator
   {
   public:

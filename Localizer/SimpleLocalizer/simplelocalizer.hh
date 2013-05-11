@@ -37,8 +37,8 @@
  *
  */
 
-#ifndef _BATS_SIMPLELOCALIZER_HH_
-#define _BATS_SIMPLELOCALOZER_HH_
+#ifndef BATS_SIMPLELOCALIZER_HH
+#define BATS_SIMPLELOCALOZER_HH
 
 #include <memory>
 #include "../localizer.hh"
@@ -46,57 +46,79 @@
 
 namespace bats
 {
-
+  /** Very simple localizer implementation
+   *
+   * Expects unlimited vision, use only as a reference
+   */
   class SimpleLocalizer : public Localizer
   {
-      friend class Singleton<Localizer>;
+  public:
+    virtual void init() {}
       
-      Eigen::Affine3d d_localTransform;
-      Eigen::Affine3d d_globalTransform;
-      
-      std::shared_ptr<NormalDistribution> d_positionsRaw[Types::NOBJECTS];
-      std::shared_ptr<NormalDistribution> d_positionsLocal[Types::NOBJECTS];
-      std::shared_ptr<NormalDistribution> d_positionsGlobal[Types::NOBJECTS];
-      
-      std::shared_ptr<NormalDistribution> d_velocitiesLocal[Types::NOBJECTS];
-      std::shared_ptr<NormalDistribution> d_velocitiesGlobal[Types::NOBJECTS];
-      
-      SimpleLocalizer();
-      SimpleLocalizer(SimpleLocalizer const& other); //NI
-      SimpleLocalizer& operator=(SimpleLocalizer const* other); //NI
+    virtual void update();
 
-    public:
-      virtual void init() {}
+    /** Get the last localization time */
+    virtual double time() {return 0;}
+    /** Get the delay seen in the object observation */
+    virtual double perceptionDelay (Types::Object object) {return 0;}
+    /** Get the last update of the object */
+    virtual double getObjectLastUpdate (Types::Object object) {return 0;}
+
+    /** Return whether the information about the object is reliable */
+    virtual bool isReliableLocal(Types::Object object) const {return true;}
       
-      virtual void update();
+    /** Return whether the information about the object is reliable */
+    virtual bool isReliableGlobal(Types::Object object) const {return true;}
 
-      /** Get the last localization time */
-      virtual double time() {return 0;}
-      /** Get the delay seen in the object observation */
-      virtual double perceptionDelay (Types::Object object) {return 0;}
-      /** Get the last update of the object */
-      virtual double getObjectLastUpdate (Types::Object object) {return 0;}
-
-      /** Return whether the information about the object is reliable */
-      virtual bool isReliableLocal(Types::Object object) const {return true;}
+    virtual Eigen::Vector3d getObjectMovement (Types::Object object)
+    {
+      return Eigen::Vector3d();
+    }
       
-      /** Return whether the information about the object is reliable */
-      virtual bool isReliableGlobal(Types::Object object) const {return true;}
+    virtual std::shared_ptr<Distribution> getPositionLocal(Types::Object object)
+    {
+      return d_positionsLocal[object];
+    }
 
-      virtual Eigen::Vector3d getObjectMovement (Types::Object object) {return Eigen::Vector3d();}
+    virtual std::shared_ptr<Distribution> getVelocityLocal(Types::Object object)
+    {
+      return d_velocitiesLocal[object];
+    }
+
+    virtual std::shared_ptr<Distribution> getPositionGlobal(Types::Object object)
+    {
+      return d_positionsGlobal[object];
+    }
+    virtual std::shared_ptr<Distribution> getVelocityGlobal(Types::Object object)
+    {
+      return d_velocitiesGlobal[object];
+}
       
-      virtual std::shared_ptr<Distribution> getPositionLocal(Types::Object object) { return d_positionsLocal[object]; }
-      virtual std::shared_ptr<Distribution> getVelocityLocal(Types::Object object) { return d_velocitiesLocal[object]; }
 
-      virtual std::shared_ptr<Distribution> getPositionGlobal(Types::Object object) { return d_positionsGlobal[object]; }
-      virtual std::shared_ptr<Distribution> getVelocityGlobal(Types::Object object) { return d_velocitiesGlobal[object]; }
+    virtual Eigen::Affine3d getLocalTransformation() const { return d_localTransform; }
+    virtual Eigen::Affine3d getGlobalTransformation() const { return d_globalTransform; }
+
+    // Needed when having fixed sized Eigen member
+    EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+
+  private:
+    friend class Singleton<Localizer>;
       
+    Eigen::Affine3d d_localTransform;
+    Eigen::Affine3d d_globalTransform;
+      
+    std::shared_ptr<NormalDistribution> d_positionsRaw[Types::NOBJECTS];
+    std::shared_ptr<NormalDistribution> d_positionsLocal[Types::NOBJECTS];
+    std::shared_ptr<NormalDistribution> d_positionsGlobal[Types::NOBJECTS];
+      
+    std::shared_ptr<NormalDistribution> d_velocitiesLocal[Types::NOBJECTS];
+    std::shared_ptr<NormalDistribution> d_velocitiesGlobal[Types::NOBJECTS];
+      
+    SimpleLocalizer();
+    SimpleLocalizer(SimpleLocalizer const& other); //NI
+    SimpleLocalizer& operator=(SimpleLocalizer const* other); //NI
 
-      virtual Eigen::Affine3d getLocalTransformation() const { return d_localTransform; }
-      virtual Eigen::Affine3d getGlobalTransformation() const { return d_globalTransform; }
 
-      // Needed when having fixed sized Eigen member
-      EIGEN_MAKE_ALIGNED_OPERATOR_NEW
   };
 }
 

@@ -37,8 +37,8 @@
  *
  */
 
-#ifndef _BATS_BEHAVIOREVENT_HH_
-#define _BATS_BEHAVIOREVENT_HH_
+#ifndef BATS_EVENT_HH
+#define BATS_EVENT_HH
 
 #include <string>
 #include <sstream>
@@ -46,7 +46,10 @@
 
 namespace bats
 {
-  /** The basic class for events fired by libbats */
+  /** Event base class
+   *
+   * The basic class for events fired by libbats
+   */
   class BatsEvent
   {
     public:
@@ -59,7 +62,7 @@ namespace bats
       virtual std::string toString() const { return "BatsEvent"; }
   };
   
-  /** An event fired when the agent beams using the Beam behavior */
+  /** Event fired when the agent beams */
   class BeamEvent : public BatsEvent
   {
       Eigen::Vector3d d_where;

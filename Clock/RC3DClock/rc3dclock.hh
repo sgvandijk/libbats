@@ -37,24 +37,27 @@
  *
  */
 
-#ifndef __BATS_RC3DCLOCK_HH_
-#define __BATS_RC3DCLOCK_HH_
+#ifndef BATS_RC3DCLOCK_HH_
+#define BATS_RC3DCLOCK_HH_
 
 #include "../clock.hh"
 
 namespace bats
 {
+  /** RC 3D Sim clock implementation
+   */
   class RC3DClock : public Clock
   {
+  public:
+    virtual void update();
+
+  private:
     friend class Singleton<Clock>;
     
     RC3DClock() {}
     RC3DClock(RC3DClock const&); // NI
     RC3DClock& operator=(RC3DClock const&); // NI
-  
-  public:
-    virtual void update();
-    
+      
   };
 }
-#endif // __BATS_RC3DCLOCK_HH_
+#endif // BATS_RC3DCLOCK_HH

@@ -37,8 +37,8 @@
  *
  */
 
-#ifndef __INC_BATS_BASICMATH_HH_
-#define __INC_BATS_BASICMATH_HH_
+#ifndef INC_BATS_BASICMATH_HH
+#define INC_BATS_BASICMATH_HH
 
 #include "config.hh"
 
@@ -47,7 +47,8 @@
 namespace bats
 {
 
-  /**
+  /** Basic, low level nath
+   *
    *  BasicMath has a few helpfull mathematical functions
    *
    *  \todo we should check if sse is supported before compiling!
@@ -143,4 +144,4 @@ namespace bats
 
 };
 
-#endif // __INC_BATS_BASICMATH_HH_
+#endif // INC_BATS_BASICMATH_HH

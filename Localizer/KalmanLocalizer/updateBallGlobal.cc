@@ -66,7 +66,7 @@ void KalmanLocalizer::updateBallGlobal()
       VectorXd globalMeas = joinPositionAndVelocityVectors(
         cutPositionVector(myPosVel) + d_globalRotation * cutPositionVector(meas),
         Vector3d(0,0,0));
-      VectorXd oldGlobalMeas = d_ball->posVelRawGlobal->getMu();
+      VectorXd oldGlobalMeas = d_ball->lastPosVelRawGlobal->getMu();
       
       // Determine velocity based on last global measurement
       VectorXd vel = VectorXd::Zero(3);
@@ -98,7 +98,7 @@ void KalmanLocalizer::updateBallGlobal()
 
       // Remember for next time
       // Not pretty using posVelRawGlobal, as it is mixing raw and global.. 
-      d_ball->posVelRawGlobal->init(globalMeas, globalSigma);
+      d_ball->lastPosVelRawGlobal->init(globalMeas, globalSigma);
 
       obsModel->init(globalMeas, globalSigma);
       d_ball->posVelGlobal->update(obsModel);

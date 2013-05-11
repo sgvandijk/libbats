@@ -32,14 +32,6 @@ set(LIBBATS_SOURCES
 ./Types/nameOf.cc
 ./Path/init.cc
 ./Path/path.cc
-./Distribution/MonteCarloDistribution/getSigma.cc
-./Distribution/MonteCarloDistribution/setMu.cc
-./Distribution/MonteCarloDistribution/getMu.cc
-./Distribution/MonteCarloDistribution/setSigma.cc
-./Distribution/MonteCarloDistribution/draw.cc
-./Distribution/MonteCarloDistribution/init.cc
-./Distribution/MonteCarloDistribution/predict.cc
-./Distribution/MonteCarloDistribution/update.cc
 ./Distribution/NormalDistribution/getP.cc
 ./Distribution/NormalDistribution/draw.cc
 ./Distribution/NormalDistribution/init.cc
@@ -125,7 +117,6 @@ set(LIBBATS_SOURCES
 ./Math/polarToCartesian.cc
 ./Localizer/getFilteredPlayers.cc
 ./Localizer/KalmanLocalizer/addGlobalMeasurement.cc
-./Localizer/KalmanLocalizer/resetBall.cc
 ./Localizer/KalmanLocalizer/updateGlobalRotation.cc
 ./Localizer/KalmanLocalizer/KalmanLocalizer.cc
 ./Localizer/KalmanLocalizer/onBeam.cc
@@ -280,7 +271,6 @@ install(FILES ./Types/types.hh
 ./SituationDetector/situationdetector.hh
 ./Path/path.hh
 ./Distribution/distribution.hh
-./Distribution/MonteCarloDistribution/montecarlodistribution.hh
 ./Distribution/NormalDistribution/normaldistribution.hh
 ./SocketComm/AgentSocketComm/agentsocketcomm.hh
 ./SocketComm/socketcomm.hh

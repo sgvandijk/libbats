@@ -37,8 +37,8 @@
  *
  */
 
-#ifndef _BATS_KALMANLOCALIZER_HH_
-#define _BATS_KALMANLOCALIZER_HH_
+#ifndef BATS_KALMANLOCALIZER_HH
+#define BATS_KALMANLOCALIZER_HH
 
 #include "../localizer.hh"
 #include "../../Distribution/NormalDistribution/normaldistribution.hh"
@@ -52,46 +52,35 @@
 
 namespace bats
 {
+  /** Kalman filter localizer implementation
+   *
+   * @ingroup localization
+   */
   class KalmanLocalizer : public Localizer
   {
   public:
     virtual void init();
     virtual void update();
 
-    void resetBall();
-
-    /** Gets transformation from agent (torso) space to local space, including both translation and rotation. */
     virtual inline Eigen::Affine3d getLocalTransformation() const;
 
-    /** Gets transformation from agent (torso) space to global space, including both translation and rotation. */
     virtual inline Eigen::Affine3d getGlobalTransformation() const;
     
-    virtual void addGlobalMeasurement(std::shared_ptr<DynamicObjectInfo> dynamicObject, std::shared_ptr<Distribution> measurement);
+    virtual void addGlobalMeasurement(std::shared_ptr<DynamicObjectInfo> dynamicObject,
+                                      std::shared_ptr<Distribution> measurement);
     
     void onBeam(std::shared_ptr<BeamEvent> event);
 
-    /**
-     * @return a unit vector in the in the local frame's x/y plane that points in
-     * the forward direction (towards the opponent's goal, parallel to the sides
-     * of the field). The z-component is zero.
-     */
     virtual Eigen::Vector3d getForwardDirLocal() const;
 
-    /** 
-     * @return a unit vector in the local frame's x/y plane that points from the
-     * left to the right of the field from the perspective of our goalie looking
-     * down the field to the opponent's goal.  This vector is parallel to the
-     * goal lines. The z-component is zero.
-     */    
     virtual Eigen::Vector3d getRightDirLocal() const;
 
-    /** @return the midpoint position of the opponent's goal in the local frame. The z-component is zero. */
     virtual Eigen::Vector3d getTheirGoalMidpointLocal() const;
-    /** @return the midpoint position of our team's goal in the local frame. The z-component is zero. */
+
     virtual Eigen::Vector3d getOurGoalMidpointLocal() const;
-    /** @return the midpoint position of the opponent's goal in the global frame. The z-component is zero. */
+
     virtual Eigen::Vector3d getTheirGoalMidpointGlobal() const;
-    /** @return the midpoint position of our team's goal in the global frame. The z-component is zero. */
+
     virtual Eigen::Vector3d getOurGoalMidpointGlobal() const;
     
     // Needed when having fixed sized Eigen member
@@ -108,16 +97,12 @@ namespace bats
     std::vector<LandmarkPair> d_rightPairs;
     std::vector<LandmarkPairPair> d_rightCrossProductPairs;
     
-    /** Transformation from agent (torso) space to global space, excluding translation. */
     Eigen::Affine3d d_globalRotation;
-    /** Transformation from agent (torso) space to global space, excluding rotation. */
     Eigen::Affine3d d_globalTranslation;
-    /** Transformation from agent (torso) space to global space, including both translation and rotation. */
     Eigen::Affine3d d_globalTransform;
-    /** Transformation from agent (torso) space to local space, including both translation and rotation. */
     Eigen::Affine3d d_localTransform;
     
-    /** True if we received vision data this cycle. */
+    // True if we received vision data this cycle.
     bool d_haveNewVisionData;
     
     KalmanLocalizer();

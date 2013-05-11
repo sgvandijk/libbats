@@ -37,14 +37,19 @@
  *
  */
 
-#ifndef _BATS_DYNAMICOBJECTINFO_HH_
-#define _BATS_DYNAMICOBJECTINFO_HH_
+#ifndef BATS_DYNAMICOBJECTINFO_HH
+#define BATS_DYNAMICOBJECTINFO_HH
 
 #include "../../Types/types.hh"
 #include "../objectinfo.hh"
 
 namespace bats
 {
+  /** Dynamic object info
+   *
+   * Extended object finormation for objects that can move around in
+   * the environment.
+   */
   struct DynamicObjectInfo : ObjectInfo
   {
     /** Holds whether localisation data relating to this object is

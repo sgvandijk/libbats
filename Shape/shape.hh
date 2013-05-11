@@ -1,5 +1,5 @@
-#ifndef __BATS_SHAPE_HH_
-#define __BATS_SHAPE_HH_
+#ifndef BATS_SHAPE_HH
+#define BATS_SHAPE_HH
 
 #include <Eigen/Core>
 #include <list>
@@ -9,6 +9,8 @@
 namespace bats
 {
   /** Shape base class
+   *
+   * @ingroup debugging
    */
   struct Shape
   {
@@ -37,6 +39,7 @@ namespace bats
   /** Line shape
    *
    * A line consisting of a start point and a direction vector.
+   * @ingroup debugging
    */
   struct Line : public Shape
   {
@@ -65,6 +68,7 @@ namespace bats
    *
    * A line consisting of a start and end point, both as absolute
    * vectors in global coordinates.
+   * @ingroup debugging
    */
   struct LineSegment : public Shape
   {
@@ -94,6 +98,7 @@ namespace bats
   };
   
   /** Circle shape
+   * @ingroup debugging
    */
   struct Circle : public Shape
   {
@@ -120,6 +125,7 @@ namespace bats
   /** Sphere shape
    *
    * An opaque sphere
+   * @ingroup debugging
    */
   struct Sphere : public Shape
   {
@@ -141,6 +147,7 @@ namespace bats
   };
   
   /** Point shape
+   * @ingroup debugging
    */
   struct Point : public Shape
   {
@@ -165,6 +172,7 @@ namespace bats
   };
   
   /** Rectangle shape
+   * @ingroup debugging
    */
   struct Rectangle : public Shape
   {
@@ -192,6 +200,7 @@ namespace bats
   /** Polygon shape
    *
    * A list of vertices connected by lines.
+   * @ingroup debugging
    */
   struct Polygon : public Shape
   {
@@ -217,6 +226,7 @@ namespace bats
   /** Filled circle shape
    *
    * An opaque filled circle
+   * @ingroup debugging
    */
   struct FilledCircle : public Polygon
   {
@@ -240,6 +250,7 @@ namespace bats
   /** Annotation shape
    *
    * A text annotation that can be positioned
+   * @ingroup debugging
    */
   struct Annotation : public Shape
   {
@@ -272,6 +283,7 @@ namespace bats
    *
    * A text annotation that is attached to an agent. Note that agent
    * annotations do not have categories assigned to them
+   * @ingroup debugging
    */
   struct AgentAnnotation : public Shape
   {
@@ -298,6 +310,7 @@ namespace bats
    *
    * A series of lines tracing the observed position of a player's
    * body.
+   * @ingroup debugging
    */
   struct PlayerSkeleton : public Shape
   {
@@ -318,6 +331,7 @@ namespace bats
    *
    * A set of lines depicting the translation and rotation of a 3D
    * transformation matrix.
+   * @ingroup debugging
    */
   struct TransformationAxes : public Shape
   {
@@ -342,6 +356,7 @@ namespace bats
   /** Progress circle shape
    *
    * A circle where the fill ratio indicates progress
+   * @ingroup debugging
    */
   struct ProgressCircle : public Shape
   {

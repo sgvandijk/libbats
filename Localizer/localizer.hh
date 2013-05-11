@@ -84,6 +84,8 @@ namespace bats
     x-axis points from the origin to the opponent's goal, the positive y-axis to
     the left when facing the opponent's goal and the positive z-axis points
     upward, perpendicular to the field.
+
+    @ingroup localization
   */
   class Localizer
   {
@@ -260,7 +262,7 @@ namespace bats
      *
      * Transform a direction vector in the global coordinate frame to
      * the local coordinate frame.
-     * @param loc Vector in global frame to transform
+     * @param glob Vector in global frame to transform
      * @returns a vector in the local frame
      */
     Eigen::Vector3d rotateGlobalToLocal(Eigen::Vector3d const& glob) {
@@ -309,6 +311,7 @@ namespace bats
     virtual void addGlobalMeasurement(std::shared_ptr<DynamicObjectInfo> dynamicObject, 
                                       std::shared_ptr<Distribution> measurement) {};
 
+    /** Notify localizer about a beam event */
     virtual void onBeam(std::shared_ptr<BeamEvent> event) {}
 
     /** Set camera offset due to calibration error */
