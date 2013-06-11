@@ -99,7 +99,17 @@ endif(PDFLATEX_COMPILER)
 
 install(TARGETS bats DESTINATION lib)
 
-install(FILES ${HEADERS} DESTINATION include/libbats/)
+macro(INSTALL_HEADERS_WITH_DIRECTORY DESTINATION HEADER_LIST)
+  foreach(HEADER \${\${HEADER_LIST}})
+    get_filename_component(FILE \${HEADER} NAME) 
+    string(REPLACE \${FILE} "" DIR \${HEADER})
+    install(FILES \${HEADER} DESTINATION \${DESTINATION}/\${DIR})
+  endforeach(HEADER)
+endmacro(INSTALL_HEADERS_WITH_DIRECTORY)
+
+set(LIBBATS_HEADERS ${HEADERS})
+
+install_headers_with_directory(include/libbats "LIBBATS_HEADERS")
 
 install(FILES ${XML} DESTINATION share/libbats/xml/)
 

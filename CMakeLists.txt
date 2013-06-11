@@ -266,7 +266,15 @@ endif(PDFLATEX_COMPILER)
 
 install(TARGETS bats DESTINATION lib)
 
-install(FILES ./Types/types.hh
+macro(INSTALL_HEADERS_WITH_DIRECTORY DESTINATION HEADER_LIST)
+  foreach(HEADER ${${HEADER_LIST}})
+    get_filename_component(FILE ${HEADER} NAME) 
+    string(REPLACE ${FILE} "" DIR ${HEADER})
+    install(FILES ${HEADER} DESTINATION ${DESTINATION}/${DIR})
+  endforeach(HEADER)
+endmacro(INSTALL_HEADERS_WITH_DIRECTORY)
+
+set(LIBBATS_HEADERS ./Types/types.hh
 ./SituationDetector/SimpleSituationDetector/simplesituationdetector.hh
 ./SituationDetector/situationdetector.hh
 ./Path/path.hh
@@ -327,7 +335,9 @@ install(FILES ./Types/types.hh
 ./docs/doc.hh
 ./SocketAddress/socketaddress.hh
 ./BatsException/batsexception.hh
-./TimeVal/timeval.hh DESTINATION include/libbats/)
+./TimeVal/timeval.hh)
+
+install_headers_with_directory(include/libbats "LIBBATS_HEADERS")
 
 install(FILES xml/conf.xml xml/nao_mdl.xml  DESTINATION share/libbats/xml/)
 
