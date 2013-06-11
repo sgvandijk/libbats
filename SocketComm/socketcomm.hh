@@ -53,7 +53,11 @@
 namespace bats {
   /** Interface between agent and simulation server
    *
-   * The SocketComm is used to communicate with the robocup 3D simulation server. It parses and queues predicates recieved from the server and outputs messages to the server. Do not use this class directly, you probably need either AgentSocketComm or TrainerSocketComm
+   * The SocketComm is used to communicate with the robocup 3D
+   * simulation server. It parses and queues predicates recieved from
+   * the server and outputs messages to the server. Do not use this
+   * class directly, you probably need either AgentSocketComm or
+   * TrainerSocketComm
    *
    */
   class SocketComm {
@@ -61,7 +65,8 @@ namespace bats {
   public:
 
     /**
-     * Default constructor. Call initSocket() before connecting to the server.
+     * Default constructor. Call initSocket() before connecting to the
+     * server.
      */
     SocketComm()
       : d_parseInput(true),
@@ -72,7 +77,8 @@ namespace bats {
     }
     
     /**
-     *  Initializes SocketComm to use @a host at portnumber @a port. Call connect() to actually establish the connection. 
+     *  Initializes SocketComm to use @a host at portnumber @a
+     *  port. Call connect() to actually establish the connection.
      *
      *  @param host Host name/IP address of the server, eg "localhost", "192.168.1.1"
      *  @param port Port number of the server, standard number is 3001
@@ -90,12 +96,17 @@ namespace bats {
     ~SocketComm() { destroy(); }
     
     /**
-     * Turn on/off parsing of input recieved from the server. Set to false to reduce overhead when the SocketComm is only used for sending messages to the server. Messages are still read from the socket to prevent overflows, but are imediatly discarded.
+     * Turn on/off parsing of input recieved from the server. Set to
+     * false to reduce overhead when the SocketComm is only used for
+     * sending messages to the server. Messages are still read from
+     * the socket to prevent overflows, but are imediatly discarded.
      */
     void parseInput(bool p);
     
     /**
-     * Turn on/off whether we should skip messages when there are multiple ones in the buffer, ie when the agent is lagging behind
+     * Turn on/off whether we should skip messages when there are
+     * multiple ones in the buffer, ie when the agent is lagging
+     * behind
      */
     void skipWhenLagging(bool s)
     {
@@ -103,7 +114,8 @@ namespace bats {
     }
     
     /**
-     * Initialize the socket to use @a host at portnumber @a port. Call connect() to actually establish the connection. 
+     * Initialize the socket to use @a host at portnumber @a
+     * port. Call connect() to actually establish the connection.
      */
     void initSocket(std::string host, int port)
     {
@@ -136,16 +148,16 @@ namespace bats {
 
     /** Directly send a string message to the server
      *
-     * @param msg The (string) message to be sent to the server. The message will be length prefixed and sent immediatly.
+     * @param msg The (string) message to be sent to the server. The
+     * message will be length prefixed and sent immediatly.
      */
     void sendMessage(std::string const &msg);
     
     
     /** Queue a predicate to be sent
      *
-     * Queues the messages for sending. It will be sent
-     * as soon as the update() method is called and the
-     * server is ready to recieve.
+     * Queues the messages for sending. It will be sent as soon as the
+     * update() method is called and the server is ready to recieve.
      * @param pred The message to be sent
      */
     void send(std::shared_ptr<Predicate> pred) { d_oMessageQueue.push(pred); }
@@ -160,8 +172,8 @@ namespace bats {
     }
     
     /**
-     * Gives the next message recieved from the server
-     * @returns The first message in the queue
+     * Gives the next message recieved from the server @returns The
+     * first message in the queue
      */
     std::shared_ptr<Predicate> nextMessage();
 
@@ -172,8 +184,9 @@ namespace bats {
     void send();
 
     /**
-     * Update the communication by first sending queued messages and then reading new available input.
-     * This method blocks until at least one message is read from the server.
+     * Update the communication by first sending queued messages and
+     * then reading new available input.  This method blocks until at
+     * least one message is read from the server.
      */
     void update()
     {
