@@ -1,7 +1,8 @@
 
-   Libbats (2008), AI department, University of Groningen
+   Libbats (2008-2013), AI department, University of Groningen
  
    Authors: 	Sander van Dijk (sgdijk@gmail.com)
+                Drew Noakes (drew@drewnoakes.com)
                 Martin Klomp (martin@ai.rug.nl)
  		Mart van de Sanden (vdsanden@ai.rug.nl)
  		A. Bram Neijt (bneijt@gmail.com)
@@ -9,7 +10,7 @@
  
    Date: 	February, 2012
  
-   Website:	https://launchpad.net/libbats
+   Website:	https://github.com/sgvandijk/libbats
  
    Comment:	Please feel free to contact us if you have any 
  		problems or questions about the code.
@@ -45,15 +46,13 @@ INSTALL
 
 DOCUMENTATION
 
-        If you have pdflatex installed while running configure, you
+        If you have pdflatex installed while running cmake, you
         can find the user manual at docs/manual/libbatsmanual.pdf. If
-        you have doxygen installed while running configure, HTML based
+        you have doxygen installed while running cmake, HTML based
         documentation can be found in docs/html. To generate
         documentation at a later time, run "make" in doc/manual for
         the user manual, and "make doc" or "doxygen" in the main
-        directory for the HTML documentation. The latest version of
-        the manual can also be found on the libbats project website:
-        https://launchpad.net/libbats.
+        directory for the HTML documentation.
 
 
 Happy hacking,
