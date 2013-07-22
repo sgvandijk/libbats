@@ -58,6 +58,8 @@ namespace bats
   class VisibleLine
   {
   public:
+    VisibleLine() {}
+
     VisibleLine(const Eigen::Vector3d end1Polar, const Eigen::Vector3d end2Polar)
     : end1Polar(end1Polar),
       end2Polar(end2Polar),
@@ -420,10 +422,11 @@ namespace bats
      */
     std::vector<VisibleLine> findLines(std::function<bool(VisibleLine)> predicate)
     {
-      std::vector<VisibleLine> results;
-      std::copy_if(d_lines.begin(), d_lines.end(),
-                   results.begin(),
-                   predicate);
+      std::vector<VisibleLine> results(d_lines.size());
+      auto endit = std::copy_if(d_lines.begin(), d_lines.end(),
+                                results.begin(),
+                                predicate);
+      results.resize(std::distance(results.begin(), endit));
       return results;
     }
     
