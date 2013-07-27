@@ -201,7 +201,6 @@ set(LIBBATS_SOURCES
 ./Debugger/RoboVizDebugger/drawAnnotation.cc
 ./Debugger/RoboVizDebugger/drawShapes.cc
 ./Debugger/RoboVizDebugger/drawPlayerSkeleton.cc
-./Debugger/RoboVizDebugger/.#drawCurve.cc
 ./Debugger/RoboVizDebugger/drawCircle.cc
 ./SocketAddress/socketaddress.cc
 ./TimeVal/timeval.cc
