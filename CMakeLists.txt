@@ -37,6 +37,7 @@ set(LIBBATS_SOURCES
 ./Distribution/NormalDistribution/init.cc
 ./Distribution/NormalDistribution/predict.cc
 ./Distribution/NormalDistribution/update.cc
+./SocketComm/connect.cc
 ./SocketComm/sendmessage.cc
 ./SocketComm/initConnection.cc
 ./SocketComm/nextMessage.cc
@@ -52,6 +53,7 @@ set(LIBBATS_SOURCES
 ./SocketComm/AgentSocketComm/moveJoint.cc
 ./SocketComm/AgentSocketComm/beam.cc
 ./SocketComm/static.cc
+./SocketComm/SocketComm.cc
 ./SocketComm/receive.cc
 ./SocketComm/parseInput.cc
 ./SocketComm/TrainerSocketComm/setPlayMode.cc
@@ -61,6 +63,7 @@ set(LIBBATS_SOURCES
 ./SocketComm/TrainerSocketComm/setBallPos.cc
 ./SocketComm/TrainerSocketComm/kickOff.cc
 ./SocketComm/TrainerSocketComm/setBallPosVel.cc
+./SocketComm/initSocket.cc
 ./SocketComm/send.cc
 ./WorldModel/onMySide.cc
 ./WorldModel/onMyBelly.cc

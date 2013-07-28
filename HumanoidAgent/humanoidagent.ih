@@ -9,6 +9,7 @@
 #include "../PCSelector/pcselector.hh"
 
 #include <sstream>
+#include <unistd.h>
 
 #define DEBUGLEVEL 0
 #include "../Preprocessor/debug.hh"

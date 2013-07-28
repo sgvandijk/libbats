@@ -37,8 +37,8 @@
  *
  */
 
-#ifndef __INC_MVDS_SOCKET_H_
-#define __INC_MVDS_SOCKET_H_
+#ifndef BATS_SOCKET_HH
+#define BATS_SOCKET_HH
 
 #include <sys/types.h>
 #include <sys/socket.h>
@@ -68,37 +68,7 @@ namespace bats {
    */
   class Socket {
 
-    int socket_handle;
-
-    unsigned *refcnt;
-
-    void copy(Socket const &_other)
-    {
-      socket_handle = _other.socket_handle;
-      refcnt = _other.refcnt;
-      ++*refcnt;
-    }
-
-    void destroy()
-    {
-      if (!(--(*refcnt)))
-      {
-        if (socket_handle != -1)
-        {
-          ::shutdown(socket_handle, SHUT_RDWR);
-          ::close(socket_handle);
-        }
-        delete refcnt;
-      }
-
-    }
-
   public:
-
-    Socket(Socket const &_other)
-    {
-      copy(_other);
-    }
 
     Socket()
     : socket_handle(-1), refcnt(new unsigned)
@@ -113,34 +83,6 @@ namespace bats {
     }
 
     Socket(int _domain, int _type, int _protocol);
-
-    Socket &operator=(Socket const &_other)
-    {
-      if (this != &_other)
-      {
-        destroy();
-        copy(_other);
-      }
-      return *this;
-    }
-
-    bool operator==(Socket const &_other) const
-      { return (socket_handle == _other.socket_handle); }
-
-    bool operator!=(Socket const &_other) const
-      { return (socket_handle != _other.socket_handle); }
-
-    bool operator>(Socket const &_other) const
-      { return (socket_handle > _other.socket_handle); }
-
-    bool operator<(Socket const &_other) const
-      { return (socket_handle < _other.socket_handle); }
-
-    bool operator>=(Socket const &_other) const
-      { return (socket_handle >= _other.socket_handle); }
-
-    bool operator<=(Socket const &_other) const
-      { return (socket_handle <= _other.socket_handle); }
 
     operator bool() const
     {
@@ -299,9 +241,24 @@ namespace bats {
       return !(flags & O_NONBLOCK);
     }
 
+  private:
+    Socket(Socket const &_other); // NI
+
+    Socket &operator=(Socket const &_other); // NI
+
+    int socket_handle;
+
+    unsigned *refcnt;
+
+    void destroy()
+    {
+      ::shutdown(socket_handle, SHUT_RDWR);
+      ::close(socket_handle);
+      delete refcnt;
+    }
   };
 
 
 };
 
-#endif //  __INC_MVDS_SOCKET_H_
+#endif //  BATS_SOCKET_HH

@@ -37,13 +37,12 @@
  *
  */
 
-#ifndef __INC_BATS_SOCKETCOMM_HH_
-#define __INC_BATS_SOCKETCOMM_HH_
+#ifndef BATS_SOCKETCOMM_HH
+#define BATS_SOCKETCOMM_HH
 
 #include <queue>
 #include <string>
 #include "../PortableParser/portableparser.hh"
-#include "../Socket/socket.hh"
 #include <fstream>
 #include "../Types/types.hh"
 #include "../TimeVal/timeval.hh"
@@ -51,6 +50,9 @@
 #define BUFFER_SIZE 64 * 1024
 
 namespace bats {
+  class Socket;
+  class SocketAddress;
+
   /** Interface between agent and simulation server
    *
    * The SocketComm is used to communicate with the robocup 3D simulation server. It parses and queues predicates recieved from the server and outputs messages to the server. Do not use this class directly, you probably need either AgentSocketComm or TrainerSocketComm
@@ -63,13 +65,7 @@ namespace bats {
     /**
      * Default constructor. Call initSocket() before connecting to the server.
      */
-    SocketComm()
-      : d_parseInput(true),
-	d_skipWhenLagging(false)
-    {
-      gettimeofday(t0,0);
-      Parser::initialize();
-    }
+    SocketComm();
     
     /**
      *  Initializes SocketComm to use @a host at portnumber @a port. Call connect() to actually establish the connection. 
@@ -77,17 +73,9 @@ namespace bats {
      *  @param host Host name/IP address of the server, eg "localhost", "192.168.1.1"
      *  @param port Port number of the server, standard number is 3001
      */
-    SocketComm(std::string host, int port)
-      : d_parseInput(true),
-	d_skipWhenLagging(false),
-	d_socket(PF_INET,SOCK_STREAM,0),
-	d_socketAddress(PF_INET,port,host)
-    {
-      gettimeofday(t0,0);
-      Parser::initialize();
-    }
+    SocketComm(std::string host, int port);
     
-    ~SocketComm() { destroy(); }
+    ~SocketComm();
     
     /**
      * Turn on/off parsing of input recieved from the server. Set to false to reduce overhead when the SocketComm is only used for sending messages to the server. Messages are still read from the socket to prevent overflows, but are imediatly discarded.
@@ -95,44 +83,21 @@ namespace bats {
     void parseInput(bool p);
     
     /**
-     * Turn on/off whether we should skip messages when there are multiple ones in the buffer, ie when the agent is lagging behind
-     */
-    void skipWhenLagging(bool s)
-    {
-      d_skipWhenLagging = s;
-    }
-    
-    /**
      * Initialize the socket to use @a host at portnumber @a port. Call connect() to actually establish the connection. 
      */
-    void initSocket(std::string host, int port)
-    {
-      d_socket = Socket(PF_INET,SOCK_STREAM,0);
-      d_socketAddress = SocketAddress(PF_INET,port,host);
-    }
+    void initSocket(std::string host, int port);
     
     /**
      * Get description of the address that is being used.
      */
-    SocketAddress getSocketAddress() { return d_socketAddress; }
+    //SocketAddress getSocketAddress() { return d_socketAddress; }
     
     /**
      * Open a connection to the server
      *
      * @throws runtime_error when connection failed
      */
-    void connect()
-    {
-      // Connect to the server.
-      d_socket.connect(d_socketAddress);
-
-      // Init connection.
-      if (d_socket)
-        initConnection();
-      else
-        throw std::runtime_error("error connecting to server");
-    }
-
+    void connect();
 
     /** Directly send a string message to the server
      *
@@ -203,24 +168,18 @@ namespace bats {
     std::shared_ptr<Predicate> d_currentPred;
 
     bool d_parseInput;
-    bool d_skipWhenLagging;
 
     TimeVal t0, t1;
 
     SocketComm(SocketComm const &); // NI
     SocketComm &operator=(SocketComm const &); // NI
 
-    void destroy()
-    {
-    }
-	
     void initConnection();
   
   private:
-    Socket d_socket;
-    SocketAddress d_socketAddress;
-
+    std::unique_ptr<Socket> d_socket;
+    std::unique_ptr<SocketAddress> d_socketAddress;
   };
 }
 
-#endif // __INC_BATS_SOCKETCOMM_HH_
+#endif // BATS_SOCKETCOMM_HH

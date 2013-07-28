@@ -4,7 +4,7 @@
 void SocketComm::receive()
 {
   // Read prefix
-  unsigned len = d_socket.readExactly(reinterpret_cast<char*>(d_buffer), 4);
+  unsigned len = d_socket->readExactly(reinterpret_cast<char*>(d_buffer), 4);
   if (len != 4)
     throw runtime_error("Failed reading prefix");
 
@@ -12,7 +12,7 @@ void SocketComm::receive()
   memcpy(reinterpret_cast<char*>(&prefix), d_buffer, 4);
   prefix = ntohl(prefix);
   
-  len = d_socket.readExactly(reinterpret_cast<char*>(d_buffer), prefix);
+  len = d_socket->readExactly(reinterpret_cast<char*>(d_buffer), prefix);
   if (len != prefix)
     throw runtime_error("Failed reading message");
 
