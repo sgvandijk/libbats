@@ -45,8 +45,6 @@
 
 namespace bats {
 
-  class AST;
-
   /**
    *  This is used for the Path expressions used by predicate. They are
    *  similar to XPath expressions but with less functionality.

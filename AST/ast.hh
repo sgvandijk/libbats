@@ -50,10 +50,8 @@ namespace bats {
   
   /** Abstract Syntax Tree.
    */
-  class AST {
-
-  public:
-
+  namespace AST {
+    
     /** Tree Node base class
      *
      * Inherit from this node to create specific tree nodes.
@@ -247,9 +245,9 @@ namespace bats {
       ///@}
 
     };
-
+    
   };
-
+  
 };
 
 
