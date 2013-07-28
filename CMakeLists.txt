@@ -52,7 +52,6 @@ set(LIBBATS_SOURCES
 ./SocketComm/AgentSocketComm/update.cc
 ./SocketComm/AgentSocketComm/moveJoint.cc
 ./SocketComm/AgentSocketComm/beam.cc
-./SocketComm/static.cc
 ./SocketComm/SocketComm.cc
 ./SocketComm/receive.cc
 ./SocketComm/parseInput.cc

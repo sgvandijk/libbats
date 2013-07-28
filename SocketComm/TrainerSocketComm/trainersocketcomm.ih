@@ -1,5 +1,7 @@
 #include "trainersocketcomm.hh"
 
+#include "../../Predicate/predicate.hh"
+
 using namespace bats;
 using namespace std;
 using namespace Eigen;

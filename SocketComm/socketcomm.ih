@@ -4,6 +4,7 @@
 #define DEBUGLEVEL 0
 #include "../Preprocessor/debug.hh"
 #include "../Socket/socket.hh"
+#include "../PortableParser/portableparser.hh"
 
 using namespace std;
 using namespace bats;

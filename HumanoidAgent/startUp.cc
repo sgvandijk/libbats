@@ -27,9 +27,6 @@ void HumanoidAgent::startUp()
   SAgentModel::initialize();
   SCerebellum::initialize();
   
-  // Before messages can be parsed, the parser should be initialized.
-  Parser::initialize();
-  
   AgentModel& am = SAgentModel::getInstance();
   am.setUnum(d_unum);
   

@@ -42,9 +42,8 @@
 
 #include <queue>
 #include <string>
-#include "../PortableParser/portableparser.hh"
 #include <fstream>
-#include "../Types/types.hh"
+#include <memory>
 #include "../TimeVal/timeval.hh"
 
 #define BUFFER_SIZE 64 * 1024
@@ -52,10 +51,16 @@
 namespace bats {
   class Socket;
   class SocketAddress;
+  class PortableParser;
+  class Predicate;
 
   /** Interface between agent and simulation server
    *
-   * The SocketComm is used to communicate with the robocup 3D simulation server. It parses and queues predicates recieved from the server and outputs messages to the server. Do not use this class directly, you probably need either AgentSocketComm or TrainerSocketComm
+   * The SocketComm is used to communicate with the robocup 3D
+   * simulation server. It parses and queues predicates recieved from
+   * the server and outputs messages to the server. Do not use this
+   * class directly, you probably need either AgentSocketComm or
+   * TrainerSocketComm
    *
    */
   class SocketComm {
@@ -68,7 +73,8 @@ namespace bats {
     SocketComm();
     
     /**
-     *  Initializes SocketComm to use @a host at portnumber @a port. Call connect() to actually establish the connection. 
+     *  Initializes SocketComm to use @a host at portnumber @a
+     *  port. Call connect() to actually establish the connection.
      *
      *  @param host Host name/IP address of the server, eg "localhost", "192.168.1.1"
      *  @param port Port number of the server, standard number is 3001
@@ -78,12 +84,16 @@ namespace bats {
     ~SocketComm();
     
     /**
-     * Turn on/off parsing of input recieved from the server. Set to false to reduce overhead when the SocketComm is only used for sending messages to the server. Messages are still read from the socket to prevent overflows, but are imediatly discarded.
+     * Turn on/off parsing of input recieved from the server. Set to
+     * false to reduce overhead when the SocketComm is only used for
+     * sending messages to the server. Messages are still read from
+     * the socket to prevent overflows, but are imediatly discarded.
      */
     void parseInput(bool p);
     
     /**
-     * Initialize the socket to use @a host at portnumber @a port. Call connect() to actually establish the connection. 
+     * Initialize the socket to use @a host at portnumber @a
+     * port. Call connect() to actually establish the connection.
      */
     void initSocket(std::string host, int port);
     
@@ -101,7 +111,8 @@ namespace bats {
 
     /** Directly send a string message to the server
      *
-     * @param msg The (string) message to be sent to the server. The message will be length prefixed and sent immediatly.
+     * @param msg The (string) message to be sent to the server. The
+     * message will be length prefixed and sent immediatly.
      */
     void sendMessage(std::string const &msg);
     
@@ -125,8 +136,8 @@ namespace bats {
     }
     
     /**
-     * Gives the next message recieved from the server
-     * @returns The first message in the queue
+     * Gives the next message recieved from the server @returns The
+     * first message in the queue
      */
     std::shared_ptr<Predicate> nextMessage();
 
@@ -137,8 +148,9 @@ namespace bats {
     void send();
 
     /**
-     * Update the communication by first sending queued messages and then reading new available input.
-     * This method blocks until at least one message is read from the server.
+     * Update the communication by first sending queued messages and
+     * then reading new available input.  This method blocks until at
+     * least one message is read from the server.
      */
     void update()
     {
@@ -146,26 +158,13 @@ namespace bats {
       receive();
     }
 
-    /**
-     * Get the current predicate from the internal parser
-     * \todo can this be private/is this deprecated?
-     */
-    std::shared_ptr<Predicate> getPred() const
-    {
-      return d_parser.getPredicate();
-    }
-
   protected:
-    static std::string s_jointNames[Types::NJOINTS];
-    
     unsigned char d_buffer[BUFFER_SIZE];
 
     typedef std::queue<std::shared_ptr<Predicate> > MessageQueue;
 
     MessageQueue   d_oMessageQueue, d_iMessageQueue;
-    PortableParser d_parser;
-
-    std::shared_ptr<Predicate> d_currentPred;
+    std::unique_ptr<PortableParser> d_parser;
 
     bool d_parseInput;
 

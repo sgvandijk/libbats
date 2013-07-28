@@ -7,6 +7,7 @@
 #include "../Clock/RC3DClock/rc3dclock.hh"
 #include "../SituationDetector/situationdetector.hh"
 #include "../PCSelector/pcselector.hh"
+#include "../Predicate/predicate.hh"
 
 #include <sstream>
 #include <unistd.h>

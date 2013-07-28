@@ -2,10 +2,13 @@
 
 void Cochlea::update()
 {
-  shared_ptr<Predicate> pred = bats::SAgentSocketComm::getInstance().getPred();
-  if (pred)
-  {
-    integrate(pred);
-    synthesizeDerivedData();
+  if (bats::SAgentSocketComm::getInstance().hasNextMessage())
+  {    
+    shared_ptr<Predicate> pred = bats::SAgentSocketComm::getInstance().nextMessage();
+    if (pred)
+    {
+      integrate(pred);
+      synthesizeDerivedData();
+    }
   }
 }

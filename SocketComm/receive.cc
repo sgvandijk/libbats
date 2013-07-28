@@ -17,7 +17,7 @@ void SocketComm::receive()
     throw runtime_error("Failed reading message");
 
   d_buffer[len] = 0;
-  d_parser.reset();
-  d_parser.parse(d_buffer, len);
-  d_parser.parse('\n');
+  d_parser->reset();
+  d_parser->parse(d_buffer, len);
+  d_parser->parse('\n');
 }

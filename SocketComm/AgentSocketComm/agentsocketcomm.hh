@@ -37,12 +37,13 @@
  *
  */
 
-#ifndef __INC_BATS_AGENTSOCKETCOMM_HH_
-#define __INC_BATS_AGENTSOCKETCOMM_HH_
+#ifndef BATS_AGENTSOCKETCOMM_HH
+#define BATS_AGENTSOCKETCOMM_HH
 
 #include "../socketcomm.hh"
 #include "../../Singleton/singleton.hh"
 #include "../../BatsEvent/batsevent.hh"
+#include "../../Types/types.hh"
 #include <sigc++/sigc++.h>
 #include <Eigen/Core>
 
@@ -53,15 +54,6 @@ namespace bats
    */
   class AgentSocketComm : public SocketComm
   {
-    friend class Singleton<AgentSocketComm>;
-    
-    AgentSocketComm(AgentSocketComm const&); //NI
-    AgentSocketComm& operator=(AgentSocketComm const&); //NI
-    
-    AgentSocketComm()
-    : SocketComm()
-    {}
-    
   public:
 
     /**
@@ -178,7 +170,21 @@ namespace bats
      */
     static std::shared_ptr<Predicate> makeSayMessage(std::string message);
 
-	sigc::signal<void, std::shared_ptr<BeamEvent> > beam_signal;
+    /** Signal that is fired when a beam message is sent
+     */
+    sigc::signal<void, std::shared_ptr<BeamEvent> > beam_signal;
+
+  private:
+    friend class Singleton<AgentSocketComm>;
+    
+    AgentSocketComm(AgentSocketComm const&); //NI
+    AgentSocketComm& operator=(AgentSocketComm const&); //NI
+    
+    AgentSocketComm()
+    : SocketComm()
+    {}
+    
+
   };
   
   typedef Singleton<AgentSocketComm> SAgentSocketComm;
