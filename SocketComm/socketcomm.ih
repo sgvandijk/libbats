@@ -1,8 +1,5 @@
 #include "socketcomm.hh"
 
-
-#define DEBUGLEVEL 0
-#include "../Preprocessor/debug.hh"
 #include "../Socket/socket.hh"
 #include "../PortableParser/portableparser.hh"
 
