@@ -2,7 +2,7 @@
 
 void Cochlea::update()
 {
-  if (bats::SAgentSocketComm::getInstance().hasNextMessage())
+  while (bats::SAgentSocketComm::getInstance().hasNextMessage())
   {    
     shared_ptr<Predicate> pred = bats::SAgentSocketComm::getInstance().nextMessage();
     if (pred)
