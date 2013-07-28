@@ -94,16 +94,21 @@ namespace bats {
       destroy();
     }
 
-    void setsockopt(int _optname, int _value)
+    void setsockopt( int level, int optname, int value)
     {
       assert(socket_handle);
-      if (::setsockopt(socket_handle,SOL_SOCKET,_optname,&_value,sizeof(int)) == -1)
+      if (::setsockopt(socket_handle, level, optname, &value,sizeof(int)) == -1)
         throw std::runtime_error(strerror(errno));
     }
 
-    void setsockopt(int _optname, bool _value)
+    void setsockopt(int optname, int value)
     {
-      setsockopt(_optname,_value);
+      setsockopt(SOL_SOCKET, optname, value);
+    }
+
+    void setsockopt(int optname, bool value)
+    {
+      setsockopt(optname, value ? 1 : 0);
     }
 
     operator int const()

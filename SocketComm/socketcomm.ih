@@ -3,5 +3,7 @@
 #include "../Socket/socket.hh"
 #include "../PortableParser/portableparser.hh"
 
+#include <netinet/tcp.h>
+
 using namespace std;
 using namespace bats;
