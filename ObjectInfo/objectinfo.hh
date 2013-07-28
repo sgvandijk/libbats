@@ -84,7 +84,7 @@ namespace bats
     /** Last global measurement
      *
      * Only used internally in KalmanLocalizer to determine velocity
-     * \TODO: make less specifically for KL
+     * \todo: make less specifically for KL
      */
     std::shared_ptr<NormalDistribution> lastPosVelRawGlobal;
     
