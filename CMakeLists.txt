@@ -17,7 +17,7 @@ PKG_CHECK_MODULES(GTKMM gtkmm-2.4)
 find_package(Doxygen)
 find_package(LATEX)
 
-set(CMAKE_CXX_FLAGS "-std=c++0x")
+set(CMAKE_CXX_FLAGS "-std=c++0x -Wno-deprecated-register")
 
 #
 ## libbats
