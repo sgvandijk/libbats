@@ -38,7 +38,7 @@
  */
 
 #ifndef BATS_SIMPLELOCALIZER_HH
-#define BATS_SIMPLELOCALOZER_HH
+#define BATS_SIMPLELOCALIZER_HH
 
 #include <memory>
 #include "../localizer.hh"

@@ -1,5 +1,5 @@
 #ifndef BATS_GTKDEBUGGER_HH
-#define BATS_GtKDEBUGGER_HH
+#define BATS_GTKDEBUGGER_HH
 
 #include "../debugger.hh"
 
