@@ -1,7 +1,7 @@
 #include "dribbleagent.ih"
 
 DribbleAgent::DribbleAgent()
-  : HumanoidAgent(string("Dribble"), "conf.xml"),
+  : HumanoidAgent("Dribble", "../../xml/conf.xml"),
     d_beamed(false)
 {
 }

@@ -69,7 +69,7 @@ public:
     *  Sets this agent's teamname to "Hello". Consider putting initialization stuff in init() instead of here.
     */
   HelloWorldAgent()
-    : HumanoidAgent(std::string("Hello"), "../../xml/conf.xml")
+    : HumanoidAgent("Hello", "../../xml/conf.xml")
   {
   }
 
