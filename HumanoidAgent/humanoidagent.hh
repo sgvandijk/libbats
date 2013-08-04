@@ -52,7 +52,10 @@ namespace bats
 {
   /** Humanoid agent base class
    *
-   * This class forms the base of your humanoid 3D soccer simulation agent. All you need to do to create a working agent is derive from this class. For instance:
+   * This class forms the base of your humanoid 3D soccer simulation
+   * agent. All you need to do to create a working agent is derive
+   * from this class. For instance:
+   *
    * \code
    * class MyAgent : public bats::HumanoidAgent
    * {
@@ -60,7 +63,10 @@ namespace bats
    *     MyAgent(std::string teamName) : bats::HumanoidAgent(teamName) {}
    * };
    * \endcode
-   * To start your agent, simply create an object of your agent class and call its run method:
+   *
+   * To start your agent, simply create an object of your agent class
+   * and call its run method:
+   *
    * \code
    * int main()
    * {
@@ -68,39 +74,20 @@ namespace bats
    *   agent.run();
    * }
    * \endcode
-   * The HumanoidAgent class handles all the communication with the server and parsing of input by using SocketComm and WorldModel. You can implement the behavior for your agent by overloading the think method. If your agent needs initialization code that should be run once at start up, overload the init method.
+   *
+   * The HumanoidAgent class handles all the communication with the
+   * server and parsing of input by using SocketComm and
+   * WorldModel. You can implement the behavior for your agent by
+   * overloading the think method. If your agent needs initialization
+   * code that should be run once at start up, overload the init
+   * method.
    */
   class HumanoidAgent
   {
-  protected:
-    std::string d_teamName;
-    std::string d_confFile;
-    std::string d_host;
-    unsigned d_port;
-    unsigned d_unum;
-    useconds_t d_minThinkTime;
-    
-		/// Kill agent next cycle
-    static bool s_die;
-    
-    /** Startup agent
-     *
-     * Performs the communication with the server necesary to start up the agent
-     */
-    void startUp();
-    
-    /** Initialize agent
-     *
-     * This method is run when the agent is started up. At this point the uniform number and all object properties are known
-     */
-    virtual void init() {}
-    
-    /** Perform think cycle
-     */
-    virtual void think() {}
-    
   public:
-    HumanoidAgent(std::string teamName, std::string confFile = "", std::string const host = "localhost", unsigned port = 3100, unsigned unum = 0)
+    HumanoidAgent(std::string teamName, std::string confFile = "",
+                  std::string const host = "localhost", unsigned port = 3100,
+                  unsigned unum = 0)
       : d_teamName(teamName),
         d_confFile(confFile),
         d_host(host),
@@ -114,7 +101,8 @@ namespace bats
     
     /** Run the agent
      *
-     * Start an infinite loop that updates the communication with the server and the WorldModel and calls think() at every step.
+     * Start an infinite loop that updates the communication with the
+     * server and the WorldModel and calls think() at every step.
      */
     void run();
     
@@ -122,6 +110,35 @@ namespace bats
     
     static sigc::signal<void> think_start_signal;
     static sigc::signal<void> think_end_signal;
+    
+  protected:
+    std::string d_teamName;
+    std::string d_confFile;
+    std::string d_host;
+    unsigned d_port;
+    unsigned d_unum;
+    useconds_t d_minThinkTime;
+    
+    /// Kill agent next cycle
+    static bool s_die;
+    
+    /** Startup agent
+     *
+     * Performs the communication with the server necesary to start up
+     * the agent
+     */
+    void startUp();
+    
+    /** Initialize agent
+     *
+     * This method is run when the agent is started up. At this point
+     * the uniform number and all object properties are known
+     */
+    virtual void init() {}
+    
+    /** Perform think cycle
+     */
+    virtual void think() {}
     
   };
   
