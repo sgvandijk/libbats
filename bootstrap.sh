@@ -30,7 +30,7 @@ PKG_CHECK_MODULES(GTKMM gtkmm-2.4)
 find_package(Doxygen)
 find_package(LATEX)
 
-set(CMAKE_CXX_FLAGS "-std=c++0x")
+set(CMAKE_CXX_FLAGS "-std=c++0x -Wno-deprecated-register")
 
 #
 ## libbats
@@ -67,7 +67,7 @@ else(GTKMM_FOUND)
   message(STATUS "  GtkDebugger will not be built")
 endif(GTKMM_FOUND)
 
-include_directories(\${LIBBATS_INCLUDE_DIRS})
+include_directories(\${LIBBATS_INCLUDE_DIRS} \${CMAKE_BINARY_DIR})
 
 add_library(bats
 \${LIBBATS_SOURCES}
@@ -99,6 +99,7 @@ endif(PDFLATEX_COMPILER)
 
 install(TARGETS bats DESTINATION lib)
 
+# Macro used to install headers under correct directory structure
 macro(INSTALL_HEADERS_WITH_DIRECTORY DESTINATION HEADER_LIST)
   foreach(HEADER \${\${HEADER_LIST}})
     get_filename_component(FILE \${HEADER} NAME) 

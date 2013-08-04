@@ -235,7 +235,7 @@ else(GTKMM_FOUND)
   message(STATUS "  GtkDebugger will not be built")
 endif(GTKMM_FOUND)
 
-include_directories(${LIBBATS_INCLUDE_DIRS})
+include_directories(${LIBBATS_INCLUDE_DIRS} ${CMAKE_BINARY_DIR})
 
 add_library(bats
 ${LIBBATS_SOURCES}
@@ -267,6 +267,7 @@ endif(PDFLATEX_COMPILER)
 
 install(TARGETS bats DESTINATION lib)
 
+# Macro used to install headers under correct directory structure
 macro(INSTALL_HEADERS_WITH_DIRECTORY DESTINATION HEADER_LIST)
   foreach(HEADER ${${HEADER_LIST}})
     get_filename_component(FILE ${HEADER} NAME) 
@@ -326,6 +327,7 @@ set(LIBBATS_HEADERS ./Types/types.hh
 ./Predicate/predicate.hh
 ./PortableParser/portableparser.hh
 ./BodyPart/bodypart.hh
+./build/configure.hh
 ./Range/range.hh
 ./AgentModel/agentmodel.hh
 ./Cerebellum/cerebellum.hh

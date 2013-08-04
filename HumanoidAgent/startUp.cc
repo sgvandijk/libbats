@@ -11,7 +11,7 @@ void HumanoidAgent::startUp()
   if (d_confFile != "")
     conf.parseFile(d_confFile);
   else
-    conf.parseFile(QUOTE(LIBBATS_DATADIR)"/conf.xml");
+    conf.parseFile(QUOTE(LIBBATS_DATADIR)"/xml/conf.xml");
   
   unsigned def = 0;
   d_minThinkTime = conf.getParam("/minthinktime", def);
