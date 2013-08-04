@@ -1,0 +1,1 @@
+#define LIBBATS_DATADIR @CMAKE_INSTALL_PREFIX@/share/libbats
