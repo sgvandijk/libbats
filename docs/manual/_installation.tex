@@ -1,55 +1,65 @@
 \chapter{Installation}
 \label{chInstallation}
 
-This section describes the installation procedure for the RoboCup 3D Simspark simulation server and for the \libbats library.
+This section describes the installation procedure for the RoboCup 3D
+Simspark simulation server and for the \libbats library.
 
 \section{RoboCup 3D Simspark Simulation Server}
 
 For the latest installation instructions of the simulator, see the SimSpark project's wiki: \\
 \url{http://simspark.sourceforge.net/wiki}\\
-There you will find instructions for installation on various Linux distributions, as well as for Windows and MacOS.
+There you will find instructions for installation on various Linux
+distributions, as well as for Windows and MacOS.
 
 \section{libbats}
 
 \begin{description}
-  \item[Dependencies] Install the necessary dependencies. For Ubuntu, and possibly other Debian based distributions, run:
+\item[Dependencies] Install the necessary dependencies. For Ubuntu,
+  and possibly other Debian based distributions, run:
 \begin{verbatim}
 $ sudo apt-get install libxml2-dev libsigc++-2.0-dev libgtkmm-2.4-dev
 \end{verbatim}
-On Arch, run as root:
+  On Arch, run as root:
 \begin{verbatim}
 $ pacman -S libxml2 libsigc++ gtkmm
 \end{verbatim}
-  \item[libbats] Install the latest version of {\tt libbats}:
-    \begin{enumerate}
-      \item Download the libbats-x.y.z.tar.gz (where x.y.z is the latest version number, currently 2.1.0) source code package from: \\
-        \url{http://launchpad.net/littlegreenbats/+download}
-      \item Unpack and navigate to the source code directory:
+\item[libbats] Install the latest version of {\tt libbats}:
+  \begin{enumerate}
+  \item Download the latest source code package release from: \\
+    \url{https://github.com/sgvandijk/libbats/releases}
+  \item Unpack and navigate to the source code directory:
 \begin{verbatim}
 $ tar xvzf libbats-x.y.ztar.gz
 $ cd libbats-x.y.z
 \end{verbatim}
-      \item Configure, make and install:
+  \item Use CMake to configure, then make and install:
 \begin{verbatim}
-$ ./configure
+$ mkdir build && cd build
+$ cmake ..
 $ make
 $ sudo make install
 \end{verbatim}
-    \end{enumerate}
+  \end{enumerate}
 \end{description}
 
 \section{RoboViz}
 
-RCSSServer3D comes with a monitor, RCSSMonitor3D, however it is rather basic, both graphically as functionally. We suggest using RoboViz instead, which offers much better visualization, and an advanced debugging interface that is supported by \libbats. Installation instructions for RoboViz can be found at:\\
+RCSSServer3D comes with a monitor, RCSSMonitor3D, however it is rather
+basic, both graphically as functionally. We suggest using RoboViz
+instead, which offers much better visualization, and an advanced
+debugging interface that is supported by \libbats. Installation
+instructions for RoboViz can be found at:\\
 \url{https://sites.google.com/site/umroboviz/}
 
 \section{Testing}
 
-To test whether everything is working correctly, start the simulator with:
+To test whether everything is working correctly, start the simulator
+with:
 \begin{verbatim}
 $ rcssserver3d
 \end{verbatim}
-This command should give you a greeting saying something similar to the following:
+This command should give you a greeting saying something similar to
+the following:
 \begin{verbatim}
 rcssserver3d (formerly simspark), a monolithic simulator 0.6.5
 Copyright (C) 2004 Markus Rollmann, 
@@ -58,41 +68,67 @@ Copyright (C) 2004-2009, The RoboCup Soccer Server Maintenance Group.
 
 Type '--help' for further information
 \end{verbatim}
-plus some initialization output. This output will contain some messages such as `{\tt ERROR: cannot find TextureServer}' and `{\tt ERROR: no FPSController found at}\\{\tt '/usr/scene/camera/physics/controller'}'; you can ignore these messages.
+plus some initialization output. This output will contain some
+messages such as `{\tt ERROR: cannot find TextureServer}' and `{\tt
+  ERROR: no FPSController found at}\\{\tt
+  '/usr/scene/camera/physics/controller'}'; you can ignore these
+messages.
 
-Next start RoboViz. Change to the directory containing RoboViz' binary and run:
+Next start RoboViz. Change to the directory containing RoboViz' binary
+and run:
 \begin{verbatim}
 ./roboviz.sh
 \end{verbatim}
-After some time in which RoboViz connects to the server and initializes its graphics a green field will appear with some lines and two goals. Ta-da, you are successfully running the simulator! If RoboViz reports 'Disconnected', you are not and something went wrong with installing the simulator; see below for some troubleshooting tips.
+After some time in which RoboViz connects to the server and
+initializes its graphics a green field will appear with some lines and
+two goals. Ta-da, you are successfully running the simulator! If
+RoboViz reports 'Disconnected', you are not and something went wrong
+with installing the simulator; see below for some troubleshooting
+tips.
 
-Finally start the example agent supplied with \libbats; in the \libbats source directory execute:
+Finally start the example agent supplied with \libbats; in the
+\libbats build directory execute:
 \begin{verbatim}
 $ cd examples/helloworld
 $ ./helloworld
 \end{verbatim}
-If everything went well, an agent should appear, standing in the left side of the field, waving its arms.
+If everything went well, an agent should appear, standing in the left
+side of the field, waving its arms. You can also try another, more
+advanced example agent; again, in the \libbats build directory, run:
+\begin{verbatim}
+$ cd examples/dribble
+$ ./dribble
+\end{verbatim}
+This should start an agent which, when you start the game, walks to
+the ball and dribbles it over to the opponent's goal.
 
 \section{Troubleshooting}
 \begin{enumerate}
-    \item To uninstall Simspark or RCSSServer3D, simply execute the following command within the respective build directory:
+\item To uninstall Simspark or RCSSServer3D, simply execute the
+  following command within the respective build directory:
 \begin{verbatim}
 $ sudo make uninstall
 \end{verbatim}
-    \item If compilation fails due to missing dependencies, as reported when running {\tt cmake} for the simulator or {\tt configure} for \libbats, try looking up the required libraries using your distributions's package manager. For Ubuntu:
+\item If compilation fails due to missing dependencies, as reported
+  when running {\tt cmake} for the simulator or for
+  \libbats, try looking up the required libraries using your
+  distributions's package manager. For Ubuntu:
 \begin{verbatim}
 $ sudo apt-cache search <missing package>
 \end{verbatim}
-For Arch:
+  For Arch:
 \begin{verbatim}
 $ pacman -Ss <missing package>
 \end{verbatim}
-    \item Please refer to the SimSpark wiki for more information on how to install (or use) simspark, e.g. when using a different operating system: \\
-        \url{http://simspark.sourceforge.net/wiki/index.php/Main_Page}.
-    \item Search through the sserver-three-d mailing list to see if there is a solution to your problem:\\
-    \url{http://sourceforge.net/search/?type_of_search=mlists&group_id=24184}\\
-    otherwise post it to the list (see \url{http://sourceforge.net/mail/?group_id=24184}).
-    \item For problems with \libbats, see the Bugs and Answers sections at: \\
-    \url{http://launchpad.net/littlegreenbats}.
+\item Please refer to the SimSpark wiki for more information on how to
+  install (or use) simspark, e.g. when using a different operating
+  system:\\
+  \url{http://simspark.sourceforge.net/wiki/index.php/Main_Page}.
+\item Search through the sserver-three-d mailing list to see if there
+  is a solution to your problem:\\
+  \url{http://sourceforge.net/search/?type_of_search=mlists&group_id=24184}\\
+  otherwise post it to the list (see
+  \url{http://sourceforge.net/mail/?group_id=24184}).
+\item For problems with \libbats, see the GitHub Issues section at: \\
+  \url{https://github.com/sgvandijk/libbats/issues}.
 \end{enumerate}
-

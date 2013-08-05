@@ -3,15 +3,96 @@
 
 \lstset{numbers=left,numberstyle=\scriptsize}
 
-This chapter is intended to show how easy it is to create an agent using {\tt libbats}. By following these steps you will recreate the simple Hello World example agent that is supplied with the library. See the next chapters for more detailed information on the modules that are used, or when you only need a small part of the library, like communication with the simulation server.
+This chapter is intended to quickly get you started with creating an
+agent using {\tt libbats}. By following these steps you will recreate
+the simple Hello World example agent that is supplied with the
+library. See the next chapters for more detailed information on the
+modules that are used, or when you only need a small part of the
+library, like communication with the simulation server.
 
-The base of a {\tt libbats} agent is the {\tt HumanoidAgent} class. This class initializes all parts of the library and supplies a simple life cycle for your agent. So let's start by creating your own agent class by extending {\tt HumanoidAgent}. Of course, we have to create a constructor and the {\tt HumanoidAgent} class requires that your agent defines an {\tt init()} and a {\tt think()} method. Listing \ref{codeMyagenthh} shows what your header file may look like.
+\section{Setting Up}
+\label{sec:setting-up}
+
+First, we will set up the basic project structure for coding and
+compiling your agent.
+
+\begin{itemize}
+\item Create a directory that will hold all files, called say '{\tt
+    myagent}. We will refer to this as the source directory.
+\item Create a directory in this new directory, called `{\tt cmake}',
+  and copy the following files from the \libbats source directory into
+  it: {\tt FindEigen3.cmake},{\tt FindSigC++.cmake}, and {\tt
+    LibFindMacros.cmake}.
+
+\begin{lstlisting}[float,caption={\tt CMakeLists.txt},label=cmakelists,frame=single]
+cmake_minimum_required (VERSION 2.6)
+project (myagent)
+
+set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/)
+find_package(Eigen3 REQUIRED)
+find_package(LibXml2 REQUIRED)
+find_package(SigC++ REQUIRED)
+PKG_CHECK_MODULES(GTKMM gtkmm-2.4)
+
+set(CMAKE_CXX_FLAGS "-std=c++0x")
+
+include_directories(
+  ${EIGEN3_INCLUDE_DIR}
+  ${LIBXML2_INCLUDE_DIR}
+  ${SigC++_INCLUDE_DIRS}
+  ${LIBXMLXX_INCLUDE_DIRS}
+  ${GTKMM_INCLUDE_DIRS}
+)
+
+add_executable(myagent
+myagent.cc
+main.cc
+)
+
+target_link_libraries(myagent
+  bats
+  ${LIBXML2_LIBRARIES}
+  ${SigC++_LIBRARIES}
+  ${GTKMM_LIBRARIES}
+)
+\end{lstlisting}
+
+\item Create a file called {\tt CMakeLists.txt} in your source
+  directory and fill it with the content of listing \ref{cmakelists}. This will do the following:
+  \begin{description}
+  \item[lines 1-2] Give some header info, such as CMake version and your project name.
+  \item[lines 4-8] Use the files copied in the previous step to find
+    and comfigure required libraries. If you didn't build libbats with
+    GTK debugger support, remove line 8, as well as lines 17 and 29.
+  \item[line 10] We need to tell the compiler that \libbats
+    extensively uses C++11 (the 0x standard is used, because older
+    compilers don't support more than that).
+  \item[lines 12-18] Tell CMake where to find all library headers.
+  \item[lines 20-23] List all source files belonging to your agent
+    that need to be compiled.
+  \item[lines 25-30] Tell CMake which libraries to link to.
+  \end{description}
+\item Copy the `{\tt xml}' fully from the \libbats source directory to
+  your own source directory.
+\end{itemize}
+
+\newpage
+\section{Coding Your Agent}
+\label{sec:coding-your-agent}
+
+The base of a {\tt libbats} agent is the {\tt HumanoidAgent}
+class. This class initializes all parts of the library and supplies a
+simple life cycle for your agent. So let's start by creating your own
+agent class by extending {\tt HumanoidAgent}. Of course, we have to
+create a constructor, and the {\tt HumanoidAgent} class requires that
+your agent defines an {\tt init()} and a {\tt think()} method. Listing
+\ref{codeMyagenthh} shows what your header file may look like.
 
 \begin{lstlisting}[float,caption={\tt myagent.hh},label=codeMyagenthh,frame=single]
-#ifndef _INC_MYAGENT_HH_
-#define _INC_MYAGENT_HH_
+#ifndef MYAGENT_HH
+#define MYAGENT_HH
 
-#include <bats/HumanoidAgent/humanoidagent.hh>
+#include <libbats/HumanoidAgent/humanoidagent.hh>
 
 /** My first agent */
 class MyAgent : public bats::HumanoidAgent
@@ -26,7 +107,7 @@ public:
 
   /** The Constructor */
   MyAgent()
-    : HumanoidAgent(std::string("MyTeam"))
+    : HumanoidAgent("MyTeam", "xml/conf.xml")
   {
   }
 
@@ -37,7 +118,13 @@ public:
 
 Now, what should these methods do?
 \begin{description}
-\item[{\tt MyAgent()}] The constructor should give some initialization information to the constructor of the base class {\tt HumanoidAgent}. At least the name of your team should be supplied, but you could also set parameters such as the host address and port number to connect to. See the following chapters and details in {\tt HumanoidAgent}'s class documentation for more information on these parameters.
+\item[{\tt MyAgent()}] The constructor should give some initialization
+  information to the constructor of the base class {\tt
+    HumanoidAgent}. At least the name of your team should be supplied,
+  but you could also set some parameters such as the host address and
+  port number to connect to. In this case, the path to a custom XML configuration file is given. See the following chapters and details in
+  {\tt HumanoidAgent}'s class documentation for more information on
+  these parameters.
 \item[{\tt init()}] This method is called once after the agent is created, a connection to the simulator is established, and all parts of the library are initialized. You can use this to initialize your own things, like a formation module, movement generators, et cetera.
 \item[{\tt think()}] Here is is where you put your agent's 'brain'. After the agent is started and initialized, this method is called at every think cycle, 50 times per second. When the {\tt think()} method is called, new sensor information from the server is read and integrated in different modules, like the {\tt AgentModel}, the {\tt WorldModel} and the {\tt Localizer} (more on these later). In this method your agent should decide what to do and make sure actions for the current think cycle are sent to the server.
 \end{description}
@@ -45,14 +132,15 @@ Now, what should these methods do?
 At the moment we don't have our own fancy modules yet, so the constructor is empty, as well as the {\tt init()} method. However, we do want our agent to do something cool, so we will fill the {\tt think()} method as shown in listing \ref{codeMyagentcc} to make him wave his arms at us. Let's look at what all of this does.
 
 \begin{lstlisting}[float,caption={\tt myagent.cc},label=codeMyagentcc,frame=single]
-#include "helloworldagent.hh"
-#include <bats/Clock/clock.hh>
-#include <bats/AgentModel/agentmodel.hh>
-#include <bats/Cerebellum/cerebellum.hh>
+#include "myagent.hh"
+#include <libbats/Clock/clock.hh>
+#include <libbats/AgentModel/agentmodel.hh>
+#include <libbats/Cerebellum/cerebellum.hh>
 
 using namespace bats;
+using namespace std;
 
-void HelloWorldAgent::think()
+void MyAgent::think()
 {
   Clock& clock = SClock::getInstance();
   AgentModel& am = SAgentModel::getInstance();
@@ -62,10 +150,10 @@ void HelloWorldAgent::think()
   
   // Get current joint angles
   double angles[4];
-  angles[0] = am.getJoint(Types::LARM1)->angle.getMu()(0);
-  angles[1] = am.getJoint(Types::LARM2)->angle.getMu()(0);
-  angles[2] = am.getJoint(Types::RARM1)->angle.getMu()(0);
-  angles[3] = am.getJoint(Types::RARM2)->angle.getMu()(0);
+  angles[0] = am.getJoint(Types::LARM1)->angle->getMu()(0);
+  angles[1] = am.getJoint(Types::LARM2)->angle->getMu()(0);
+  angles[2] = am.getJoint(Types::RARM1)->angle->getMu()(0);
+  angles[3] = am.getJoint(Types::RARM2)->angle->getMu()(0);
   
   // Calculate target joint angles
   double targets[4];
@@ -80,28 +168,55 @@ void HelloWorldAgent::think()
     velocities[i] = 0.1 * (targets[i] - angles[i]);
   
   // Add joint movement actions to the Cerebellum
-  cer.addAction(new Cerebellum::MoveJointAction(Types::LARM1, velocities[0]));
-  cer.addAction(new Cerebellum::MoveJointAction(Types::LARM2, velocities[1]));
-  cer.addAction(new Cerebellum::MoveJointAction(Types::RARM1, velocities[2]));
-  cer.addAction(new Cerebellum::MoveJointAction(Types::RARM2, velocities[3]));
+  cer.addAction(make_shared<MoveJointAction>(Types::LARM1, velocities[0]));
+  cer.addAction(make_shared<MoveJointAction>(Types::LARM2, velocities[1]));
+  cer.addAction(make_shared<MoveJointAction>(Types::RARM1, velocities[2]));
+  cer.addAction(make_shared<MoveJointAction>(Types::RARM2, velocities[3]));
   
   // Tell the Cerebellum to send the actions to the simulator
   cer.outputCommands(SAgentSocketComm::getInstance());
 }
+}
 \end{lstlisting}
 
 \begin{description}
-\item[lines 1-6] First include the header file of your agent class, here {\tt helloworldagent.hh}, and the header files of the modules that are used. All {\tt libbats} classes are in the {\tt bats} namespace, so in line 6 we import this namespace so we don't have to type {\tt bats::} all the time.
-\item[lines 10-12] Here references to the used modules are requested. Most modules are so called \emph{singletons}, which means there is only one instance of each class. The {\tt Clock} and {\tt AgentModel} do what you probably already expect they do: they give the current time and a model of the agent's state. The {\tt Cerebellum} is named after the part of your brain that handles control and coordination of your movements and is used to actually do stuff, as you will see later on.
-\item[line 14] Get the current time.
-\item[lines 17-21] We want our agent to wave his arms, by moving his shoulder joints. To do this it is useful to know the current state of these joints. This sounds like a job for the {\tt AgentModel} and as you can see it is. The {\tt Types} class defines all sorts of handy types used by several modules.
-\item[lines 24-28] Next we define the angles we want to move the joints to. Here a sinusoidal pattern is used to create a smooth, friendly waving behavior.
-\item[lines 31-33] The agent is controlled by setting the angular velocities of its joints, so here these are calculated based on the current and target angles and a gain factor.
-\item[lines 36-39] As mentioned earlier, the {\tt Cerebellum} is used to act. It is fed with actions, in this case joint movements, but it also controls the other actuators like speech and beaming.
-\item[line 42] When the {\tt Cerebellum} has gathered all actions, it is time to send them to the simulation server. A {\tt SocketComm}, in the form of the specialized {\tt AgentSocketComm}, is needed for this, which handles the actual complicated communication through sockets.
+\item[lines 1-7] First include the header file of your agent class,
+  here {\tt helloworldagent.hh}, and the header files of the modules
+  that are used. All {\tt libbats} classes are in the {\tt bats}
+  namespace, so in line 6 we import this namespace so we don't have to
+  type {\tt bats::} all the time. The {\tt std} namespace is also
+  imported for convenience.
+\item[lines 11-13] Here references to the used modules are
+  requested. Most modules are so called \emph{singletons}, which means
+  there is only one instance of each class. The {\tt Clock} and {\tt
+    AgentModel} do what you probably already expect they do: they give
+  the current time and a model of the agent's state. The {\tt
+    Cerebellum} is named after the part of your brain that handles
+  control and coordination of your movements and is used to actually
+  do stuff, as you will see later on.
+\item[line 15] Get the current time.
+\item[lines 18-22] We want our agent to wave his arms, by moving his
+  shoulder joints. To do this it is useful to know the current state
+  of these joints. This sounds like a job for the {\tt AgentModel} and
+  as you can see it is. The {\tt Types} class defines all sorts of
+  handy types used by several modules.
+\item[lines 25-29] Next we define the angles we want to move the
+  joints to. Here a sinusoidal pattern is used to create a smooth,
+  friendly waving behavior.
+\item[lines 32-34] The agent is controlled by setting the angular
+  velocities of its joints, so here these are calculated based on the
+  current and target angles and a gain factor.
+\item[lines 37-40] As mentioned earlier, the {\tt Cerebellum} is used
+  to act. It is fed with actions, in this case joint movements, but it
+  also controls the other actuators like speech and beaming.
+\item[line 43] When the {\tt Cerebellum} has gathered all actions, it
+  is time to send them to the simulation server. A {\tt SocketComm},
+  in the form of the specialized {\tt AgentSocketComm}, is needed for
+  this, which handles the actual complicated communication through
+  sockets.
 \end{description}
 
-And that's it! Almost. The only thing left to do now is to create an actual executable program that runs our agent. This is done by defining the standard {\tt main()} method, creating an instance of the agent class and tell it to run, as shown in listing \ref{codeMaincc}. Now compile these files with your favorite building method (ours is {\tt ccbuild}\footnote{\url{http://ccbuild.sourceforge.net/}}), fire up RCSSServer3d, run the agent binary and wave back at your new friend!
+\newpage
 
 \begin{lstlisting}[float,caption={\tt main.cc},label=codeMaincc,frame=single]
 #include "myagent.hh"
@@ -112,3 +227,16 @@ int main()
   agent.run();
 }
 \end{lstlisting}
+
+And that's it! Almost. The only thing left to do now is to create an
+actual executable program that runs our agent. This is done by
+defining the standard {\tt main()} method, creating an instance of the
+agent class and tell it to run, as shown in listing
+\ref{codeMaincc}. Now, configure and compile your agent, by running
+`{\tt cmake . \&\& make}' in your source directory, fire up RCSSServer3d
+and a monitor, run the `{\tt myagent}' binary and wave back at your
+new friend!
+
+%%% Local Variables: 
+%%% TeX-master: "libbatsmanual"
+%%% End: 
