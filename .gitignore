@@ -18,3 +18,4 @@ libbatsmanual.pdf
 /examples/helloworld/helloworld
 /examples/dribble/dribble
 /Doxyfile
+*.el
