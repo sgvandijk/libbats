@@ -59,7 +59,6 @@ namespace bats
    *     &end;: 4;
    *   </sequence>
    *   <issymmetric>1</issymmetric>
-   *   </param>
    * </motionsequenceplayer>
    * \endcode
    * 
