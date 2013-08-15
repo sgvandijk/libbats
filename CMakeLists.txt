@@ -237,6 +237,11 @@ endif(GTKMM_FOUND)
 
 include_directories(${LIBBATS_INCLUDE_DIRS} ${CMAKE_BINARY_DIR})
 
+configure_file (
+  "${CMAKE_SOURCE_DIR}/configure.hh.in"
+  "${CMAKE_BINARY_DIR}/configure.hh"
+)
+
 add_library(bats
 ${LIBBATS_SOURCES}
 )
@@ -327,7 +332,6 @@ set(LIBBATS_HEADERS ./Types/types.hh
 ./Predicate/predicate.hh
 ./PortableParser/portableparser.hh
 ./BodyPart/bodypart.hh
-./build/configure.hh
 ./Range/range.hh
 ./AgentModel/agentmodel.hh
 ./Cerebellum/cerebellum.hh
