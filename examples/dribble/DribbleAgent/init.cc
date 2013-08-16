@@ -3,6 +3,7 @@
 void DribbleAgent::init()
 {
   // Put initialization stuff here
+  SConf::getInstance().parseFile("./conf.xml");
 
   // Initialize localizer; use Kalman filter implementation
   SLocalizer::initialize<KalmanLocalizer>();
