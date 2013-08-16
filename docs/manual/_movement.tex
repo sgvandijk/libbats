@@ -131,6 +131,30 @@ Fig.~\ref{fig:gait}.
     forward. \label{fig:gait}}
 \end{figure}
 
+This figure show some of the parameters that determine the actual
+resulting path. These parameters can be configured in the XML
+configuration file; the full list and the XML element names to be used
+can be found in Tab.~\ref{tab:ikparams}. Again, for a working example,
+look at the {\tt DribbleAgent} example agent code, and it's XML
+configuration file.
+
+\begin{table}
+  \begin{tabular}{cll}
+    Param & XML & Description \\
+    \hline
+    $T$ & {\tt period} & Time to complete 2 steps: one with each leg (seconds). \\
+    $\tau$ & {\tt startuptime} & Time to reach full speed/step sizes from standstill (seconds). \\
+    $e_l$ & {\tt ellipselength} & Maximum ellipse length/step size (meters). \\
+    $e_h$ & {\tt ellipseheight} & Maximum ellipse/step height (meters). \\
+    $e_w$ & {\tt sidewidth} & Maximum sideways step size (meters). \\
+%    $d_x$ & {\tt offsetx} & Offset of ellipse center from hip along x-axis, in meters. (\emph{currently ignored}). \\
+    $d_y$ & {\tt offsety} & Offset of ellipse center from hip along y-axis (meters). \\
+    $d_z$ & {\tt offsetz} & Offset of ellipse center from hip along z-axis (meters). \\
+    $\alpha_{max}$ & {\tt maxturnangle} & Maximum angle for {\tt LEG1} joint, used to turn (degrees). \\
+    $\theta$ & {\tt leanangle} & Angle of torso relative to vertical (degrees).
+  \end{tabular}
+  \caption{List of {\tt IKGaitGenerator} configurable parameters \label{tab:ikparams}}
+\end{table}
 
 %%% Local Variables: 
 %%% mode: latex
