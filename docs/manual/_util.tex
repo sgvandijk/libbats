@@ -124,12 +124,25 @@ itself):
   between a line and a point. The line, dashed black in the example to
   the right, is defined by a point vector $l_0$ and a direction vector
   $\vec{l}$, the point $p$ is also a point vector. The method returns
-  the length of the red, dashed line $d$.
+  the length of the red, dotted line $d$.
 \end{description}
 \end{minipage}
 &
 \begin{minipage}{0.3\textwidth}
-\includegraphics[width=2.5cm]{distlp.png}
+  \begin{tikzpicture}[scale=.7]
+    \draw[dotted] (0,0) -- (2,4);
+    \node[label=left:$l_0$] (lz) at (0.5,1) {};
+    \node[label=left:$\vec{l}$] (ld) at (1.5,3) {};
+    \node[label=right:$p_0$] (p0) at (3,1) {};
+    \node[] (p1) at (1,2) {};
+
+    \draw[very thick,->,>=stealth] (lz.center) -- (ld.center);
+    \draw[dotted,thick,red] (p0.center) -- node[above]{$d$} (p1.center);
+    \fill (lz) circle(0.1);
+    \fill (p0) circle(0.1);
+    
+    \draw ($(p1.center) + (0.0,-0.5)$) -- ++(0.1,0.2) -- ++(0.2,-0.1);
+  \end{tikzpicture}
 \end{minipage}
 \end{tabular}
 
@@ -145,7 +158,21 @@ itself):
 \end{minipage}
 &
 \begin{minipage}{0.3\textwidth}
-\includegraphics[width=2.5cm]{pointlcp.png}
+  \begin{tikzpicture}[scale=.7]
+    \draw[dotted] (0,0) -- (2,4);
+    \node[label=left:$l_0$] (lz) at (0.5,1) {};
+    \node[label=left:$\vec{l}$] (ld) at (1.5,3) {};
+    \node[label=right:$p_0$] (p0) at (3,1) {};
+    \node[label=left:\color{red}$p_1$] (p1) at (1,2) {};
+
+    \draw[very thick,->,>=stealth] (lz.center) -- (ld.center);
+    \draw[dotted] (p0.center) -- (p1.center);
+    \fill (lz) circle(0.1);
+    \fill (p0) circle(0.1);
+    \fill[red] (p1) circle(0.1);
+    
+    \draw ($(p1.center) + (0.0,-0.5)$) -- ++(0.1,0.2) -- ++(0.2,-0.1);
+  \end{tikzpicture}
 \end{minipage}
 \end{tabular}
 
@@ -164,7 +191,21 @@ itself):
 \end{minipage}
 &
 \begin{minipage}{0.3\textwidth}
-\includegraphics[width=3cm]{intersectvectorplane.png}
+  \begin{tikzpicture}[scale=.7]
+    \draw[dotted] (1.25,0) -- (1.75,1);
+    \fill[Cerulean!30!white] (-0.5,1) -- (0.5,2) -- (4.5,2) -- (3.5,1);
+    \draw[dotted,Cerulean!70!black] (1.75,1) -- (2,1.5);
+    \draw[dotted] (2,1.5) -- (3,3.5);
+    
+    \node[label=right:\color{red}$p$] (p) at (2,1.5) {};
+    \fill[red] (p) circle(0.1);
+    
+    \node[label=left:$l_0$] (lz) at (2.4,2.3);
+    \node[label=left:$\vec{l}$] (ld) at (2.9,3.3);
+
+    \draw[very thick,->,>=stealth] (lz.center) -- (ld.center);
+    \fill (lz) circle(0.1);
+  \end{tikzpicture}
 \end{minipage}
 \end{tabular}
 
@@ -208,3 +249,7 @@ Vector3d pos = localizer.getLocaltionLocal(Types::GOAL1THEM)->getMu();
 \end{lstlisting}
 \end{description}
 
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "libbatsmanual"
+%%% End: 
