@@ -19,3 +19,5 @@ libbatsmanual.pdf
 /examples/dribble/dribble
 /Doxyfile
 *.el
+/configure.hh
+/install_manifest.txt
