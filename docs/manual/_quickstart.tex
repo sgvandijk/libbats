@@ -72,8 +72,8 @@ target_link_libraries(myagent
     that need to be compiled.
   \item[lines 25-30] Tell CMake which libraries to link to.
   \end{description}
-\item Copy the `{\tt xml}' fully from the \libbats source directory to
-  your own source directory.
+\item Copy the `{\tt xml}' directory fully from the \libbats source
+  directory to your own source directory.
 \end{itemize}
 
 \newpage
@@ -98,7 +98,7 @@ your agent defines an {\tt init()} and a {\tt think()} method. Listing
 class MyAgent : public bats::HumanoidAgent
 {
   /** Initialize agent */
-  virtual void init() {}
+  virtual void init();
   
   /** Think cycle */
   virtual void think();
@@ -107,10 +107,8 @@ public:
 
   /** The Constructor */
   MyAgent()
-    : HumanoidAgent("MyTeam", "xml/conf.xml")
-  {
-  }
-
+    : bats::HumanoidAgent("MyTeam", "xml/conf.xml")
+  {  }
 };
 
 #endif
@@ -122,23 +120,48 @@ Now, what should these methods do?
   information to the constructor of the base class {\tt
     HumanoidAgent}. At least the name of your team should be supplied,
   but you could also set some parameters such as the host address and
-  port number to connect to. In this case, the path to a custom XML configuration file is given. See the following chapters and details in
-  {\tt HumanoidAgent}'s class documentation for more information on
+  port number to connect to. In this case, the path to a custom XML
+  configuration file is given. See the following chapters and details
+  in {\tt HumanoidAgent}'s class documentation for more information on
   these parameters.
-\item[{\tt init()}] This method is called once after the agent is created, a connection to the simulator is established, and all parts of the library are initialized. You can use this to initialize your own things, like a formation module, movement generators, et cetera.
-\item[{\tt think()}] Here is is where you put your agent's 'brain'. After the agent is started and initialized, this method is called at every think cycle, 50 times per second. When the {\tt think()} method is called, new sensor information from the server is read and integrated in different modules, like the {\tt AgentModel}, the {\tt WorldModel} and the {\tt Localizer} (more on these later). In this method your agent should decide what to do and make sure actions for the current think cycle are sent to the server.
+\item[{\tt init()}] This method is called once after the agent is
+  created, a connection to the simulator is established, and all parts
+  of the library are initialized. You can use this to initialize your
+  own things, like a formation module, movement generators, et cetera.
+\item[{\tt think()}] Here is where you put your agent's 'brain'. After
+  the agent is started and initialized, this method is called at every
+  think cycle, 50 times per second. When the {\tt think()} method is
+  called, new sensor information from the server is read and
+  integrated in different modules, like the {\tt AgentModel}, the {\tt
+    WorldModel} and the {\tt Localizer} (more on these later). In this
+  method your agent should decide what to do and make sure actions for
+  the current think cycle are sent to the server.
 \end{description}
 
-At the moment we don't have our own fancy modules yet, so the constructor is empty, as well as the {\tt init()} method. However, we do want our agent to do something cool, so we will fill the {\tt think()} method as shown in listing \ref{codeMyagentcc} to make him wave his arms at us. Let's look at what all of this does.
+At the moment we don't have our own fancy modules yet, so the
+constructor is empty. However, we do want our agent to do something
+cool, so we will fill the {\tt think()} method as shown in listing
+\ref{codeMyagentcc} to make him wave his arms at us. Let's look at
+what all of this does.
 
 \begin{lstlisting}[float,caption={\tt myagent.cc},label=codeMyagentcc,frame=single]
 #include "myagent.hh"
 #include <libbats/Clock/clock.hh>
 #include <libbats/AgentModel/agentmodel.hh>
 #include <libbats/Cerebellum/cerebellum.hh>
+#include <libbats/Localizer/KalmanLocalizer/kalmanlocalizer.hh>
+#include <libbats/Debugger/RoboVizDebugger/robovizdebugger.hh>
 
 using namespace bats;
 using namespace std;
+
+void MyAgent::init()
+{
+  // You must tell libbats which flavor localizer
+  // and debugger you are using
+  SLocalizer::initialize<KalmanLocalizer>();
+  SDebugger::initialize<RoboVizDebugger>();
+}
 
 void MyAgent::think()
 {
@@ -176,17 +199,20 @@ void MyAgent::think()
   // Tell the Cerebellum to send the actions to the simulator
   cer.outputCommands(SAgentSocketComm::getInstance());
 }
-}
 \end{lstlisting}
 
 \begin{description}
-\item[lines 1-7] First include the header file of your agent class,
+\item[lines 1-9] First include the header file of your agent class,
   here {\tt helloworldagent.hh}, and the header files of the modules
   that are used. All {\tt libbats} classes are in the {\tt bats}
   namespace, so in line 6 we import this namespace so we don't have to
   type {\tt bats::} all the time. The {\tt std} namespace is also
   imported for convenience.
-\item[lines 11-13] Here references to the used modules are
+\item[lines 11-17] This is the implementation of the {\tt init}
+  method, which is called once at start-up. Here you should initialize
+  all your modules. At the very least, you must tell {\libbats} which
+  classes of {\tt Localizer} and {\tt Debugger} you want to use.
+\item[lines 21-23] Here references to the used modules are
   requested. Most modules are so called \emph{singletons}, which means
   there is only one instance of each class. The {\tt Clock} and {\tt
     AgentModel} do what you probably already expect they do: they give
@@ -194,22 +220,22 @@ void MyAgent::think()
     Cerebellum} is named after the part of your brain that handles
   control and coordination of your movements and is used to actually
   do stuff, as you will see later on.
-\item[line 15] Get the current time.
-\item[lines 18-22] We want our agent to wave his arms, by moving his
+\item[line 25] Get the current time.
+\item[lines 28-32] We want our agent to wave his arms, by moving his
   shoulder joints. To do this it is useful to know the current state
   of these joints. This sounds like a job for the {\tt AgentModel} and
   as you can see it is. The {\tt Types} class defines all sorts of
   handy types used by several modules.
-\item[lines 25-29] Next we define the angles we want to move the
+\item[lines 35-39] Next we define the angles we want to move the
   joints to. Here a sinusoidal pattern is used to create a smooth,
   friendly waving behavior.
-\item[lines 32-34] The agent is controlled by setting the angular
+\item[lines 42-44] The agent is controlled by setting the angular
   velocities of its joints, so here these are calculated based on the
   current and target angles and a gain factor.
-\item[lines 37-40] As mentioned earlier, the {\tt Cerebellum} is used
+\item[lines 47-50] As mentioned earlier, the {\tt Cerebellum} is used
   to act. It is fed with actions, in this case joint movements, but it
   also controls the other actuators like speech and beaming.
-\item[line 43] When the {\tt Cerebellum} has gathered all actions, it
+\item[line 53] When the {\tt Cerebellum} has gathered all actions, it
   is time to send them to the simulation server. A {\tt SocketComm},
   in the form of the specialized {\tt AgentSocketComm}, is needed for
   this, which handles the actual complicated communication through

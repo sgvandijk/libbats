@@ -23,13 +23,15 @@ $ sudo apt-get install libxml2-dev libsigc++-2.0-dev libgtkmm-2.4-dev
 \begin{verbatim}
 $ pacman -S libxml2 libsigc++ gtkmm
 \end{verbatim}
+  You can leave out {\tt gtkmm} if you don't want to build the GTK
+  based debugger implementation.
 \item[libbats] Install the latest version of {\tt libbats}:
   \begin{enumerate}
   \item Download the latest source code package release from: \\
     \url{https://github.com/sgvandijk/libbats/releases}
   \item Unpack and navigate to the source code directory:
 \begin{verbatim}
-$ tar xvzf libbats-x.y.ztar.gz
+$ tar xvzf libbats-x.y.z.tar.gz
 $ cd libbats-x.y.z
 \end{verbatim}
   \item Use CMake to configure, then make and install:
@@ -132,3 +134,8 @@ $ pacman -Ss <missing package>
 \item For problems with \libbats, see the GitHub Issues section at: \\
   \url{https://github.com/sgvandijk/libbats/issues}.
 \end{enumerate}
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "libbatsmanual"
+%%% End: 
