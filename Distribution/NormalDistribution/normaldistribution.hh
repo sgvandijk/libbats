@@ -1,18 +1,17 @@
 /*
- *  Little Green BATS (2008), AI department, University of Groningen
+ *  Little Green BATS (2008-2013), AI department, University of Groningen
  *
- *  Authors: 	Martin Klomp (martin@ai.rug.nl)
+ *  Authors: 	Sander van Dijk (sgdijk@ai.rug.nl)
+ *		Drew Noakes (drew@drewnoakes.com)
+ *		Martin Klomp (martin@ai.rug.nl)
  *		Mart van de Sanden (vdsanden@ai.rug.nl)
- *		Sander van Dijk (sgdijk@ai.rug.nl)
  *		A. Bram Neijt (bneijt@gmail.com)
  *		Matthijs Platje (mplatje@gmail.com)
+ *		Jeroen Kuijpers (jkuypers@gmail.com)
  *
- *	All students of AI at the University of Groningen
- *  at the time of writing. See: http://www.ai.rug.nl/
+ *  Date: 	August 17, 20013
  *
- *  Date: 	November 1, 2008
- *
- *  Website:	http://www.littlegreenbats.nl
+ *  Website:	https://github.com/sgvandijk/libbats
  *
  *  Comment:	Please feel free to contact us if you have any 
  *		problems or questions about the code.
@@ -36,7 +35,6 @@
  *		Suite 330, Boston, MA  02111-1307, USA.
  *
  */
-
 #ifndef __INC_BATS_NORMALDISTRIBUTION_HH_
 #define __INC_BATS_NORMALDISTRIBUTION_HH_
 
