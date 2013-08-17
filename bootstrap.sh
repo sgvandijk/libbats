@@ -74,6 +74,10 @@ configure_file (
   "\${CMAKE_BINARY_DIR}/configure.hh"
 )
 
+configure_file(xml/conf.xml xml/conf.xml COPYONLY)
+configure_file(xml/conf.dtd xml/conf.dtd COPYONLY)
+configure_file(xml/nao_mdl.xml xml/nao_mdl.xml COPYONLY)
+
 add_library(bats
 \${LIBBATS_SOURCES}
 )
@@ -157,7 +161,6 @@ target_link_libraries(helloworld bats \${LIBXML2_LIBRARIES} \${SigC++_LIBRARIES}
 if (GTKMM_FOUND)
   target_link_libraries(helloworld \${GTKMM_LIBRARIES})
 endif (GTKMM_FOUND)
-
 EOF
 
 echo "Generating examples/dribble/CMakeLists.txt"
@@ -188,5 +191,9 @@ target_link_libraries(dribble bats \${LIBXML2_LIBRARIES} \${SigC++_LIBRARIES})
 if (GTKMM_FOUND)
   target_link_libraries(dribble \${GTKMM_LIBRARIES})
 endif (GTKMM_FOUND)
+
+configure_file(conf.xml conf.xml COPYONLY)
+configure_file(nao_mdl.xml nao_mdl.xml COPYONLY)
+configure_file(conf.dtd conf.dtd COPYONLY)
 
 EOF

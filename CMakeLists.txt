@@ -242,6 +242,10 @@ configure_file (
   "${CMAKE_BINARY_DIR}/configure.hh"
 )
 
+configure_file(xml/conf.xml xml/conf.xml COPYONLY)
+configure_file(xml/conf.dtd xml/conf.dtd COPYONLY)
+configure_file(xml/nao_mdl.xml xml/nao_mdl.xml COPYONLY)
+
 add_library(bats
 ${LIBBATS_SOURCES}
 )
@@ -297,6 +301,7 @@ set(LIBBATS_HEADERS ./Types/types.hh
 ./ObjectInfo/DynamicObjectInfo/dynamicobjectinfo.hh
 ./ObjectInfo/objectinfo.hh
 ./BatsEvent/batsevent.hh
+./configure.hh
 ./Parser/parser.hh
 ./AST/ast.hh
 ./Singleton/singleton.hh
@@ -332,6 +337,7 @@ set(LIBBATS_HEADERS ./Types/types.hh
 ./Predicate/predicate.hh
 ./PortableParser/portableparser.hh
 ./BodyPart/bodypart.hh
+./build/configure.hh
 ./Range/range.hh
 ./AgentModel/agentmodel.hh
 ./Cerebellum/cerebellum.hh

@@ -25,3 +25,7 @@ if (GTKMM_FOUND)
   target_link_libraries(dribble ${GTKMM_LIBRARIES})
 endif (GTKMM_FOUND)
 
+configure_file(conf.xml conf.xml COPYONLY)
+configure_file(nao_mdl.xml nao_mdl.xml COPYONLY)
+configure_file(conf.dtd conf.dtd COPYONLY)
+

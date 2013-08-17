@@ -19,4 +19,3 @@ target_link_libraries(helloworld bats ${LIBXML2_LIBRARIES} ${SigC++_LIBRARIES})
 if (GTKMM_FOUND)
   target_link_libraries(helloworld ${GTKMM_LIBRARIES})
 endif (GTKMM_FOUND)
-
