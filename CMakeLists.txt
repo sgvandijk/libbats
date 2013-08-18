@@ -301,7 +301,6 @@ set(LIBBATS_HEADERS ./Types/types.hh
 ./ObjectInfo/DynamicObjectInfo/dynamicobjectinfo.hh
 ./ObjectInfo/objectinfo.hh
 ./BatsEvent/batsevent.hh
-./configure.hh
 ./Parser/parser.hh
 ./AST/ast.hh
 ./Singleton/singleton.hh
@@ -337,7 +336,6 @@ set(LIBBATS_HEADERS ./Types/types.hh
 ./Predicate/predicate.hh
 ./PortableParser/portableparser.hh
 ./BodyPart/bodypart.hh
-./build/configure.hh
 ./Range/range.hh
 ./AgentModel/agentmodel.hh
 ./Cerebellum/cerebellum.hh

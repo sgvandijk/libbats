@@ -5,7 +5,7 @@ LNAME=libbats
 echo "Generating CMakeFiles.txt"
 
 SOURCES=`find . -name '*.cc' | grep -v examples | grep -v GtkDebugger`
-HEADERS=`find . -name '*.hh' | grep -v examples`
+HEADERS=`find . -name '*.hh' | grep -v examples | grep -v configure.hh`
 IHEADERS=`find . -name '*.ih' | tr '\n' ' '`
 XML=`ls xml/*.xml |  tr '\n' ' '`
 
