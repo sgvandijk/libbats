@@ -10,7 +10,7 @@ Libbats
 * Martin Klomp (martin@ai.rug.nl)
 * Mart van de Sanden (vdsanden@ai.rug.nl)
 * A. Bram Neijt (bneijt@gmail.com)
-*  Matthijs Platje (mplatje@gmail.com)
+* Matthijs Platje (mplatje@gmail.com)
  
 **Website:**
 
@@ -46,13 +46,19 @@ problems or questions about the code.
 - Eigen 3
 - libxml-2.0
 - sigc++-2.0
-- gtkmm-2.4 (optional)
+- gtkmm-2.4 (optional; for GTK+ debugger)
+- Doxygen (optional; for HTML documentation)
+- pdflatex (optional; for PDF manual)
 
+***Ubuntu:***
+
+    sudo apt-get install libeigen3-dev libxml2-dev libsigc++-2.0-dev [libgtkmm-2.4-dev] [doxygen] [texlive-latex-base]
+    
 **Install:**
 
 Run:
 
-    cmake && make && make install
+    cmake . && make && sudo make install
 
 **Documentation:**
 
