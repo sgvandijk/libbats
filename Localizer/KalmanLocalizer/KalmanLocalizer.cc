@@ -36,15 +36,14 @@ KalmanLocalizer::KalmanLocalizer()
   // though the keeper will always have unum==1.
   for (unsigned unum = 1; unum <= wm.getNumberOfPlayers(); ++unum)
   {
-    shared_ptr<PlayerInfo> tm =
-      make_shared<PlayerInfo>(Types::getTeamMateWithUnum(unum), playerRadius);
+    shared_ptr<PlayerInfo> tm(new PlayerInfo(Types::getTeamMateWithUnum(unum), playerRadius));
     if (tm->isMe)
       d_me = tm;
     d_teamMates.push_back(tm);
   }
 
   for (unsigned unum = 1; unum <= 11; ++unum)
-    d_opponents.push_back(make_shared<PlayerInfo>(Types::getOpponentWithUnum(unum), playerRadius));
+    d_opponents.push_back(shared_ptr<PlayerInfo>(new PlayerInfo(Types::getOpponentWithUnum(unum), playerRadius)));
   
   // Add them to the players list
   d_players.insert(d_players.end(), d_teamMates.begin(), d_teamMates.end());

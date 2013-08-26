@@ -48,10 +48,10 @@ void KalmanLocalizer::update()
       Vector3d lineStartGlobal = cameraToGlobalTransform * lineStartCamera;
       Vector3d lineEndGlobal   = cameraToGlobalTransform * lineEndCamera;
 
-      dbg.draw(make_shared<LineSegment>(lineStartGlobal, lineEndGlobal, Vector4d(1,1,0,1), "Lines.3D"));
+      dbg.draw(shared_ptr<LineSegment>(new LineSegment(lineStartGlobal, lineEndGlobal, Vector4d(1,1,0,1), "Lines.3D")));
       // redraw with z == 0
       lineStartGlobal.z() = lineEndGlobal.z() = 0;
-      dbg.draw(make_shared<LineSegment>(lineStartGlobal, lineEndGlobal, Vector4d(0,0,0,.5), "Lines.2D"));
+      dbg.draw(shared_ptr<LineSegment>(new LineSegment(lineStartGlobal, lineEndGlobal, Vector4d(0,0,0,.5), "Lines.2D")));
 //       // draw the line length as an annotation at the line's midpoint
 //       auto midPoint = (lineStartGlobal + lineEndGlobal) / 2;
 //       std::stringstream length;

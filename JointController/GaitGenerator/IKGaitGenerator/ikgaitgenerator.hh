@@ -83,6 +83,9 @@ namespace bats
       Eigen::Vector3d lEnd;
       Eigen::Vector3d rStart;
       Eigen::Vector3d rEnd;
+
+      // Needed when having fixed sized Eigen member
+      EIGEN_MAKE_ALIGNED_OPERATOR_NEW
     };
 
     // Gait parameters

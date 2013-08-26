@@ -4,7 +4,7 @@ shared_ptr<BodyPart> AgentModel::getBodyPartCopy(shared_ptr<BodyPart> part)
 {
   if (shared_ptr<Limb> l = dynamic_pointer_cast<Limb>(part))
   {
-    shared_ptr<Limb> copy = make_shared<Limb>();
+    shared_ptr<Limb> copy(new Limb());
     copy->name = l->name;
     copy->weight = l->weight;
     copy->relativeWeight = l->relativeWeight;
@@ -15,7 +15,7 @@ shared_ptr<BodyPart> AgentModel::getBodyPartCopy(shared_ptr<BodyPart> part)
   }
   else if (shared_ptr<Joint> j = dynamic_pointer_cast<Joint>(part))
   {
-    shared_ptr<Joint> copy = make_shared<Joint>();
+    shared_ptr<Joint> copy(new Joint());
     copy->name = j->name;
     copy->axis = j->axis;
     copy->perceptor = j->perceptor;

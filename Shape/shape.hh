@@ -70,6 +70,7 @@ namespace bats
     /// Width of line strokes
     double strokeWidth;
     
+    // Needed when having fixed sized Eigen member
     EIGEN_MAKE_ALIGNED_OPERATOR_NEW
   };
   

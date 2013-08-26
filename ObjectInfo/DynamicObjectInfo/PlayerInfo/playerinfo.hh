@@ -115,6 +115,9 @@ namespace bats
     const unsigned unum;
     
     PlayerInfo(Types::Object objectId, double radius);
+
+    // Needed when having fixed sized Eigen member
+    EIGEN_MAKE_ALIGNED_OPERATOR_NEW
   };
 }
 

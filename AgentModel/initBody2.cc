@@ -14,7 +14,7 @@ double AgentModel::initBody(XMLNode& part1Node, std::shared_ptr<Joint> joint)
   {
     _debugLevel4("Got a body part");
     
-    shared_ptr<Limb> p = make_shared<Limb>();
+    shared_ptr<Limb> p(new Limb());
 
     p->name = part1Node.getProp("name");
     p->id = getLimbID(p->name);
@@ -46,7 +46,7 @@ double AgentModel::initBody(XMLNode& part1Node, std::shared_ptr<Joint> joint)
       XMLNode jointNode = *iter;
       _debugLevel4("Attaching " << jointNode.getProp("name") << " to " << part1Node.getProp("name"));
       
-      shared_ptr<Joint> j = make_shared<Joint>();
+      shared_ptr<Joint> j(new Joint());
       j->name = jointNode.getProp("name");
       j->id = getJointID(j->name);
       
@@ -111,7 +111,7 @@ double AgentModel::initBody(XMLNode& part1Node, std::shared_ptr<Joint> joint)
   {
     _debugLevel4("Got a joint part");
 
-    shared_ptr<Joint> j = make_shared<Joint>();
+    shared_ptr<Joint> j(new Joint());
     j->name = part1Node.getProp("name");
     j->perceptor = part1Node.getProp("perceptor");
     j->effector = part1Node.getProp("effector");
