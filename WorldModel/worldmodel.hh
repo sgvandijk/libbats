@@ -134,6 +134,7 @@ namespace bats {
      * /todo Move to a better place
      * @returns the direction of the center of the opponent's goal in polar coordinates
      */
+    #pragma deprecated
     Eigen::Vector3d getDirectionOfOpponentGoal() const;
 
     /**
