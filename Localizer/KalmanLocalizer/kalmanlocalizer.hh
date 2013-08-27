@@ -57,29 +57,29 @@ namespace bats
   class KalmanLocalizer : public Localizer
   {
   public:
-    virtual void init();
-    virtual void update();
+    virtual void init() override;
+    virtual void update() override;
 
-    virtual inline Eigen::Affine3d getLocalTransformation() const;
+    virtual inline Eigen::Affine3d getLocalTransformation() const override;
 
-    virtual inline Eigen::Affine3d getGlobalTransformation() const;
+    virtual inline Eigen::Affine3d getGlobalTransformation() const override;
     
     virtual void addGlobalMeasurement(std::shared_ptr<DynamicObjectInfo> dynamicObject,
-                                      std::shared_ptr<Distribution> measurement);
+                                      std::shared_ptr<Distribution> measurement) override;
     
     void onBeam(std::shared_ptr<BeamEvent> event);
 
-    virtual Eigen::Vector3d getForwardDirLocal() const;
+    virtual Eigen::Vector3d getForwardDirLocal() const override;
 
-    virtual Eigen::Vector3d getRightDirLocal() const;
+    virtual Eigen::Vector3d getRightDirLocal() const override;
 
-    virtual Eigen::Vector3d getTheirGoalMidpointLocal() const;
+    virtual Eigen::Vector3d getTheirGoalMidpointLocal() const override;
 
-    virtual Eigen::Vector3d getOurGoalMidpointLocal() const;
+    virtual Eigen::Vector3d getOurGoalMidpointLocal() const override;
 
-    virtual Eigen::Vector3d getTheirGoalMidpointGlobal() const;
+    virtual Eigen::Vector3d getTheirGoalMidpointGlobal() const override;
 
-    virtual Eigen::Vector3d getOurGoalMidpointGlobal() const;
+    virtual Eigen::Vector3d getOurGoalMidpointGlobal() const override;
     
     // Needed when having fixed sized Eigen member
     EIGEN_MAKE_ALIGNED_OPERATOR_NEW
