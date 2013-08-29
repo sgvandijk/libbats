@@ -60,18 +60,10 @@ namespace bats
     virtual void init() override;
     virtual void update() override;
 
-    virtual inline Eigen::Affine3d getLocalTransformation() const override;
-
-    virtual inline Eigen::Affine3d getGlobalTransformation() const override;
-    
     virtual void addGlobalMeasurement(std::shared_ptr<DynamicObjectInfo> dynamicObject,
                                       std::shared_ptr<Distribution> measurement) override;
     
     void onBeam(std::shared_ptr<BeamEvent> event);
-
-    virtual Eigen::Vector3d getForwardDirLocal() const override;
-
-    virtual Eigen::Vector3d getRightDirLocal() const override;
 
     virtual Eigen::Vector3d getTheirGoalMidpointLocal() const override;
 
@@ -97,8 +89,6 @@ namespace bats
     
     Eigen::Affine3d d_globalRotation;
     Eigen::Affine3d d_globalTranslation;
-    Eigen::Affine3d d_globalTransform;
-    Eigen::Affine3d d_localTransform;
     
     // True if we received vision data this cycle.
     bool d_haveNewVisionData;
@@ -138,16 +128,6 @@ namespace bats
 
     Cochlea::InfoID getCochleaIdForObject(std::shared_ptr<ObjectInfo> object) const;
   };
-
-  Eigen::Affine3d KalmanLocalizer::getLocalTransformation() const
-  {
-    return d_localTransform;
-  }
-
-  Eigen::Affine3d KalmanLocalizer::getGlobalTransformation() const
-  {
-    return d_globalTransform;
-  }
 
   Eigen::Vector3d KalmanLocalizer::cutPositionVector(Eigen::VectorXd const& posVel) const
   {

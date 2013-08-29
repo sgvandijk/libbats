@@ -153,7 +153,8 @@ namespace bats
      * the returned list if pred(PlayerInfo) evaluates to true.
      * @param aliveOnly Whether or not to only include players that we have recently seen.
      */
-    PlayerVector getFilteredPlayers(std::function<bool(std::shared_ptr<PlayerInfo>)> pred, bool aliveOnly = true);
+    PlayerVector getFilteredPlayers(std::function<bool(std::shared_ptr<PlayerInfo>)> pred,
+                                    bool aliveOnly = true);
 
     /** Filter a vector of objects, using some predicate
      *
@@ -161,19 +162,22 @@ namespace bats
      * @param pred Predicate to filter with. An object is included in
      * the returned list if pred(ObjectInfo) evaluates to true.
      */    
-    ObjectVector getFilteredObjects(std::vector<std::shared_ptr<ObjectInfo> > objects, std::function<bool(std::shared_ptr<ObjectInfo>)> pred);
+    ObjectVector getFilteredObjects(std::vector<std::shared_ptr<ObjectInfo> > objects,
+                                    std::function<bool(std::shared_ptr<ObjectInfo>)> pred);
 
     /** Filter only those objects we know about
      *
      * @param objects Vector of objects to filter.
      * @param pred Optional additional predicate to filter with.
      */
-    ObjectVector getAliveObjects(std::vector<std::shared_ptr<DynamicObjectInfo> > objects, std::function<bool(std::shared_ptr<DynamicObjectInfo>)> pred = 0);
+    ObjectVector getAliveObjects(std::vector<std::shared_ptr<DynamicObjectInfo> > objects,
+                                 std::function<bool(std::shared_ptr<DynamicObjectInfo>)> pred = 0);
 
     /** Count the number of objects for which a predicate is true. Deprecated, use std::count instead */
 #pragma deprecated
     template <typename ObjectType>
-    unsigned count(std::vector<std::shared_ptr<ObjectType>> objects, std::function<bool(std::shared_ptr<ObjectType>)> pred)
+    unsigned count(std::vector<std::shared_ptr<ObjectType>> objects,
+                   std::function<bool(std::shared_ptr<ObjectType>)> pred)
     {
       return std::count(objects.begin(), objects.end(), pred);
     };
@@ -193,7 +197,7 @@ namespace bats
      * frame. Multiplication of a vector in the agent frame with this matrix
      * results in the position of that vector with respect to the local frame.
      */
-    virtual Eigen::Affine3d getLocalTransformation() const = 0;
+    Eigen::Affine3d getLocalTransformation() const;
 
     /** Get the global transformation matrix
      *
@@ -203,7 +207,7 @@ namespace bats
      * results in the position of that vector with respect to the global
      * frame.
      */
-    virtual Eigen::Affine3d getGlobalTransformation() const = 0;
+    Eigen::Affine3d getGlobalTransformation() const;
 
     /** Local to global transform
      *
@@ -213,15 +217,7 @@ namespace bats
      * @param zeroZ Whether to fix the z coordinate in to result to zero
      * @returns a vector in the global frame
      */
-    Eigen::Vector3d localToGlobal(Eigen::Vector3d const& loc, bool zeroZ = false)
-    {
-      Eigen::Vector3d global =
-        Eigen::Affine3d(getGlobalTransformation() *
-                        getLocalTransformation().inverse()) * loc;
-      if (zeroZ)
-        global.z() = 0;
-      return global;
-    }
+    Eigen::Vector3d localToGlobal(Eigen::Vector3d const& loc, bool zeroZ = false);
 
     /** Global to local transform
      *
@@ -231,15 +227,7 @@ namespace bats
      * @param zeroZ Whether to fix the z coordinate in to result to zero
      * @returns a vector in the local frame
      */
-    Eigen::Vector3d globalToLocal(Eigen::Vector3d const& glob, bool zeroZ = false)
-    {
-      Eigen::Vector3d local =
-        Eigen::Affine3d(getLocalTransformation() *
-                        getGlobalTransformation().inverse()) * glob;
-      if (zeroZ)
-        local.z() = 0;
-      return local;
-    }
+    Eigen::Vector3d globalToLocal(Eigen::Vector3d const& glob, bool zeroZ = false);
     
     /** Local to global rotation
      *
@@ -248,13 +236,7 @@ namespace bats
      * @param loc Vector in global frame to transform
      * @returns a vector in the local frame
      */
-    Eigen::Vector3d rotateLocalToGlobal(Eigen::Vector3d const& loc)
-    {
-      return
-        Eigen::Affine3d(getGlobalTransformation().linear() *
-                        Eigen::Affine3d(getLocalTransformation().inverse()).linear()) *
-        loc;
-    }
+    Eigen::Vector3d rotateLocalToGlobal(Eigen::Vector3d const& loc);
 
     /** Global to local rotation
      *
@@ -263,36 +245,43 @@ namespace bats
      * @param glob Vector in global frame to transform
      * @returns a vector in the local frame
      */
-    Eigen::Vector3d rotateGlobalToLocal(Eigen::Vector3d const& glob) {
-      return
-        Eigen::Affine3d(getLocalTransformation().linear() *
-                        Eigen::Affine3d(getGlobalTransformation().inverse()).linear()) *
-        glob;
-    }
+    Eigen::Vector3d rotateGlobalToLocal(Eigen::Vector3d const& glob);
 
     /** 
      * @return a unit vector in the local frame's x/y plane that points in
      * the forward direction (towards the opponent's goal, parallel to the
      * sides of the field).
      */
-    virtual Eigen::Vector3d getForwardDirLocal() const = 0;
-    
+    Eigen::Vector3d getForwardDirLocal() const
+    {
+      // Rows of transform give global axes in agent frame
+      return d_localTransform * d_globalTransform.matrix().block<1,3>(0, 0).transpose();
+    }
+
     /** 
      * @return a unit vector in the local frame's x/y plane that points from
      * the left to the right of the field from the perspective of our goalie
      * looking down the field to the opponent's goal.  This vector is parallel
      * to the goal lines.
      */
-    virtual Eigen::Vector3d getRightDirLocal() const = 0;
+    Eigen::Vector3d getRightDirLocal() const
+    {
+      // Rows of transform give global axes in agent frame
+      return d_localTransform * d_globalTransform.matrix().block<1,3>(1, 0).transpose();
+    }
 
     /** @return the midpoint position of the opponent's goal in the local frame. The z-component is zero. */
-    virtual Eigen::Vector3d getTheirGoalMidpointLocal() const = 0;
+    #pragma deprecated
+    virtual Eigen::Vector3d getTheirGoalMidpointLocal() const { return Eigen::Vector3d(0,1,0); }
     /** @return the midpoint position of our team's goal in the local frame. The z-component is zero. */
-    virtual Eigen::Vector3d getOurGoalMidpointLocal() const = 0;
+    #pragma deprecated
+    virtual Eigen::Vector3d getOurGoalMidpointLocal() const  { return Eigen::Vector3d(0,1,0); }
     /** @return the midpoint position of the opponent's goal in the global frame. The z-component is zero. */
-    virtual Eigen::Vector3d getTheirGoalMidpointGlobal() const = 0;
+    #pragma deprecated
+    virtual Eigen::Vector3d getTheirGoalMidpointGlobal() const  { return Eigen::Vector3d(0,1,0); }
     /** @return the midpoint position of our team's goal in the global frame. The z-component is zero. */
-    virtual Eigen::Vector3d getOurGoalMidpointGlobal() const = 0;
+    #pragma deprecated
+    virtual Eigen::Vector3d getOurGoalMidpointGlobal() const  { return Eigen::Vector3d(0,1,0); }
 
     ///@}
 
@@ -321,6 +310,11 @@ namespace bats
     ///@}
 
   protected:
+    // Global transformation
+    Eigen::Affine3d d_globalTransform;
+
+    // Local transformation
+    Eigen::Affine3d d_localTransform;
     
     // The camera offset due to calibration error
     Eigen::Vector3d d_cameraOffset;
@@ -441,6 +435,51 @@ namespace bats
   inline std::shared_ptr<bats::ObjectInfo> Localizer::getFieldCenter() const
   {
     return d_center;
+  }
+
+  inline Eigen::Affine3d Localizer::getLocalTransformation() const
+  {
+    return d_localTransform;
+  }
+
+  inline Eigen::Affine3d Localizer::getGlobalTransformation() const
+  {
+    return d_globalTransform;
+  }
+
+  inline Eigen::Vector3d Localizer::localToGlobal(Eigen::Vector3d const& loc, bool zeroZ)
+  {
+    Eigen::Vector3d global =
+      Eigen::Affine3d(getGlobalTransformation() *
+                      getLocalTransformation().inverse()) * loc;
+    if (zeroZ)
+      global.z() = 0;
+    return global;
+  }
+
+  inline Eigen::Vector3d Localizer::globalToLocal(Eigen::Vector3d const& glob, bool zeroZ)
+  {
+    Eigen::Vector3d local =
+      Eigen::Affine3d(getLocalTransformation() *
+                      getGlobalTransformation().inverse()) * glob;
+    if (zeroZ)
+      local.z() = 0;
+    return local;
+  }
+
+  inline Eigen::Vector3d Localizer::rotateLocalToGlobal(Eigen::Vector3d const& loc)
+  {
+    return
+      Eigen::Affine3d(getGlobalTransformation().linear() *
+                      Eigen::Affine3d(getLocalTransformation().inverse()).linear()) *
+      loc;
+  }
+
+  inline Eigen::Vector3d Localizer::rotateGlobalToLocal(Eigen::Vector3d const& glob) {
+    return
+      Eigen::Affine3d(getLocalTransformation().linear() *
+                      Eigen::Affine3d(getGlobalTransformation().inverse()).linear()) *
+      glob;
   }
   
   typedef Singleton<Localizer> SLocalizer;
