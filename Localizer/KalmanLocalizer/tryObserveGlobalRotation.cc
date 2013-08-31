@@ -4,81 +4,45 @@ bool KalmanLocalizer::tryObserveGlobalRotation(Eigen::Matrix3d& transform)
 {
   if (!d_haveNewVisionData)
     return false;
+
+  //
+  // Build matrixes with global directions and observed directions
+  //
+  ObjectVector observedLandmarks =
+    getFilteredObjects(d_objects, [](shared_ptr<ObjectInfo> o)
+                       {
+                         return o->isVisible && !o->isDynamic;
+                       });
   
+  unsigned nM = observedLandmarks.size();
+
   //
-  // Attempt to find a forward vector equivalent to (0,1,0) from the global
-  // frame, but in the local frame.
+  // If we have less than 3 landmarks, can't determine rotation
+  // TODO: if all landmarks are in a line, this won't work either
   //
-  Vector3d forward(0, 0, 0);
-  unsigned forwardCount = 0;
-  for (LandmarkPair const& p : d_forwardPairs)
-  {
-    if (p.first->isVisible && p.second->isVisible)
-    {
-      Vector3d pos1 = p.first->getPositionRaw();
-      Vector3d pos2 = p.second->getPositionRaw();
-      forward += (pos2 - pos1).normalized();
-      ++forwardCount;
-    }
-  }
-  
-  //
-  // If we don't have at least one forward vector, we cannot continue.
-  //
-  if (forwardCount == 0)
+  if (nM < 3)
     return false;
+
+  MatrixXd dirsGlobal(3, nM * (nM - 1) / 2);
+  MatrixXd dirsObserved(3, nM * (nM - 1) / 2);
   
-  forward /= forwardCount;
-  forward.normalize();
-  
-  Vector3d right(0, 0, 0);
-  unsigned rightCount = 0;
-  for (LandmarkPair const& pair : d_rightPairs)
-  {
-    if (pair.first->isVisible && pair.second->isVisible)
+  // Go through all combinations, and determine directions
+  unsigned idx = 0;
+  for (unsigned i = 0; i < nM; ++i)
+    for (unsigned j = i + 1; j < nM; ++j)
     {
-      Vector3d pos1 = pair.first->getPositionRaw();
-      Vector3d pos2 = pair.second->getPositionRaw();
-      right += (pos2 - pos1).normalized();
-      ++rightCount;
+      dirsGlobal.col(idx) = observedLandmarks[j]->getPositionGlobal() - observedLandmarks[i]->getPositionGlobal();
+      dirsObserved.col(idx) = observedLandmarks[j]->getPositionRaw() - observedLandmarks[i]->getPositionRaw();
+      ++idx;
     }
-  }
   
-  //
-  // If we didn't get any right vectors, try to get one from a cross product
-  // of landmarks from one end of the field.
-  //
-  if (rightCount == 0)
-  {
-    // Check cross products
-    for (LandmarkPairPair const& pairPair : d_rightCrossProductPairs)
-    {
-      if (pairPair.first.first->isVisible  && pairPair.first.second->isVisible &&
-          pairPair.second.first->isVisible && pairPair.second.second->isVisible)
-      {
-        Vector3d a = pairPair.first.second->getPositionRaw()  - pairPair.first.first->getPositionRaw();
-        Vector3d b = pairPair.second.second->getPositionRaw() - pairPair.second.first->getPositionRaw();
-        right += a.cross(b).normalized();
-        ++rightCount;
-      }
-    }
-    if (rightCount == 0)
-      return false;
-  }
-
-  right /= rightCount;
-  right.normalize();
-
-  Vector3d up = right.cross(forward);
-    
-  // The transform comprised of these three vectors represents the transform
-  // from the world frame into the agent's torso frame
-  Affine3d invTransform = Math::makeTransform(right, forward, up);
+  // Determine covariance (proxy)
+  MatrixXd covar = dirsGlobal * dirsObserved.transpose();
   
-  // The inverse gives what we want: the transform from the agent's torso
-  // frame into world coordinates (equivalent to the world frame's axis
-  // position/orientation in the torso's frame)
-  transform = invTransform.inverse().rotation();
-
-  return true;
+  // Perform singular value decomposition, which provides two rotations and a scaling
+  JacobiSVD<MatrixXd> svd(covar, ComputeThinU | ComputeThinV);
+  
+  // Least square estimate of the rotation matrix is product of the two rotations
+  transform = svd.matrixU() * svd.matrixV().transpose();
+    return true;
 }
