@@ -26,9 +26,14 @@ set(CMAKE_CXX_FLAGS "-std=c++0x -Wno-deprecated-register")
 set(LIBBATS_SOURCES
 ./TimeVal/timeval.cc
 ./Socket/socket.cc
+./Localizer/Localizer.cc
+./Localizer/update.cc
+./Localizer/updateGlobalRotation.cc
+./Localizer/tryObserveGlobalRotation.cc
+./Localizer/updateRaw.cc
 ./Localizer/getFilteredPlayers.cc
 ./Localizer/getFilteredObjects.cc
-./Localizer/KalmanLocalizer/getCochleaIdForObject.cc
+./Localizer/getCochleaIdForObject.cc
 ./Localizer/KalmanLocalizer/updateBallGlobal.cc
 ./Localizer/KalmanLocalizer/init.cc
 ./Localizer/KalmanLocalizer/globalToLocal.cc
@@ -39,9 +44,6 @@ set(LIBBATS_SOURCES
 ./Localizer/KalmanLocalizer/updateSelfGlobal.cc
 ./Localizer/KalmanLocalizer/updatePlayersGlobal.cc
 ./Localizer/KalmanLocalizer/update.cc
-./Localizer/KalmanLocalizer/updateGlobalRotation.cc
-./Localizer/KalmanLocalizer/tryObserveGlobalRotation.cc
-./Localizer/KalmanLocalizer/updateRaw.cc
 ./Localizer/getAliveObjects.cc
 ./Localizer/SimpleLocalizer/SimpleLocalizer.cc
 ./Localizer/SimpleLocalizer/update.cc

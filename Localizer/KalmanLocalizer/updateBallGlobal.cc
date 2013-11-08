@@ -54,7 +54,7 @@ void KalmanLocalizer::updateBallGlobal()
     if (d_ball->isVisible)
     {
       shared_ptr<NormalDistribution> obsModel = make_shared<NormalDistribution>(6);
-      Affine3d globalRotationTrans = Affine3d(d_globalRotation.matrix().transpose());
+      Affine3d globalRotationTrans = Affine3d(d_globalTransform.rotation().matrix().transpose());
 
       VectorXd meas = d_ball->posVelRaw->getMu();
       MatrixXd sigma = d_ball->posVelRaw->getSigma();
@@ -64,7 +64,7 @@ void KalmanLocalizer::updateBallGlobal()
 
       // Raw measurement of position in global coordinates
       VectorXd globalMeas = joinPositionAndVelocityVectors(
-        cutPositionVector(myPosVel) + d_globalRotation * cutPositionVector(meas),
+        cutPositionVector(myPosVel) + d_globalTransform.linear() * cutPositionVector(meas),
         Vector3d(0,0,0));
       VectorXd oldGlobalMeas = d_ball->lastPosVelRawGlobal->getMu();
       
@@ -89,10 +89,10 @@ void KalmanLocalizer::updateBallGlobal()
       // Sigma of vel is transformed sigma of measurement plus old sigma
       // Sigma_global = T^-1 Sigma_agent T, where T is transform from agent to global, i.e. inverse of global rotation
       Matrix3d posSigma =
-	d_globalRotation.linear() * cutPositionMatrix(sigma) * globalRotationTrans.linear();
+	d_globalTransform.linear() * cutPositionMatrix(sigma) * globalRotationTrans.linear();
       // velocity uncertainty is uncertainty of 
       Matrix3d velSigma =
-	d_globalRotation.linear() * cutVelocityMatrix(sigma) * globalRotationTrans.linear();
+	d_globalTransform.linear() * cutVelocityMatrix(sigma) * globalRotationTrans.linear();
 
       MatrixXd globalSigma = joinPositionAndVelocityMatrices(posSigma, velSigma);
 

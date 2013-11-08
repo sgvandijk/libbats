@@ -2,7 +2,7 @@
 
 void KalmanLocalizer::onBeam(shared_ptr<BeamEvent> event)
 {
-  d_globalRotation = AngleAxisd(event->getWhere()[2] / 180.0 * M_PI -.5 * M_PI, Vector3d::UnitZ());
+  d_globalTransform.linear() = AngleAxisd(event->getWhere()[2] / 180.0 * M_PI -.5 * M_PI, Vector3d::UnitZ()).matrix();
 
   Vector3d pos = event->getWhere();
 

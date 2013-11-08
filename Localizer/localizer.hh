@@ -44,6 +44,7 @@
 #include <vector>
 #include <functional>
 
+#include "../Cochlea/cochlea.hh"
 #include "../Distribution/distribution.hh"
 #include "../Distribution/NormalDistribution/normaldistribution.hh"
 #include "../Types/types.hh"
@@ -56,6 +57,7 @@
 
 namespace bats
 {
+  
   /** The localizer interface
 
     Localization is done using a class with an interface compatible with this
@@ -91,6 +93,7 @@ namespace bats
     typedef std::vector<std::shared_ptr<bats::PlayerInfo> > PlayerVector;
     typedef std::vector<std::shared_ptr<bats::ObjectInfo> > ObjectVector;
     
+    Localizer();
     virtual ~Localizer() {}
 
     ///@name Life cycle
@@ -100,7 +103,7 @@ namespace bats
     virtual void init() = 0;
 
     /** Called when an update needs to be done */
-    virtual void update() = 0;
+    virtual void update();
 
     ///@}
 
@@ -310,6 +313,36 @@ namespace bats
     ///@}
 
   protected:
+    inline Eigen::Vector3d cutPositionVector(Eigen::VectorXd const& posVel) const;
+    inline Eigen::Vector3d cutVelocityVector(Eigen::VectorXd const& posVel) const;
+    inline Eigen::VectorXd joinPositionAndVelocityVectors(Eigen::Vector3d const& loc, Eigen::Vector3d const& vel) const;
+    
+    inline Eigen::Matrix3d cutPositionMatrix(Eigen::MatrixXd const& posVel) const;
+    inline Eigen::Matrix3d cutVelocityMatrix(Eigen::MatrixXd const& posVel) const;
+    inline Eigen::MatrixXd joinPositionAndVelocityMatrices(Eigen::Matrix3d const& loc, Eigen::Matrix3d const& vel) const;
+    
+    inline void setPositionVector(Eigen::VectorXd& posVel, Eigen::Vector3d const& pos);
+    inline void setVelocityVector(Eigen::VectorXd& posVel, Eigen::Vector3d const& vel);
+
+    void updateGlobalRotation();
+    
+    /** Attempts to estimate the global orientation using vision data.
+     * 
+     * @param observedGlobalRotation the observed rotation matrix (out param)
+     * @returns true if a value could be determined, otherwise false
+     */
+    bool tryObserveGlobalRotation(Eigen::Matrix3d& observedGlobalRotation);
+    
+    /** Updates object positions relative to the torso using raw vision data.
+     * No filtering occurs.
+     */
+    void updateRaw();
+    
+    Cochlea::InfoID getCochleaIdForObject(std::shared_ptr<ObjectInfo> object) const;
+
+    // Whether we have new vision data this timestep
+    bool d_haveNewVisionData;
+
     // Global transformation
     Eigen::Affine3d d_globalTransform;
 
@@ -480,6 +513,52 @@ namespace bats
       Eigen::Affine3d(getLocalTransformation().linear() *
                       Eigen::Affine3d(getGlobalTransformation().inverse()).linear()) *
       glob;
+  }
+
+  Eigen::Vector3d Localizer::cutPositionVector(Eigen::VectorXd const& posVel) const
+  {
+    return posVel.head<3>();
+  }
+  
+  Eigen::Vector3d Localizer::cutVelocityVector(Eigen::VectorXd const& posVel) const
+  {
+    return posVel.tail<3>();
+  }
+
+  void Localizer::setPositionVector(Eigen::VectorXd& posVel, Eigen::Vector3d const& pos)
+  {
+    posVel.head<3>() = pos;
+  }
+  
+  void Localizer::setVelocityVector(Eigen::VectorXd& posVel, Eigen::Vector3d const& vel)
+  {
+    posVel.tail<3>() = vel;
+  }
+  
+  Eigen::Matrix3d Localizer::cutPositionMatrix(Eigen::MatrixXd const& posVel) const
+  {
+    return posVel.topLeftCorner<3,3>();
+  }
+
+  Eigen::Matrix3d Localizer::cutVelocityMatrix(Eigen::MatrixXd const& posVel) const
+  {
+    return posVel.bottomRightCorner<3,3>();
+  }
+
+  Eigen::VectorXd Localizer::joinPositionAndVelocityVectors(Eigen::Vector3d const& loc, Eigen::Vector3d const& vel) const
+  {
+    Eigen::VectorXd locVel(6);
+    locVel << loc, vel;
+    return locVel;
+  }
+
+  Eigen::MatrixXd Localizer::joinPositionAndVelocityMatrices(Eigen::Matrix3d const& loc, Eigen::Matrix3d const& vel) const
+  {
+    Eigen::MatrixXd locVel = Eigen::MatrixXd::Zero(6,6);
+    locVel.fill(0);
+    locVel.topLeftCorner<3,3>() = loc;
+    locVel.bottomRightCorner<3,3>() = vel;
+    return locVel;
   }
   
   typedef Singleton<Localizer> SLocalizer;

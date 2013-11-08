@@ -3,20 +3,8 @@
 
 void KalmanLocalizer::update()
 {
-  Cochlea& cochlea = bats::SCochlea::getInstance();
-  d_haveNewVisionData = cochlea.getTimestamp(Cochlea::iVision) == bats::SClock::getInstance().getTime();
+  Localizer::update();
   
-  //
-  // Copy vision data into raw (unfiltered) fields on ObjectInfo instances.
-  //
-  updateRaw();
-  
-  //
-  // Integrate gyro measurement data into the global rotation matrix and
-  // adjust for any drift in the rotation via comparison with vision data.
-  //
-  updateGlobalRotation();
-
   //
   // Update all objects in gobal space
   //
@@ -41,6 +29,8 @@ void KalmanLocalizer::update()
     // Draw the lines that the agent can see.
     //
 //     int index = 0;
+
+    Cochlea& cochlea = SCochlea::getInstance();
     for (VisibleLine line : cochlea.getLines())
     {
       Vector3d lineStartCamera = line.end1Cartesian;

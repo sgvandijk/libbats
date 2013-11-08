@@ -1,6 +1,6 @@
-#include "kalmanlocalizer.ih"
+#include "localizer.ih"
 
-void KalmanLocalizer::updateGlobalRotation()
+void Localizer::updateGlobalRotation()
 {
   // todo consider using an estimate of the gyro data for the *current* cycle -- find out whether the data tends to support this well or not
   
@@ -32,7 +32,7 @@ void KalmanLocalizer::updateGlobalRotation()
   //
   // Integrate this step change in rotation into our global rotation.
   //
-  d_globalRotation = d_globalRotation * changeInRotation;
+  d_globalTransform = d_globalTransform * changeInRotation;
 
 /*
   //
@@ -111,12 +111,14 @@ void KalmanLocalizer::updateGlobalRotation()
 //    cout << "-- observed orientation" << endl << observedGlobalRotation << endl;
     
     // If both are the same, this should be the identity matrix
-    Matrix3d obsDiffTransform = d_globalRotation.matrix().block<3,3>(0,0) * observedGlobalRotation.inverse();
+    Matrix3d obsDiffTransform = d_globalTransform.linear().matrix() * observedGlobalRotation.inverse();
     AngleAxisd obsDiff = AngleAxisd(obsDiffTransform);
 //     cout << "-- observed difference: " << Math::radToDeg(obsDiff.angle()) << " deg on axis: " << obsDiff.axis().transpose() << endl << endl;
 
+    Vector3d globalTranslation = d_globalTransform.translation();
     AngleAxisd correction = AngleAxisd(-0.05 * obsDiff.angle(), obsDiff.axis());
-    d_globalRotation = correction * d_globalRotation;
+    d_globalTransform = Affine3d(correction * d_globalTransform.rotation());
+    d_globalTransform.translation() = globalTranslation;
     
     //cout << "------" << endl;
     //cout << d_globalRotation.matrix() << endl << endl << transform.matrix() << endl << endl;

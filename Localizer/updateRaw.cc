@@ -1,6 +1,6 @@
-#include "kalmanlocalizer.ih"
+#include "localizer.ih"
 
-void KalmanLocalizer::updateRaw()
+void Localizer::updateRaw()
 {
   // No sense in updating if there is no vision data
   if (!d_haveNewVisionData)

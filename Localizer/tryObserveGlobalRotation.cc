@@ -1,6 +1,6 @@
-#include "kalmanlocalizer.ih"
+#include "localizer.ih"
 
-bool KalmanLocalizer::tryObserveGlobalRotation(Eigen::Matrix3d& transform)
+bool Localizer::tryObserveGlobalRotation(Eigen::Matrix3d& transform)
 {
   if (!d_haveNewVisionData)
     return false;

@@ -1,6 +1,6 @@
-  #include "kalmanlocalizer.ih"
+  #include "localizer.ih"
 
-Cochlea::InfoID KalmanLocalizer::getCochleaIdForObject(shared_ptr<ObjectInfo> object) const
+Cochlea::InfoID Localizer::getCochleaIdForObject(shared_ptr<ObjectInfo> object) const
 {
   if (object->isBall)
   {

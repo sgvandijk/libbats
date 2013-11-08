@@ -4,9 +4,12 @@ void KalmanLocalizer::updateSelfGlobal()
 {
   AgentModel& am = bats::SAgentModel::getInstance();
   
+  // Old estimate
   VectorXd oldLocVel = d_me->posVelGlobal->getMu();
+
+  // Accelerometer
   Vector3d accLocal = am.getAcc();
-  Vector3d accGlobal = d_globalRotation.linear() * accLocal;
+  Vector3d accGlobal = d_globalTransform.linear() * accLocal;
   
   /*
    * Predict
@@ -49,7 +52,8 @@ void KalmanLocalizer::updateSelfGlobal()
   if (d_haveNewVisionData)
   {
     shared_ptr<NormalDistribution> obsModel = make_shared<NormalDistribution>(6);
-    Affine3d globalRotationTrans(d_globalRotation.matrix().transpose());
+    Affine3d globalRotation(d_globalTransform.linear());
+    Affine3d globalRotationTrans(globalRotation.matrix().transpose());
     
     for (shared_ptr<ObjectInfo> landmark : d_landmarks)
     {
@@ -64,20 +68,20 @@ void KalmanLocalizer::updateSelfGlobal()
 
       VectorXd globalMeas = VectorXd::Zero(6);
       // Location part
-      globalMeas.head<3>() = cutPositionVector(pos) - d_globalRotation * cutPositionVector(meas);
+      globalMeas.head<3>() = cutPositionVector(pos) - globalRotation * cutPositionVector(meas);
       // Velocity part
       globalMeas.tail<3>() = (globalMeas - oldLocVel).head<3>();
       //cerr << "global meas:" << endl << globalMeas << endl;
       
       MatrixXd globalSigma = joinPositionAndVelocityMatrices(
-        d_globalRotation.linear() * cutPositionMatrix(sigma) * globalRotationTrans.linear(),
-        d_globalRotation.linear() * cutVelocityMatrix(sigma) * globalRotationTrans.linear());
+        globalRotation.linear() * cutPositionMatrix(sigma) * globalRotationTrans.linear(),
+        globalRotation.linear() * cutVelocityMatrix(sigma) * globalRotationTrans.linear());
       
       obsModel->init(globalMeas, globalSigma);
       d_me->posVelGlobal->update(obsModel);
     }
   }
   
-  d_globalTranslation = Translation3d(cutPositionVector(d_me->posVelGlobal->getMu()));
-  d_globalTransform = d_globalTranslation * d_globalRotation;
+  Translation3d globalTranslation = Translation3d(cutPositionVector(d_me->posVelGlobal->getMu()));
+  d_globalTransform = globalTranslation * d_globalTransform.linear();
 }

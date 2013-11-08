@@ -55,14 +55,14 @@ void KalmanLocalizer::updatePlayersGlobal()
       /// todo: cache obsModel
       shared_ptr<NormalDistribution> obsModel = make_shared<NormalDistribution>(6);
       /// todo: cache trans of global rotation matrix
-      Affine3d globalRotationTrans = Affine3d(d_globalRotation.matrix().transpose());
+      Affine3d globalRotationTrans = Affine3d(d_globalTransform.linear().matrix().transpose());
       if (player->isVisible)
       {
         VectorXd meas = player->posVelRaw->getMu();
         MatrixXd sigma = player->posVelRaw->getSigma();
 
         VectorXd globalMeas = joinPositionAndVelocityVectors(
-          cutPositionVector(myPosVelGlobal) + d_globalRotation * cutPositionVector(meas),
+          cutPositionVector(myPosVelGlobal) + d_globalTransform.linear() * cutPositionVector(meas),
           Vector3d(0,0,0));
         VectorXd vel = globalMeas - oldPosVelGlobal;
         globalMeas = joinPositionAndVelocityVectors(
@@ -70,8 +70,8 @@ void KalmanLocalizer::updatePlayersGlobal()
           cutPositionVector(vel));
 
         MatrixXd globalSigma = joinPositionAndVelocityMatrices(
-          d_globalRotation.linear() * cutPositionMatrix(sigma) * globalRotationTrans.linear(),
-          d_globalRotation.linear() * cutVelocityMatrix(sigma) * globalRotationTrans.linear()) + mySigma;
+          d_globalTransform.linear() * cutPositionMatrix(sigma) * globalRotationTrans.linear(),
+          d_globalTransform.linear() * cutVelocityMatrix(sigma) * globalRotationTrans.linear()) + mySigma;
 
         obsModel->init(globalMeas, globalSigma);
         player->posVelGlobal->update(obsModel);
@@ -81,25 +81,25 @@ void KalmanLocalizer::updatePlayersGlobal()
         if (player->lArmVisible)
         {
           Vector3d rawDiff = player->posLArmLocal - meas.head<3>();
-          Vector3d globalDiff = d_globalRotation * rawDiff;
+          Vector3d globalDiff = d_globalTransform.linear() * rawDiff;
           player->posLArmGlobal = globalDiff;
         }
         if (player->rArmVisible)
         {
           Vector3d rawDiff = player->posRArmLocal - meas.head<3>();
-          Vector3d globalDiff = d_globalRotation * rawDiff;
+          Vector3d globalDiff = d_globalTransform.linear() * rawDiff;
           player->posRArmGlobal = globalDiff;
         }
         if (player->lFootVisible)
         {
           Vector3d rawDiff = player->posLFootLocal - meas.head<3>();
-          Vector3d globalDiff = d_globalRotation * rawDiff;
+          Vector3d globalDiff = d_globalTransform.linear() * rawDiff;
           player->posLFootGlobal = globalDiff;
         }
         if (player->rFootVisible)
         {
           Vector3d rawDiff = player->posRFootLocal - meas.head<3>();
-          Vector3d globalDiff = d_globalRotation * rawDiff;
+          Vector3d globalDiff = d_globalTransform.linear() * rawDiff;
           player->posRFootGlobal = globalDiff;
         }
       }
