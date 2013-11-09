@@ -7,13 +7,16 @@ project (libbats)
 
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/)
 set(BUILD_SHARED_LIBS ON CACHE BOOL "Choose whether to build a shared library")
+set(BUILD_GTK_DEBUGGER OFF CACHE BOOL "Choose whether to build the GTL Debugger")
 
 INCLUDE(FindPkgConfig)
 
 find_package(Eigen3 REQUIRED)
 find_package(LibXml2 REQUIRED)
 find_package(SigC++ REQUIRED)
-PKG_CHECK_MODULES(GTKMM gtkmm-2.4)
+if (BUILD_GTK_DEBUGGER)
+  PKG_CHECK_MODULES(GTKMM gtkmm-2.4)
+endif(BUILD_GTK_DEBUGGER)
 find_package(Doxygen)
 find_package(LATEX)
 
@@ -212,29 +215,31 @@ set(LIBBATS_SOURCES
 set(LIBBATS_INCLUDE_DIRS ${EIGEN3_INCLUDE_DIR} ${LIBXML2_INCLUDE_DIR} ${SigC++_INCLUDE_DIRS} ${LIBXMLXX_INCLUDE_DIRS})
 
 # Only build GTK debugger if GTKmm was found
-if(GTKMM_FOUND)
-  list(APPEND LIBBATS_SOURCES
-       ./Debugger/GtkDebugger/onDebugText.cc
-       ./Debugger/GtkDebugger/run.cc
-       ./Debugger/GtkDebugger/onThinkEnd.cc
-       ./Debugger/GtkDebugger/drawShapes.cc
-       ./Debugger/GtkDebugger/GtkDebugger.cc
-       ./Debugger/GtkDebugger/drawBall.cc
-       ./Debugger/GtkDebugger/drawCurve.cc
-       ./Debugger/GtkDebugger/plot.cc
-       ./Debugger/GtkDebugger/drawPlayers.cc
-       ./Debugger/GtkDebugger/start.cc
-       ./Debugger/GtkDebugger/drawSelf.cc
-       ./Debugger/GtkDebugger/init.cc
-       ./Debugger/GtkDebugger/drawField.cc
-       ./Debugger/GtkDebugger/reDraw.cc
-       ./Debugger/GtkDebugger/onDrawingAreaExpose.cc
-  )
-
-  list(APPEND LIBBATS_INCLUDE_DIRS ${GTKMM_INCLUDE_DIRS})
-else(GTKMM_FOUND)
-  message(STATUS "  GtkDebugger will not be built")
-endif(GTKMM_FOUND)
+if(BUILD_GTK_DEBUGGER)
+  if(GTKMM_FOUND)
+    list(APPEND LIBBATS_SOURCES
+      ./Debugger/GtkDebugger/onDebugText.cc
+      ./Debugger/GtkDebugger/run.cc
+      ./Debugger/GtkDebugger/onThinkEnd.cc
+      ./Debugger/GtkDebugger/drawShapes.cc
+      ./Debugger/GtkDebugger/GtkDebugger.cc
+      ./Debugger/GtkDebugger/drawBall.cc
+      ./Debugger/GtkDebugger/drawCurve.cc
+      ./Debugger/GtkDebugger/plot.cc
+      ./Debugger/GtkDebugger/drawPlayers.cc
+      ./Debugger/GtkDebugger/start.cc
+      ./Debugger/GtkDebugger/drawSelf.cc
+      ./Debugger/GtkDebugger/init.cc
+      ./Debugger/GtkDebugger/drawField.cc
+      ./Debugger/GtkDebugger/reDraw.cc
+      ./Debugger/GtkDebugger/onDrawingAreaExpose.cc
+      )
+    
+    list(APPEND LIBBATS_INCLUDE_DIRS ${GTKMM_INCLUDE_DIRS})
+  else(GTKMM_FOUND)
+    message(STATUS "  GtkDebugger will not be built")
+  endif(GTKMM_FOUND)
+endif(BUILD_GTK_DEBUGGER)
 
 include_directories(${LIBBATS_INCLUDE_DIRS} ${CMAKE_BINARY_DIR})
 
