@@ -61,9 +61,7 @@ void KalmanLocalizer::updateSelfGlobal()
         continue;
 
       VectorXd pos = landmark->posVelGlobal->getMu();
-      //cerr << "landmark loc:" << endl << loc << endl;
       VectorXd meas = landmark->posVelRaw->getMu();
-      //cerr << "raw meas:" << endl << meas << endl;
       MatrixXd sigma = landmark->posVelRaw->getSigma();
 
       VectorXd globalMeas = VectorXd::Zero(6);
@@ -71,8 +69,7 @@ void KalmanLocalizer::updateSelfGlobal()
       globalMeas.head<3>() = cutPositionVector(pos) - globalRotation * cutPositionVector(meas);
       // Velocity part
       globalMeas.tail<3>() = (globalMeas - oldLocVel).head<3>();
-      //cerr << "global meas:" << endl << globalMeas << endl;
-      
+
       MatrixXd globalSigma = joinPositionAndVelocityMatrices(
         globalRotation.linear() * cutPositionMatrix(sigma) * globalRotationTrans.linear(),
         globalRotation.linear() * cutVelocityMatrix(sigma) * globalRotationTrans.linear());
