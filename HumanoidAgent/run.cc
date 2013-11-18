@@ -107,7 +107,9 @@ gettimeofday(&end, 0);
     
     loc.update();
     _debugLevel4("Localizer updated");
-    
+
+    update();
+
     am.predict();
 
     think_start_signal();

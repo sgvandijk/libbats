@@ -94,7 +94,14 @@ namespace bats
     }
     
     virtual ~HumanoidAgent() {}
-    
+
+    /** Update before think
+     *
+     * Called after all modules are updated, but before joint angle
+     * prediction is done.
+     */
+    virtual void update() {}
+
     /** Run the agent
      *
      * Start an infinite loop that updates the communication with the
