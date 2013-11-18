@@ -7,6 +7,9 @@ void KalmanLocalizer::updatePlayersGlobal()
 
   for (shared_ptr<PlayerInfo> player : d_players)
   {
+    if (player == d_me)
+      continue;
+
     VectorXd oldPosVelGlobal = player->posVelGlobal->getMu();
     
     //
