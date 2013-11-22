@@ -7,16 +7,13 @@ project (libbats)
 
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/)
 set(BUILD_SHARED_LIBS ON CACHE BOOL "Choose whether to build a shared library")
-set(BUILD_GTK_DEBUGGER OFF CACHE BOOL "Choose whether to build the GTL Debugger")
 
 INCLUDE(FindPkgConfig)
 
 find_package(Eigen3 REQUIRED)
 find_package(LibXml2 REQUIRED)
 find_package(SigC++ REQUIRED)
-if (BUILD_GTK_DEBUGGER)
-  PKG_CHECK_MODULES(GTKMM gtkmm-2.4)
-endif(BUILD_GTK_DEBUGGER)
+PKG_CHECK_MODULES(GTKMM gtkmm-2.4)
 find_package(Doxygen)
 find_package(LATEX)
 
@@ -27,219 +24,219 @@ set(CMAKE_CXX_FLAGS "-std=c++0x -Wno-deprecated-register")
 #
 
 set(LIBBATS_SOURCES
-./TimeVal/timeval.cc
-./Socket/socket.cc
-./Localizer/Localizer.cc
-./Localizer/update.cc
-./Localizer/updateGlobalRotation.cc
-./Localizer/tryObserveGlobalRotation.cc
-./Localizer/updateRaw.cc
-./Localizer/getFilteredPlayers.cc
-./Localizer/getFilteredObjects.cc
-./Localizer/getCochleaIdForObject.cc
-./Localizer/KalmanLocalizer/updateBallGlobal.cc
-./Localizer/KalmanLocalizer/init.cc
-./Localizer/KalmanLocalizer/globalToLocal.cc
-./Localizer/KalmanLocalizer/KalmanLocalizer.cc
-./Localizer/KalmanLocalizer/addGlobalMeasurement.cc
-./Localizer/KalmanLocalizer/getGoalMidpoint.cc
-./Localizer/KalmanLocalizer/onBeam.cc
-./Localizer/KalmanLocalizer/updateSelfGlobal.cc
-./Localizer/KalmanLocalizer/updatePlayersGlobal.cc
-./Localizer/KalmanLocalizer/update.cc
-./Localizer/getAliveObjects.cc
-./Localizer/SimpleLocalizer/SimpleLocalizer.cc
-./Localizer/SimpleLocalizer/update.cc
-./Clock/RC3DClock/update.cc
-./Cochlea/synthesizeDerivedData.cc
-./Cochlea/getLineJunctions.cc
-./Cochlea/parseTransform.cc
-./Cochlea/parseVect.cc
-./Cochlea/nameOf.cc
-./Cochlea/update.cc
-./Cochlea/translateInfo.cc
-./Cochlea/parseScalar.cc
-./Cochlea/parsePolar.cc
-./Cochlea/Cochlea.cc
-./Cochlea/integrate.cc
-./Debugger/RoboVizDebugger/drawAnnotation.cc
-./Debugger/RoboVizDebugger/init.cc
-./Debugger/RoboVizDebugger/drawSphere.cc
-./Debugger/RoboVizDebugger/drawLine.cc
-./Debugger/RoboVizDebugger/drawProgressCircle.cc
-./Debugger/RoboVizDebugger/drawPoint.cc
-./Debugger/RoboVizDebugger/reDraw.cc
-./Debugger/RoboVizDebugger/drawAgentAnnotation.cc
-./Debugger/RoboVizDebugger/drawTransformationAxes.cc
-./Debugger/RoboVizDebugger/drawCurve.cc
-./Debugger/RoboVizDebugger/drawPolygon.cc
-./Debugger/RoboVizDebugger/drawShapes.cc
-./Debugger/RoboVizDebugger/getSetName.cc
-./Debugger/RoboVizDebugger/onThinkEnd.cc
-./Debugger/RoboVizDebugger/RoboVizDebugger.cc
-./Debugger/RoboVizDebugger/start.cc
-./Debugger/RoboVizDebugger/drawCircle.cc
-./Debugger/RoboVizDebugger/drawPlayerSkeleton.cc
-./Debugger/RoboVizDebugger/plot.cc
-./Predicate/operator0.cc
-./Predicate/toString.cc
-./Predicate/generate.cc
-./Predicate/copy.cc
-./Predicate/destroy.cc
-./AgentModel/onMyFeet.cc
-./AgentModel/onMySide.cc
-./AgentModel/setUnum.cc
-./AgentModel/getJointName.cc
-./AgentModel/checkDirectionOfFall.cc
-./AgentModel/initBody2.cc
-./AgentModel/onMyBack.cc
-./AgentModel/AgentModel.cc
-./AgentModel/update.cc
-./AgentModel/isDown.cc
-./AgentModel/onMyBelly.cc
-./AgentModel/jointAnglesForAnklePosition.cc
-./AgentModel/updatePosture.cc
-./AgentModel/updateCOM.cc
-./AgentModel/predict.cc
-./AgentModel/initBody.cc
-./AgentModel/getBodyCopy.cc
-./AgentModel/getBodyPartCopy.cc
-./SocketComm/initSocket.cc
-./SocketComm/AgentSocketComm/moveJoint.cc
-./SocketComm/AgentSocketComm/init.cc
-./SocketComm/AgentSocketComm/syn.cc
-./SocketComm/AgentSocketComm/moveUniversalJoint.cc
-./SocketComm/AgentSocketComm/update.cc
-./SocketComm/AgentSocketComm/beam.cc
-./SocketComm/AgentSocketComm/makeMoveHingeJoint.cc
-./SocketComm/AgentSocketComm/say.cc
-./SocketComm/AgentSocketComm/moveHingeJoint.cc
-./SocketComm/AgentSocketComm/makemovetorquejointmessage.cc
-./SocketComm/AgentSocketComm/movetorquejoint.cc
-./SocketComm/connect.cc
-./SocketComm/sendmessage.cc
-./SocketComm/receive.cc
-./SocketComm/TrainerSocketComm/setBallVel.cc
-./SocketComm/TrainerSocketComm/init.cc
-./SocketComm/TrainerSocketComm/setBallPos.cc
-./SocketComm/TrainerSocketComm/static.cc
-./SocketComm/TrainerSocketComm/setBallPosVel.cc
-./SocketComm/TrainerSocketComm/setPlayMode.cc
-./SocketComm/TrainerSocketComm/kickOff.cc
-./SocketComm/initConnection.cc
-./SocketComm/SocketComm.cc
-./SocketComm/send.cc
-./SocketComm/parseInput.cc
-./SocketComm/nextMessage.cc
-./SocketAddress/socketaddress.cc
-./Path/init.cc
-./Path/path.cc
-./AST/findalldeep.cc
-./AST/finddeep.cc
-./AST/findall.cc
-./AST/selectall.cc
-./AST/select.cc
-./AST/find.cc
-./PortableParser/static.cc
-./Parser/initialize.cc
-./Parser/parse.cc
-./Parser/static.cc
-./Parser/parser0.cc
-./Parser/generate.cc
-./WorldModel/getDirectionOfFall.cc
-./WorldModel/onMyFeet.cc
-./WorldModel/onMySide.cc
-./WorldModel/worldmodel.cc
-./WorldModel/updateGameState.cc
-./WorldModel/static.cc
-./WorldModel/onMyBack.cc
-./WorldModel/update.cc
-./WorldModel/getDirectionOfOpponentGoal.cc
-./WorldModel/otherCloserTo.cc
-./WorldModel/onMyBelly.cc
-./WorldModel/initWeights.cc
-./WorldModel/initJoints.cc
-./HumanoidAgent/static.cc
-./HumanoidAgent/startUp.cc
-./HumanoidAgent/run.cc
-./Types/isTeamMate.cc
-./Types/objectEnumFor.cc
 ./Types/dualOf.cc
 ./Types/getPlayerWithUnum.cc
-./Types/nameOf.cc
+./Types/objectEnumFor.cc
+./Types/isTeamMate.cc
 ./Types/unumFor.cc
-./PlayerClass/static.cc
-./JointController/GaitGenerator/IKGaitGenerator/determineNextStep.cc
-./JointController/GaitGenerator/IKGaitGenerator/IKGaitGenerator.cc
-./JointController/GaitGenerator/IKGaitGenerator/fillJointAngles.cc
-./JointController/GaitGenerator/IKGaitGenerator/doStep.cc
-./JointController/GaitGenerator/IKGaitGenerator/determineSwingFootEnd.cc
-./JointController/GaitGenerator/IKGaitGenerator/updateSpeed.cc
-./JointController/GaitGenerator/IKGaitGenerator/updatePhase.cc
-./JointController/GaitGenerator/IKGaitGenerator/run.cc
-./JointController/GaitGenerator/IKGaitGenerator/resetGait.cc
-./JointController/MotionSequencePlayer/checkFirstRun.cc
-./JointController/MotionSequencePlayer/checkSequenceDone.cc
-./JointController/MotionSequencePlayer/runCurrentStep.cc
-./JointController/MotionSequencePlayer/loadSequenceFromConf.cc
-./JointController/MotionSequencePlayer/run.cc
+./Types/nameOf.cc
+./Path/init.cc
+./Path/path.cc
+./Distribution/NormalDistribution/getP.cc
 ./Distribution/NormalDistribution/draw.cc
 ./Distribution/NormalDistribution/init.cc
-./Distribution/NormalDistribution/getP.cc
-./Distribution/NormalDistribution/update.cc
 ./Distribution/NormalDistribution/predict.cc
-./Random/uniform2.cc
-./Random/stdNorm.cc
-./Random/seed.cc
-./Random/uniform.cc
-./Math/intersectVectorPlane.cc
-./Math/calcperpend.cc
-./Math/intersectLineCircle.cc
-./Math/cartesianToPolar.cc
-./Math/linePointClosestToPoint.cc
-./Math/atSameSideOf.cc
-./Math/polarToCartesian.cc
-./Math/intersectLines2D.cc
+./Distribution/NormalDistribution/update.cc
+./SocketComm/connect.cc
+./SocketComm/sendmessage.cc
+./SocketComm/initConnection.cc
+./SocketComm/nextMessage.cc
+./SocketComm/AgentSocketComm/moveUniversalJoint.cc
+./SocketComm/AgentSocketComm/makemovetorquejointmessage.cc
+./SocketComm/AgentSocketComm/syn.cc
+./SocketComm/AgentSocketComm/moveHingeJoint.cc
+./SocketComm/AgentSocketComm/say.cc
+./SocketComm/AgentSocketComm/movetorquejoint.cc
+./SocketComm/AgentSocketComm/init.cc
+./SocketComm/AgentSocketComm/makeMoveHingeJoint.cc
+./SocketComm/AgentSocketComm/update.cc
+./SocketComm/AgentSocketComm/moveJoint.cc
+./SocketComm/AgentSocketComm/beam.cc
+./SocketComm/SocketComm.cc
+./SocketComm/receive.cc
+./SocketComm/parseInput.cc
+./SocketComm/TrainerSocketComm/setPlayMode.cc
+./SocketComm/TrainerSocketComm/static.cc
+./SocketComm/TrainerSocketComm/init.cc
+./SocketComm/TrainerSocketComm/setBallVel.cc
+./SocketComm/TrainerSocketComm/setBallPos.cc
+./SocketComm/TrainerSocketComm/kickOff.cc
+./SocketComm/TrainerSocketComm/setBallPosVel.cc
+./SocketComm/initSocket.cc
+./SocketComm/send.cc
+./WorldModel/onMySide.cc
+./WorldModel/onMyBelly.cc
+./WorldModel/otherCloserTo.cc
+./WorldModel/updateGameState.cc
+./WorldModel/initJoints.cc
+./WorldModel/getDirectionOfFall.cc
+./WorldModel/worldmodel.cc
+./WorldModel/onMyFeet.cc
+./WorldModel/static.cc
+./WorldModel/update.cc
+./WorldModel/initWeights.cc
+./WorldModel/getDirectionOfOpponentGoal.cc
+./WorldModel/onMyBack.cc
+./Cochlea/translateInfo.cc
+./Cochlea/parsePolar.cc
+./Cochlea/Cochlea.cc
+./Cochlea/getLineJunctions.cc
+./Cochlea/parseScalar.cc
+./Cochlea/parseVect.cc
+./Cochlea/parseTransform.cc
+./Cochlea/update.cc
+./Cochlea/synthesizeDerivedData.cc
+./Cochlea/integrate.cc
+./Cochlea/nameOf.cc
+./Socket/socket.cc
+./ObjectInfo/DynamicObjectInfo/PlayerInfo/PlayerInfo.cc
+./ObjectInfo/ObjectInfo.cc
+./Parser/parse.cc
+./Parser/parser0.cc
+./Parser/generate.cc
+./Parser/initialize.cc
+./Parser/static.cc
+./AST/find.cc
+./AST/finddeep.cc
+./AST/findall.cc
+./AST/findalldeep.cc
+./AST/selectall.cc
+./AST/select.cc
+./PlayerClass/static.cc
+./Conf/selectxpath.cc
+./Conf/parseConf.cc
+./Conf/Conf.cc
+./Clock/RC3DClock/update.cc
 ./Math/makeRotation.cc
 ./Math/distanceLinePoint.cc
-./Conf/selectxpath.cc
-./Conf/Conf.cc
-./Conf/parseConf.cc
-./Cerebellum/outputCommands.cc
-./Cerebellum/addAction.cc
+./Math/linePointClosestToPoint.cc
+./Math/cartesianToPolar.cc
+./Math/calcperpend.cc
+./Math/intersectLineCircle.cc
+./Math/intersectLines2D.cc
+./Math/intersectVectorPlane.cc
+./Math/atSameSideOf.cc
+./Math/polarToCartesian.cc
+./Localizer/getFilteredPlayers.cc
+./Localizer/updateGlobalRotation.cc
+./Localizer/KalmanLocalizer/addGlobalMeasurement.cc
+./Localizer/KalmanLocalizer/KalmanLocalizer.cc
+./Localizer/KalmanLocalizer/onBeam.cc
+./Localizer/KalmanLocalizer/getGoalMidpoint.cc
+./Localizer/KalmanLocalizer/init.cc
+./Localizer/KalmanLocalizer/update.cc
+./Localizer/KalmanLocalizer/updatePlayersGlobal.cc
+./Localizer/KalmanLocalizer/updateBallGlobal.cc
+./Localizer/KalmanLocalizer/updateSelfGlobal.cc
+./Localizer/KalmanLocalizer/globalToLocal.cc
+./Localizer/getFilteredObjects.cc
+./Localizer/update.cc
+./Localizer/tryObserveGlobalRotation.cc
+./Localizer/getAliveObjects.cc
+./Localizer/updateRaw.cc
+./Localizer/getCochleaIdForObject.cc
+./Localizer/SimpleLocalizer/SimpleLocalizer.cc
+./Localizer/SimpleLocalizer/update.cc
+./Localizer/Localizer.cc
+./JointController/GaitGenerator/IKGaitGenerator/determineNextStep.cc
+./JointController/GaitGenerator/IKGaitGenerator/doStep.cc
+./JointController/GaitGenerator/IKGaitGenerator/determineSwingFootEnd.cc
+./JointController/GaitGenerator/IKGaitGenerator/resetGait.cc
+./JointController/GaitGenerator/IKGaitGenerator/updatePhase.cc
+./JointController/GaitGenerator/IKGaitGenerator/IKGaitGenerator.cc
+./JointController/GaitGenerator/IKGaitGenerator/updateSpeed.cc
+./JointController/GaitGenerator/IKGaitGenerator/fillJointAngles.cc
+./JointController/GaitGenerator/IKGaitGenerator/run.cc
+./JointController/MotionSequencePlayer/loadSequenceFromConf.cc
+./JointController/MotionSequencePlayer/runCurrentStep.cc
+./JointController/MotionSequencePlayer/checkSequenceDone.cc
+./JointController/MotionSequencePlayer/checkFirstRun.cc
+./JointController/MotionSequencePlayer/run.cc
+./HumanoidAgent/startUp.cc
+./HumanoidAgent/static.cc
+./HumanoidAgent/run.cc
+./Random/multivarNorm.cc
+./Random/seed.cc
+./Random/stdNorm.cc
+./Random/uniform2.cc
+./Random/uniform.cc
+./Random/stdNorm2.cc
+./Predicate/destroy.cc
+./Predicate/copy.cc
+./Predicate/generate.cc
+./Predicate/operator0.cc
+./Predicate/toString.cc
+./PortableParser/static.cc
+./AgentModel/onMySide.cc
+./AgentModel/onMyBelly.cc
+./AgentModel/getJointName.cc
+./AgentModel/checkDirectionOfFall.cc
+./AgentModel/getBodyCopy.cc
+./AgentModel/AgentModel.cc
+./AgentModel/initBody2.cc
+./AgentModel/updatePosture.cc
+./AgentModel/updateCOM.cc
+./AgentModel/setUnum.cc
+./AgentModel/onMyFeet.cc
+./AgentModel/jointAnglesForAnklePosition.cc
+./AgentModel/predict.cc
+./AgentModel/update.cc
+./AgentModel/isDown.cc
+./AgentModel/initBody.cc
+./AgentModel/getBodyPartCopy.cc
+./AgentModel/onMyBack.cc
 ./Cerebellum/cerebellum.cc
-./ObjectInfo/ObjectInfo.cc
-./ObjectInfo/DynamicObjectInfo/PlayerInfo/PlayerInfo.cc
+./Cerebellum/addAction.cc
+./Cerebellum/outputCommands.cc
+./Debugger/RoboVizDebugger/drawCurve.cc
+./Debugger/RoboVizDebugger/getSetName.cc
+./Debugger/RoboVizDebugger/drawPoint.cc
+./Debugger/RoboVizDebugger/drawLine.cc
+./Debugger/RoboVizDebugger/drawProgressCircle.cc
+./Debugger/RoboVizDebugger/drawSphere.cc
+./Debugger/RoboVizDebugger/reDraw.cc
+./Debugger/RoboVizDebugger/RoboVizDebugger.cc
+./Debugger/RoboVizDebugger/start.cc
+./Debugger/RoboVizDebugger/drawTransformationAxes.cc
+./Debugger/RoboVizDebugger/init.cc
+./Debugger/RoboVizDebugger/plot.cc
+./Debugger/RoboVizDebugger/onThinkEnd.cc
+./Debugger/RoboVizDebugger/drawPolygon.cc
+./Debugger/RoboVizDebugger/drawAgentAnnotation.cc
+./Debugger/RoboVizDebugger/drawAnnotation.cc
+./Debugger/RoboVizDebugger/drawShapes.cc
+./Debugger/RoboVizDebugger/drawPlayerSkeleton.cc
+./Debugger/RoboVizDebugger/drawCircle.cc
+./SocketAddress/socketaddress.cc
+./TimeVal/timeval.cc
 )
 
 set(LIBBATS_INCLUDE_DIRS ${EIGEN3_INCLUDE_DIR} ${LIBXML2_INCLUDE_DIR} ${SigC++_INCLUDE_DIRS} ${LIBXMLXX_INCLUDE_DIRS})
 
 # Only build GTK debugger if GTKmm was found
-if(BUILD_GTK_DEBUGGER)
-  if(GTKMM_FOUND)
-    list(APPEND LIBBATS_SOURCES
-      ./Debugger/GtkDebugger/onDebugText.cc
-      ./Debugger/GtkDebugger/run.cc
-      ./Debugger/GtkDebugger/onThinkEnd.cc
-      ./Debugger/GtkDebugger/drawShapes.cc
-      ./Debugger/GtkDebugger/GtkDebugger.cc
-      ./Debugger/GtkDebugger/drawBall.cc
-      ./Debugger/GtkDebugger/drawCurve.cc
-      ./Debugger/GtkDebugger/plot.cc
-      ./Debugger/GtkDebugger/drawPlayers.cc
-      ./Debugger/GtkDebugger/start.cc
-      ./Debugger/GtkDebugger/drawSelf.cc
-      ./Debugger/GtkDebugger/init.cc
-      ./Debugger/GtkDebugger/drawField.cc
-      ./Debugger/GtkDebugger/reDraw.cc
-      ./Debugger/GtkDebugger/onDrawingAreaExpose.cc
-      )
-    
-    list(APPEND LIBBATS_INCLUDE_DIRS ${GTKMM_INCLUDE_DIRS})
-  else(GTKMM_FOUND)
-    message(STATUS "  GtkDebugger will not be built")
-  endif(GTKMM_FOUND)
-endif(BUILD_GTK_DEBUGGER)
+if(GTKMM_FOUND)
+  list(APPEND LIBBATS_SOURCES
+       ./Debugger/GtkDebugger/onDebugText.cc
+       ./Debugger/GtkDebugger/run.cc
+       ./Debugger/GtkDebugger/onThinkEnd.cc
+       ./Debugger/GtkDebugger/drawShapes.cc
+       ./Debugger/GtkDebugger/GtkDebugger.cc
+       ./Debugger/GtkDebugger/drawBall.cc
+       ./Debugger/GtkDebugger/drawCurve.cc
+       ./Debugger/GtkDebugger/plot.cc
+       ./Debugger/GtkDebugger/drawPlayers.cc
+       ./Debugger/GtkDebugger/start.cc
+       ./Debugger/GtkDebugger/drawSelf.cc
+       ./Debugger/GtkDebugger/init.cc
+       ./Debugger/GtkDebugger/drawField.cc
+       ./Debugger/GtkDebugger/reDraw.cc
+       ./Debugger/GtkDebugger/onDrawingAreaExpose.cc
+  )
+
+  list(APPEND LIBBATS_INCLUDE_DIRS ${GTKMM_INCLUDE_DIRS})
+else(GTKMM_FOUND)
+  message(STATUS "  GtkDebugger will not be built")
+endif(GTKMM_FOUND)
 
 include_directories(${LIBBATS_INCLUDE_DIRS} ${CMAKE_BINARY_DIR})
 
@@ -291,68 +288,68 @@ macro(INSTALL_HEADERS_WITH_DIRECTORY DESTINATION HEADER_LIST)
   endforeach(HEADER)
 endmacro(INSTALL_HEADERS_WITH_DIRECTORY)
 
-set(LIBBATS_HEADERS ./TimeVal/timeval.hh
-./Socket/socket.hh
-./Localizer/KalmanLocalizer/kalmanlocalizer.hh
-./Localizer/SimpleLocalizer/simplelocalizer.hh
-./Localizer/localizer.hh
-./Clock/RC3DClock/rc3dclock.hh
-./Clock/clock.hh
-./Cochlea/cochlea.hh
-./Debugger/GtkDebugger/gtkdebugger.hh
-./Debugger/debugger.hh
-./Debugger/RoboVizDebugger/robovizdebugger.hh
-./Debugger/EmptyDebugger/emptydebugger.hh
-./Singleton/singleton.hh
-./Predicate/predicate.hh
-./BatsException/batsexception.hh
-./Range/range.hh
-./AgentModel/agentmodel.hh
-./SocketComm/AgentSocketComm/agentsocketcomm.hh
-./SocketComm/TrainerSocketComm/trainersocketcomm.hh
-./SocketComm/socketcomm.hh
-./MotionSequence/motionsequence.hh
-./SocketAddress/socketaddress.hh
-./Path/path.hh
-./BodyPart/bodypart.hh
-./AST/ast.hh
-./PortableParser/portableparser.hh
-./Parser/parser.hh
-./WorldModel/worldmodel.hh
+set(LIBBATS_HEADERS ./Types/types.hh
 ./SituationDetector/SimpleSituationDetector/simplesituationdetector.hh
 ./SituationDetector/situationdetector.hh
-./HumanoidAgent/humanoidagent.hh
+./Path/path.hh
+./Distribution/distribution.hh
+./Distribution/NormalDistribution/normaldistribution.hh
+./SocketComm/AgentSocketComm/agentsocketcomm.hh
+./SocketComm/socketcomm.hh
+./SocketComm/TrainerSocketComm/trainersocketcomm.hh
+./WorldModel/worldmodel.hh
+./Cochlea/cochlea.hh
+./Socket/socket.hh
+./ObjectInfo/DynamicObjectInfo/PlayerInfo/playerinfo.hh
+./ObjectInfo/DynamicObjectInfo/dynamicobjectinfo.hh
+./ObjectInfo/objectinfo.hh
 ./BatsEvent/batsevent.hh
+./Parser/parser.hh
+./AST/ast.hh
+./Singleton/singleton.hh
+./DistributionTracker/distributiontracker.hh
+./PlayerClass/playerclass.hh
+./Shape/shape.hh
+./Conf/conf.hh
+./Conf/xmlattr.hh
+./Conf/xmlnodeset.hh
+./Conf/xmlnode.hh
+./Clock/RC3DClock/rc3dclock.hh
+./Clock/clock.hh
 ./Action/action.hh
 ./Action/RC3DAction/rc3daction.hh
-./Types/types.hh
-./PCSelector/UnumPCSelector/unumpcselector.hh
-./PCSelector/pcselector.hh
-./Shape/shape.hh
-./PlayerClass/playerclass.hh
-./DistributionTracker/distributiontracker.hh
-./JointController/GaitGenerator/IKGaitGenerator/ikgaitgenerator.hh
-./JointController/GaitGenerator/gaitgenerator.hh
-./JointController/MotionSequencePlayer/motionsequenceplayer.hh
-./JointController/jointcontroller.hh
-./Distribution/NormalDistribution/normaldistribution.hh
-./Distribution/distribution.hh
-./Configurable/configurable.hh
-./docs/doc.hh
-./Random/random.hh
 ./Math/config.hh
 ./Math/basicmath.hh
 ./Math/math.hh
-./Conf/conf.hh
-./Conf/xmlnode.hh
-./Conf/xmlnodeset.hh
-./Conf/xmlattr.hh
-./Preprocessor/foreach.hh
+./Localizer/KalmanLocalizer/kalmanlocalizer.hh
+./Localizer/SimpleLocalizer/simplelocalizer.hh
+./Localizer/localizer.hh
+./JointController/GaitGenerator/gaitgenerator.hh
+./JointController/GaitGenerator/IKGaitGenerator/ikgaitgenerator.hh
+./JointController/MotionSequencePlayer/motionsequenceplayer.hh
+./JointController/jointcontroller.hh
+./HumanoidAgent/humanoidagent.hh
+./Configurable/configurable.hh
+./PCSelector/pcselector.hh
+./PCSelector/UnumPCSelector/unumpcselector.hh
 ./Preprocessor/debug.hh
+./Preprocessor/foreach.hh
+./MotionSequence/motionsequence.hh
+./Random/random.hh
+./Predicate/predicate.hh
+./PortableParser/portableparser.hh
+./BodyPart/bodypart.hh
+./Range/range.hh
+./AgentModel/agentmodel.hh
 ./Cerebellum/cerebellum.hh
-./ObjectInfo/objectinfo.hh
-./ObjectInfo/DynamicObjectInfo/PlayerInfo/playerinfo.hh
-./ObjectInfo/DynamicObjectInfo/dynamicobjectinfo.hh)
+./Debugger/RoboVizDebugger/robovizdebugger.hh
+./Debugger/debugger.hh
+./Debugger/GtkDebugger/gtkdebugger.hh
+./Debugger/EmptyDebugger/emptydebugger.hh
+./docs/doc.hh
+./SocketAddress/socketaddress.hh
+./BatsException/batsexception.hh
+./TimeVal/timeval.hh)
 
 install_headers_with_directory(include/libbats "LIBBATS_HEADERS")
 

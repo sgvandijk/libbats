@@ -1,6 +1,7 @@
 #include "random.hh"
 #include <cstdlib>
 #include <cmath>
+#include <Eigen/Cholesky>
 
 using namespace bats;
 using namespace Eigen;

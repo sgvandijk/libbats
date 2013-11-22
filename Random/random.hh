@@ -35,8 +35,8 @@
  *		Suite 330, Boston, MA  02111-1307, USA.
  *
  */
-#ifndef __BATS_RANDOM_HH__
-#define __BATS_RANDOM_HH__
+#ifndef BATS_RANDOM_HH
+#define BATS_RANDOM_HH
 
 #include <Eigen/Core>
 
@@ -45,19 +45,34 @@ namespace bats
   /** Utility class to work with random numbers */
   class Random
   {
-    public:
-      /// Seed the random number generator
-      static void seed(unsigned s);
-      
-      /// Draw a value from a uniform distribution over [@a begin, @a end)
-      static double uniform(double begin = 0, double end = 1);
-      
-      /// Create a random vector, where each element is drawn uniformally from the range defined by @a begin and @a end
-      static Eigen::VectorXd uniform(Eigen::VectorXd const& begin, Eigen::VectorXd const& end);
-      
-      /// Draw a value from a standard normal distribution
-      static double stdNorm();
-      
+  public:
+    /** Seed the random number generator
+     */
+    static void seed(unsigned s);
+    
+    /* Draw a value from a uniform distribution over [@a begin, @a end)
+     */
+    static double uniform(double begin = 0, double end = 1);
+    
+    /** Create a random vector, where each element is drawn
+     * uniformally from the range defined by @a begin and @a end.
+     */
+    static Eigen::VectorXd uniform(Eigen::VectorXd const& begin, Eigen::VectorXd const& end);
+    
+    /** Draw a value from a standard normal distribution
+     */
+    static double stdNorm();
+
+    /** Create a random vector, where each element is i.i.d according
+     * to a standard normal distribution.
+     */
+    static Eigen::VectorXd stdNorm(unsigned size);
+
+    /** Create a random vector drawn from a multivariate normal
+     * distribution with the given covariance matrix
+     */
+    static Eigen::VectorXd multivarNorm(Eigen::MatrixXd const& covar);
+
     private:
       Random (); // NI
 
