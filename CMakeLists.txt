@@ -250,6 +250,8 @@ add_library(bats
 ${LIBBATS_SOURCES}
 )
 
+target_link_libraries(bats ${LIBXML2_LIBRARIES} ${SigC++_LIBRARIES})
+
 #
 ## HTML documentation with doxygen
 #
